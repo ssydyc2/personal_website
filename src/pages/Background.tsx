@@ -55,7 +55,7 @@ function NeuralNetwork() {
         </linearGradient>
       </defs>
       {/* Neural network nodes and connections */}
-      {[...Array(6)].map((_, layer) => (
+      {[...Array(6)].flatMap((_, layer) =>
         [...Array(4)].map((_, node) => (
           <g key={`${layer}-${node}`}>
             <circle
@@ -79,7 +79,7 @@ function NeuralNetwork() {
             )}
           </g>
         ))
-      ))}
+      )}
     </svg>
   );
 }
