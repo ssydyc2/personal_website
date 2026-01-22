@@ -1,11 +1,10 @@
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Background from './pages/Background';
 import Journey from './pages/Journey';
 
 export default function App() {
   return (
-    <HashRouter>
     <BrowserRouter basename="/journey_to_performance_engineer_website">
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -13,6 +12,6 @@ export default function App() {
           <Route path="journey" element={<Journey />} />
         </Route>
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
