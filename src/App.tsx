@@ -6,6 +6,7 @@ import Journey from './pages/Journey';
 export default function App() {
   return (
     <HashRouter>
+    <BrowserRouter basename="/journey_to_performance_engineer_website">
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Background />} />
