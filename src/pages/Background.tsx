@@ -45,42 +45,6 @@ const timelineData: TimelineItem[] = [
   }
 ];
 
-function NeuralNetwork() {
-  const nodes: { layer: number; node: number }[] = [];
-  for (let layer = 0; layer < 6; layer++) {
-    for (let node = 0; node < 4; node++) {
-      nodes.push({ layer, node });
-    }
-  }
-
-  return (
-    <svg className="absolute inset-0 w-full h-full opacity-5" viewBox="0 0 400 600">
-      {nodes.map(({ layer, node }) => (
-        <g key={`${layer}-${node}`}>
-          <circle
-            cx={50 + layer * 60}
-            cy={100 + node * 100 + (layer % 2) * 50}
-            r={8}
-            fill="#6366f1"
-            className="animate-pulse"
-            style={{ animationDelay: `${(layer + node) * 0.2}s` }}
-          />
-          {layer < 5 && (
-            <line
-              x1={58 + layer * 60}
-              y1={100 + node * 100 + (layer % 2) * 50}
-              x2={92 + layer * 60}
-              y2={100 + ((node + 1) % 4) * 100 + ((layer + 1) % 2) * 50}
-              stroke="#6366f1"
-              strokeWidth={1}
-              opacity={0.3}
-            />
-          )}
-        </g>
-      ))}
-    </svg>
-  );
-}
 
 function TimelineCard({ item, index, isVisible }: { item: TimelineItem; index: number; isVisible: boolean }) {
   const isLeft = index % 2 === 0;
@@ -155,8 +119,6 @@ export default function Background() {
 
   return (
     <div className="relative min-h-screen">
-      {/* Background neural network pattern */}
-      <NeuralNetwork />
 
       <div className="relative space-y-4">
         {/* Header */}
