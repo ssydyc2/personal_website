@@ -1,9 +1,10 @@
 import { useState } from 'react';
+import type { ReactNode } from 'react';
 
 interface Section {
   id: string;
   title: string;
-  content: React.ReactNode;
+  content: ReactNode;
 }
 
 const sections: Section[] = [
