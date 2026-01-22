@@ -12,7 +12,7 @@ export default function Layout() {
             <div className="mt-3 flex items-center gap-4">
               <div className="h-px w-12 bg-gray-300"></div>
               <span className="text-2xl tracking-[0.3em] text-gray-400 font-light">
-                Test name
+                宋思源
               </span>
             </div>
           </div>
