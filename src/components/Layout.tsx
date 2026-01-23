@@ -39,7 +39,7 @@ export default function Layout() {
                 }`
               }
             >
-              Journey to Performance Engineer
+              Growth 
             </NavLink>
           </nav>
         </div>

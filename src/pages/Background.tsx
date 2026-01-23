@@ -10,7 +10,7 @@ interface TimelineItem {
 
 const timelineData: TimelineItem[] = [
   {
-    period: "2014 - 2018",
+    period: "2013 - 2018",
     title: "Ph.D. in Operations Research",
     description: "Focused on theoretical optimization problem",
     tags: ["Optimization", "Mathematical Modeling", "Research"]
