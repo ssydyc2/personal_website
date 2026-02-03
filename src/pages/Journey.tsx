@@ -1,6 +1,114 @@
 import { useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 
+interface Paper {
+  id: string;
+  title: string;
+  authors: string;
+  venue: string;
+  year: number;
+  description: string;
+  link: string;
+  color: string;
+}
+
+const papers: Paper[] = [
+  {
+    id: 'flash-attention-v1',
+    title: 'FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness',
+    authors: 'Tri Dao, Daniel Y. Fu, Stefano Ermon, Atri Rudra, Christopher Ré',
+    venue: 'NeurIPS',
+    year: 2022,
+    description:
+      'Introduces an IO-aware algorithm that uses tiling to reduce memory reads/writes between GPU high bandwidth memory (HBM) and on-chip SRAM. Achieves 2-4x speedup over standard attention while reducing memory usage from O(N²) to O(N).',
+    link: 'https://arxiv.org/abs/2205.14135',
+    color: 'from-orange-500 via-amber-500 to-yellow-500',
+  },
+  {
+    id: 'flash-attention-v2',
+    title: 'FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning',
+    authors: 'Tri Dao',
+    venue: 'ICLR',
+    year: 2024,
+    description:
+      'Improves upon FlashAttention with better work partitioning between GPU thread blocks and warps. Achieves around 2x speedup over FlashAttention by reducing non-matmul FLOPs and improving parallelism across the sequence length dimension.',
+    link: 'https://arxiv.org/abs/2307.08691',
+    color: 'from-rose-500 via-pink-500 to-fuchsia-500',
+  },
+  {
+    id: 'paged-attention',
+    title: 'Efficient Memory Management for Large Language Model Serving with PagedAttention',
+    authors: 'Woosuk Kwon, Zhuohan Li, Siyuan Zhuang, Ying Sheng, Lianmin Zheng, Cody Hao Yu, Joseph E. Gonzalez, Hao Zhang, Ion Stoica',
+    venue: 'SOSP',
+    year: 2023,
+    description:
+      'Introduces PagedAttention, inspired by OS virtual memory paging, to manage the KV cache in LLM serving. Enables near-zero waste in KV cache memory and flexible sharing across requests, achieving 2-4x throughput improvements in vLLM.',
+    link: 'https://arxiv.org/abs/2309.06180',
+    color: 'from-cyan-500 via-blue-500 to-indigo-500',
+  },
+];
+
+function PaperCard({ paper, index }: { paper: Paper; index: number }) {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(true), index * 100);
+    return () => clearTimeout(timer);
+  }, [index]);
+
+  return (
+    <div
+      className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${paper.color} p-8 text-white`}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? 'translateY(0)' : 'translateY(20px)',
+        transition: 'all 0.6s ease-out',
+      }}
+    >
+      <div className="absolute inset-0 bg-black/10" />
+      <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
+      <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
+
+      <div className="relative z-10">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="px-2 py-1 bg-white/20 rounded text-xs font-medium">
+            {paper.venue} {paper.year}
+          </span>
+        </div>
+        <h2 className="text-xl font-semibold mb-3 leading-tight">{paper.title}</h2>
+        <p className="text-white/80 text-sm mb-4">{paper.authors}</p>
+        <p className="text-white/90 leading-relaxed mb-6 text-sm">{paper.description}</p>
+        <a
+          href={paper.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-800 rounded-lg font-medium hover:bg-white/90 transition-colors shadow-lg text-sm"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+            />
+          </svg>
+          Read on arXiv
+        </a>
+      </div>
+    </div>
+  );
+}
+
+function PapersContent() {
+  return (
+    <div className="space-y-6">
+      {papers.map((paper, index) => (
+        <PaperCard key={paper.id} paper={paper} index={index} />
+      ))}
+    </div>
+  );
+}
+
 function AIPerformanceContent() {
   const [visible, setVisible] = useState(false);
 
@@ -175,6 +283,11 @@ const sections: Section[] = [
     id: 'resources',
     title: 'AI Performance Engineer',
     content: <AIPerformanceContent />,
+  },
+  {
+    id: 'papers',
+    title: 'Important Papers',
+    content: <PapersContent />,
   },
 ];
 
