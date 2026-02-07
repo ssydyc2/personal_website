@@ -301,7 +301,7 @@ function GPUProgrammingContent() {
           </p>
           <div className="flex flex-wrap gap-3">
             <a
-              href="https://github.com/ssydyc2/learn_jax"
+              href="https://github.com/ssydyc2/learn_triton"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2 bg-white text-blue-600 rounded-lg font-medium hover:bg-white/90 transition-colors shadow-lg"
