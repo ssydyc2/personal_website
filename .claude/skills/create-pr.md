@@ -7,12 +7,12 @@ When creating pull requests for this repository, use the following format:
 Classify your PR by prefixing the title with one of these types:
 
 - **[Refactoring]** - Code restructuring without changing functionality
-- **[New Feature]** - Adding new functionality or capabilities
+- **[Feature]** - Adding or updating functionality
 - **[Bug Fix]** - Fixing broken or incorrect behavior
 - **[Documentation]** - Updates to docs, comments, or README
 
 **Example titles:**
-- `[New Feature] Add interactive timeline to Background page`
+- `[Feature] Add interactive timeline to Background page`
 - `[Bug Fix] Resolve mobile navigation overflow issue`
 - `[Refactoring] Extract reusable Card component`
 - `[Documentation] Update deployment instructions in README`
