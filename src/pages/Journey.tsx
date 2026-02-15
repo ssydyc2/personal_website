@@ -4,6 +4,7 @@ import {
   GPUProgrammingContent,
   AIPerformanceContent,
   PapersContent,
+  QuantitativeTradingContent,
 } from '../components/journey';
 
 interface Section {
@@ -27,6 +28,11 @@ const sections: Section[] = [
     id: 'papers',
     title: 'Important Papers',
     content: <PapersContent />,
+  },
+  {
+    id: 'quant-trading',
+    title: 'Quantitative Trading',
+    content: <QuantitativeTradingContent />,
   },
 ];
 
