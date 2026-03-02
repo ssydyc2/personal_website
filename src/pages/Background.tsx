@@ -12,7 +12,7 @@ const timelineData: TimelineItem[] = [
   {
     period: "2013 - 2018",
     title: "Ph.D. in Operations Research",
-    description: "Focused on theoretical optimization problem",
+    description: "Focused on theoretical optimization and algorithmic research",
     tags: ["Optimization", "Mathematical Modeling", "Research"]
   },
   {
@@ -26,7 +26,7 @@ const timelineData: TimelineItem[] = [
     period: "2020 - 2022",
     title: "Machine Learning Engineer",
     company: "Snap Inc.",
-    description: "Developed machine learning models for friending suggestions and notification optimization, directly impacting user engagement and retention.",
+    description: "Developed machine learning models for friend recommendations and notification optimization, directly impacting user engagement and retention.",
     tags: ["ML Systems", "Recommendation Systems"]
   },
   {
@@ -40,8 +40,8 @@ const timelineData: TimelineItem[] = [
     period: "2025 - Present",
     title: "Software Engineer, Machine Learning",
     company: "Meta Inc.",
-    description: "Working on classifiers (fine tuned LLMs) and safety eval to block unsafe contents generated from AI",
-    tags: ["Post Training", "AI Safety", "LLMs"]
+    description: "On the AI Platform team, working on LLM inference and performance optimization across different hardware (AMD & TPU)",
+    tags: ["LLM", "Infra", "Performance Optimization"]
   }
 ];
 
