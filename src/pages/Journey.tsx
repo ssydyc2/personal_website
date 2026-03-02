@@ -4,7 +4,6 @@ import {
   GPUProgrammingContent,
   AIPerformanceContent,
   PapersContent,
-  QuantitativeTradingContent,
 } from '../components/journey';
 
 interface Section {
