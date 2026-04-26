@@ -16,7 +16,7 @@ export default function Layout() {
               </span>
             </div>
           </div>
-          <nav className="flex gap-8">
+          <nav className="flex flex-wrap gap-x-8 gap-y-3">
             <NavLink
               to="/"
               className={({ isActive }) =>
@@ -42,7 +42,7 @@ export default function Layout() {
               Growth
             </NavLink>
             <NavLink
-              to="/books"
+              to="/reading-list"
               className={({ isActive }) =>
                 `text-sm tracking-wide transition-colors ${
                   isActive
@@ -51,7 +51,19 @@ export default function Layout() {
                 }`
               }
             >
-              Books
+              Reading List
+            </NavLink>
+            <NavLink
+              to="/study-plans"
+              className={({ isActive }) =>
+                `text-sm tracking-wide transition-colors ${
+                  isActive
+                    ? 'text-gray-900 font-medium'
+                    : 'text-gray-400 hover:text-gray-600'
+                }`
+              }
+            >
+              Study Plans
             </NavLink>
           </nav>
         </div>
