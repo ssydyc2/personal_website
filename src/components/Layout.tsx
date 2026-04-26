@@ -39,7 +39,19 @@ export default function Layout() {
                 }`
               }
             >
-              Growth 
+              Growth
+            </NavLink>
+            <NavLink
+              to="/books"
+              className={({ isActive }) =>
+                `text-sm tracking-wide transition-colors ${
+                  isActive
+                    ? 'text-gray-900 font-medium'
+                    : 'text-gray-400 hover:text-gray-600'
+                }`
+              }
+            >
+              Books
             </NavLink>
           </nav>
         </div>
