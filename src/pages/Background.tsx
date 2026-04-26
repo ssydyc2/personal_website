@@ -10,24 +10,11 @@ interface TimelineItem {
 
 const timelineData: TimelineItem[] = [
   {
-    period: "2013 - 2018",
-    title: "Ph.D. in Operations Research",
-    description: "Focused on theoretical optimization and algorithmic research",
-    tags: ["Optimization", "Mathematical Modeling", "Research"]
-  },
-  {
-    period: "2018 - 2020",
-    title: "Software Engineer, Infrastructure",
-    company: "Snap Inc.",
-    description: "Built service mesh infrastructure powering real-time communication for hundreds of millions of users.",
-    tags: ["Distributed Systems", "Infrastructure"]
-  },
-  {
-    period: "2020 - 2022",
-    title: "Machine Learning Engineer",
-    company: "Snap Inc.",
-    description: "Developed machine learning models for friend recommendations and notification optimization, directly impacting user engagement and retention.",
-    tags: ["ML Systems", "Recommendation Systems"]
+    period: "2025 - Present",
+    title: "Software Engineer, Machine Learning",
+    company: "Meta Inc.",
+    description: "On the AI Platform team, working on LLM inference and training supporting other teams, especially for TPU.",
+    tags: ["LLM", "Infra", "Performance Optimization"]
   },
   {
     period: "2022 - 2025",
@@ -37,11 +24,24 @@ const timelineData: TimelineItem[] = [
     tags: ["ML Systems", "Ads"]
   },
   {
-    period: "2025 - Present",
-    title: "Software Engineer, Machine Learning",
-    company: "Meta Inc.",
-    description: "On the AI Platform team, working on LLM inference and performance optimization across different hardware (AMD & TPU)",
-    tags: ["LLM", "Infra", "Performance Optimization"]
+    period: "2020 - 2022",
+    title: "Machine Learning Engineer",
+    company: "Snap Inc.",
+    description: "Developed machine learning models for friend recommendations and notification optimization, directly impacting user engagement and retention.",
+    tags: ["ML Systems", "Recommendation Systems"]
+  },
+  {
+    period: "2018 - 2020",
+    title: "Software Engineer, Infrastructure",
+    company: "Snap Inc.",
+    description: "Built service mesh infrastructure powering real-time communication for hundreds of millions of users.",
+    tags: ["Distributed Systems", "Infrastructure"]
+  },
+  {
+    period: "2013 - 2018",
+    title: "Ph.D. in Operations Research",
+    description: "Focused on theoretical optimization and algorithmic research",
+    tags: ["Optimization", "Mathematical Modeling", "Research"]
   }
 ];
 
