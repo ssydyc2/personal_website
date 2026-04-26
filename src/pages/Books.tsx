@@ -15,7 +15,7 @@ const books: Book[] = [
 export default function Books() {
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-light text-gray-900">Books</h1>
+      <h1 className="text-3xl font-light text-gray-900">Reading List</h1>
 
       <div className="space-y-4">
         {books.map((book) => (
