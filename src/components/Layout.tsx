@@ -30,18 +30,6 @@ export default function Layout() {
               Background
             </NavLink>
             <NavLink
-              to="/journey"
-              className={({ isActive }) =>
-                `text-sm tracking-wide transition-colors ${
-                  isActive
-                    ? 'text-gray-900 font-medium'
-                    : 'text-gray-400 hover:text-gray-600'
-                }`
-              }
-            >
-              Growth
-            </NavLink>
-            <NavLink
               to="/reading-list"
               className={({ isActive }) =>
                 `text-sm tracking-wide transition-colors ${
