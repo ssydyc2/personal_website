@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
 interface Resource {
   title: string;
@@ -344,24 +344,24 @@ const studyPlans: StudyPlan[] = [
 
 function ResourceCard({ resource }: { resource: Resource }) {
   return (
-    <article className="rounded-lg border border-gray-100 bg-white p-5 shadow-sm">
-      <div className="space-y-2">
+    <article className="border-b border-gray-100 py-7 last:border-b-0">
+      <div className="space-y-2.5">
         <a
           href={resource.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-base font-medium leading-snug text-gray-900 hover:text-indigo-700"
+          className="block text-xl font-light leading-snug text-gray-900 transition-colors hover:text-sky-700"
         >
           {resource.title}
         </a>
         {resource.meta && (
-          <p className="text-sm tracking-wide text-gray-400">{resource.meta}</p>
+          <p className="text-sm text-gray-400">{resource.meta}</p>
         )}
       </div>
-      <ul className="mt-4 space-y-2">
+      <ul className="mt-4 space-y-2.5">
         {resource.notes.map((note) => (
-          <li key={note} className="flex gap-3 text-sm leading-relaxed text-gray-600">
-            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-300" />
+          <li key={note} className="flex gap-3 text-base leading-7 text-gray-600">
+            <span className="mt-3 h-1 w-1 shrink-0 rounded-full bg-gray-300" />
             <span>{note}</span>
           </li>
         ))}
@@ -372,24 +372,24 @@ function ResourceCard({ resource }: { resource: Resource }) {
 
 function PhaseSection({ phase, index }: { phase: Phase; index: number }) {
   return (
-    <section className="space-y-5">
-      <div className="flex flex-col gap-2 border-b border-gray-100 pb-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-sm font-medium text-indigo-600">Phase {index + 1}</p>
+    <section id={`phase-${index + 1}`} className="scroll-mt-8 space-y-5">
+      <div className="border-b border-gray-200 pb-5">
+        <p className="text-sm text-gray-400">{phase.period}</p>
+        <div className="mt-1 flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
           <h2 className="text-2xl font-light text-gray-900">{phase.title}</h2>
+          <span className="text-sm text-gray-400">Phase {index + 1}</span>
         </div>
-        <span className="text-sm text-gray-400">{phase.period}</span>
+        <p className="mt-3 max-w-3xl text-base leading-7 text-gray-600">{phase.summary}</p>
       </div>
-      <p className="text-gray-600 leading-relaxed">{phase.summary}</p>
-      <div className="space-y-6">
+      <div className="space-y-8">
         {phase.groups.map((group) => (
-          <div key={group.title ?? phase.title} className="space-y-4">
+          <div key={group.title ?? phase.title}>
             {group.title && (
-              <h3 className="text-sm font-medium uppercase tracking-wide text-gray-400">
+              <h3 className="mb-1 text-sm font-medium uppercase tracking-wide text-gray-400">
                 {group.title}
               </h3>
             )}
-            <div className="grid gap-4">
+            <div>
               {group.resources.map((resource) => (
                 <ResourceCard key={resource.title} resource={resource} />
               ))}
@@ -401,145 +401,198 @@ function PhaseSection({ phase, index }: { phase: Phase; index: number }) {
   );
 }
 
+function NumberedList({ title, items }: { title: string; items: string[] }) {
+  return (
+    <section className="border-t border-gray-200 pt-7">
+      <h2 className="text-xl font-light text-gray-900">{title}</h2>
+      <ol className="mt-4 space-y-3">
+        {items.map((item, index) => (
+          <li key={item} className="flex gap-4 text-base leading-7 text-gray-600">
+            <span className="w-6 shrink-0 text-right text-sm text-gray-400">
+              {index + 1}.
+            </span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+function ReadingChecklist({ items }: { items: string[] }) {
+  return (
+    <section className="border-y border-gray-200 py-7">
+      <h2 className="text-xl font-light text-gray-900">Reading Checklist</h2>
+      <ul className="mt-4 grid gap-x-8 gap-y-3 md:grid-cols-2">
+        {items.map((item) => (
+          <li key={item} className="flex gap-3 text-base leading-7 text-gray-600">
+            <span className="mt-3 h-px w-4 shrink-0 bg-gray-300" />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function FrameworkComparison({ rows }: { rows: string[][] }) {
+  return (
+    <section className="space-y-4 border-t border-gray-200 pt-7">
+      <h2 className="text-xl font-light text-gray-900">Framework Comparison</h2>
+      <div className="overflow-x-auto">
+        <table className="min-w-full border-y border-gray-200 text-left text-sm">
+          <thead className="text-gray-500">
+            <tr className="border-b border-gray-200">
+              <th className="py-3 pr-5 font-medium">Framework</th>
+              <th className="px-5 py-3 font-medium">Canonical Paper</th>
+              <th className="px-5 py-3 font-medium">Sync/Async</th>
+              <th className="px-5 py-3 font-medium">Placement</th>
+              <th className="py-3 pl-5 font-medium">Read First</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100 text-gray-600">
+            {rows.map((row) => (
+              <tr key={row[0]}>
+                {row.map((cell, index) => (
+                  <td
+                    key={`${row[0]}-${cell}`}
+                    className={`py-3 align-top leading-6 ${
+                      index === 0 ? 'pr-5 text-gray-900' : index === row.length - 1 ? 'pl-5' : 'px-5'
+                    }`}
+                  >
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
+function TopThree({ items }: { items: string[] }) {
+  return (
+    <section className="border-t border-gray-200 pt-7">
+      <h2 className="text-xl font-light text-gray-900">Top 3 If Short on Time</h2>
+      <div className="mt-4 grid gap-4 sm:grid-cols-3">
+        {items.map((item, index) => (
+          <p key={item} className="border-l border-gray-200 pl-4 text-base leading-7 text-gray-600">
+            <span className="block text-sm text-gray-400">{index + 1}</span>
+            {item}
+          </p>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function KeyConcepts({ concepts }: { concepts: string }) {
+  return (
+    <section className="border-t border-gray-200 pt-7">
+      <h2 className="text-xl font-light text-gray-900">Key Concepts Map</h2>
+      <pre className="mt-4 overflow-x-auto border-y border-gray-200 bg-gray-50 px-4 py-5 text-sm leading-7 text-gray-600">
+        {concepts}
+      </pre>
+    </section>
+  );
+}
+
 function StudyPlanDetail({ plan }: { plan: StudyPlan }) {
   return (
-    <div className="space-y-10">
-      <header className="space-y-3">
-        <p className="text-sm font-medium uppercase tracking-wide text-gray-400">
-          {plan.eyebrow}
-        </p>
-        <h1 className="text-3xl font-light text-gray-900">{plan.title}</h1>
-        <p className="max-w-3xl text-gray-600 leading-relaxed">{plan.summary}</p>
+    <article className="mx-auto max-w-3xl space-y-12">
+      <header className="border-b border-gray-200 pb-8">
+        <p className="text-sm uppercase tracking-wide text-gray-400">{plan.eyebrow}</p>
+        <h1 className="mt-3 text-4xl font-light leading-tight text-gray-900">{plan.title}</h1>
+        <p className="mt-4 text-lg leading-8 text-gray-600">{plan.summary}</p>
+
+        <nav aria-label="Study plan phases" className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-gray-400">
+          {plan.phases.map((phase, index) => (
+            <a key={phase.title} href={`#phase-${index + 1}`} className="transition-colors hover:text-gray-700">
+              {phase.title}
+            </a>
+          ))}
+        </nav>
       </header>
 
-      <section className="rounded-lg border border-gray-100 bg-gray-50 p-5">
-        <h2 className="text-lg font-medium text-gray-900">Reading Checklist</h2>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          {plan.readingChecklist.map((item) => (
-            <div key={item} className="rounded-md bg-white p-3 text-sm leading-relaxed text-gray-600">
-              {item}
-            </div>
-          ))}
-        </div>
-      </section>
+      <ReadingChecklist items={plan.readingChecklist} />
 
       {plan.phases.map((phase, index) => (
         <PhaseSection key={phase.title} phase={phase} index={index} />
       ))}
 
-      <section className="space-y-4">
-        <h2 className="text-2xl font-light text-gray-900">Framework Comparison</h2>
-        <div className="overflow-x-auto rounded-lg border border-gray-100">
-          <table className="min-w-full divide-y divide-gray-100 text-left text-sm">
-            <thead className="bg-gray-50 text-gray-500">
-              <tr>
-                <th className="px-4 py-3 font-medium">Framework</th>
-                <th className="px-4 py-3 font-medium">Canonical Paper</th>
-                <th className="px-4 py-3 font-medium">Sync/Async</th>
-                <th className="px-4 py-3 font-medium">Placement</th>
-                <th className="px-4 py-3 font-medium">Read First</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100 bg-white text-gray-600">
-              {plan.frameworkRows.map((row) => (
-                <tr key={row[0]}>
-                  {row.map((cell) => (
-                    <td key={cell} className="px-4 py-3 align-top">
-                      {cell}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+      <FrameworkComparison rows={plan.frameworkRows} />
 
-      <section className="grid gap-6 md:grid-cols-2">
-        <div className="rounded-lg border border-gray-100 bg-white p-5 shadow-sm">
-          <h2 className="text-lg font-medium text-gray-900">Suggested Practice Path</h2>
-          <ol className="mt-4 space-y-3">
-            {plan.practicePath.map((item, index) => (
-              <li key={item} className="flex gap-3 text-sm leading-relaxed text-gray-600">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-indigo-50 text-xs font-medium text-indigo-700">
-                  {index + 1}
-                </span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
+      <div className="grid gap-10 md:grid-cols-2">
+        <NumberedList title="Suggested Practice Path" items={plan.practicePath} />
+        <NumberedList title="Minimal Path" items={plan.minimalPath} />
+      </div>
 
-        <div className="rounded-lg border border-gray-100 bg-white p-5 shadow-sm">
-          <h2 className="text-lg font-medium text-gray-900">Minimal Path</h2>
-          <ol className="mt-4 space-y-3">
-            {plan.minimalPath.map((item, index) => (
-              <li key={item} className="flex gap-3 text-sm leading-relaxed text-gray-600">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-medium text-gray-700">
-                  {index + 1}
-                </span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
+      <TopThree items={plan.topThree} />
 
-      <section className="rounded-lg border border-gray-100 bg-white p-5 shadow-sm">
-        <h2 className="text-lg font-medium text-gray-900">Top 3 If Short on Time</h2>
-        <div className="mt-4 grid gap-3 sm:grid-cols-3">
-          {plan.topThree.map((item) => (
-            <div key={item} className="rounded-md bg-gray-50 p-3 text-sm leading-relaxed text-gray-600">
-              {item}
-            </div>
-          ))}
-        </div>
-      </section>
+      <KeyConcepts concepts={plan.keyConcepts} />
+    </article>
+  );
+}
 
-      <section className="rounded-lg border border-gray-100 bg-gray-950 p-5 text-gray-100 shadow-sm">
-        <h2 className="text-lg font-medium">Key Concepts Map</h2>
-        <pre className="mt-4 overflow-x-auto whitespace-pre text-xs leading-relaxed text-gray-300">
-          {plan.keyConcepts}
-        </pre>
-      </section>
+function StudyPlanIndex({ plans }: { plans: StudyPlan[] }) {
+  return (
+    <div className="mx-auto max-w-4xl space-y-10">
+      <header className="max-w-3xl">
+        <h1 className="text-4xl font-light leading-tight text-gray-900">Study Plans</h1>
+        <p className="mt-4 text-lg leading-8 text-gray-600">
+          Study Plans for interesting LLM topics
+        </p>
+      </header>
+
+      <div className="border-y border-gray-200">
+        {plans.map((plan) => (
+          <Link
+            key={plan.id}
+            to={`/study-plans/${plan.id}`}
+            className="group grid gap-5 border-b border-gray-100 py-8 transition-colors last:border-b-0 hover:bg-gray-50/70 sm:grid-cols-[minmax(0,1fr)_2rem] sm:items-center sm:px-4"
+          >
+            <article className="min-w-0">
+              <h2 className="text-2xl font-light leading-snug text-gray-900 transition-colors group-hover:text-sky-700">
+                {plan.title}
+              </h2>
+              <p className="mt-4 max-w-3xl text-base leading-7 text-gray-600">
+                {plan.summary}
+              </p>
+            </article>
+            <span
+              aria-hidden="true"
+              className="text-2xl font-light text-gray-300 transition-all group-hover:translate-x-1 group-hover:text-sky-700"
+            >
+              &rarr;
+            </span>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
 
 export default function StudyPlans() {
-  const [activePlanId, setActivePlanId] = useState(studyPlans[0].id);
-  const activePlan = studyPlans.find((plan) => plan.id === activePlanId) ?? studyPlans[0];
+  const { planId } = useParams();
+  const activePlan = studyPlans.find((plan) => plan.id === planId);
+
+  if (activePlan) {
+    return (
+      <div className="space-y-8">
+        <Link
+          to="/study-plans"
+          className="text-sm text-gray-400 transition-colors hover:text-gray-700"
+        >
+          Back to study plans
+        </Link>
+        <StudyPlanDetail plan={activePlan} />
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-8">
-      <h1 className="text-3xl font-light text-gray-900">Study Plans</h1>
-
-      <div className="flex flex-col gap-8 lg:flex-row">
-        <aside className="lg:w-44 lg:shrink-0">
-          <nav className="flex gap-2 overflow-x-auto border-b border-gray-100 pb-3 lg:sticky lg:top-6 lg:flex-col lg:overflow-visible lg:border-b-0 lg:border-r lg:pb-0 lg:pr-4">
-            {studyPlans.map((plan) => (
-              <button
-                key={plan.id}
-                onClick={() => setActivePlanId(plan.id)}
-                className={`min-w-44 border-l-2 px-3 py-2 text-left transition-colors lg:min-w-0 ${
-                  activePlan.id === plan.id
-                    ? 'border-gray-900 text-gray-900'
-                    : 'border-transparent text-gray-400 hover:text-gray-600'
-                }`}
-              >
-                <span className="block text-sm font-medium">{plan.title}</span>
-                <span className="mt-1 block text-xs uppercase tracking-wide text-gray-400">
-                  {plan.eyebrow}
-                </span>
-              </button>
-            ))}
-          </nav>
-        </aside>
-
-        <div className="min-w-0 flex-1">
-          <StudyPlanDetail plan={activePlan} />
-        </div>
-      </div>
-    </div>
+    <StudyPlanIndex plans={studyPlans} />
   );
 }
