@@ -15,6 +15,7 @@ export default function App() {
           <Route path="books" element={<Books />} />
           <Route path="reading-list" element={<Books />} />
           <Route path="study-plans" element={<StudyPlans />} />
+          <Route path="study-plans/:planId" element={<StudyPlans />} />
         </Route>
       </Routes>
     </BrowserRouter>
