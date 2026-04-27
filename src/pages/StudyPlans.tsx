@@ -1,4 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
+import aiPerformanceImage from '../assets/study-plans/ai-systems-performance-engineering.webp';
+import rlForLlmsImage from '../assets/study-plans/efficient-rl-for-llms.webp';
+import kernelRuntimeImage from '../assets/study-plans/llm-kernel-runtime-basics.webp';
 
 interface Resource {
   title: string;
@@ -325,6 +328,306 @@ const keyConcepts = `Efficient RL for LLMs
 |-- Practical Stacks
     |-- verl, OpenRLHF, TRL, NeMo-Aligner, torchtune`;
 
+const aiPerformanceReadingChecklist = [
+  'Role definition: what an AI systems performance engineer owns',
+  'Hardware: GPU architecture, memory hierarchy, tensor cores, and interconnects',
+  'Workloads: training vs inference performance bottlenecks',
+  'Tooling: profiler-driven optimization rather than intuition-driven tuning',
+  'Scale: single-node efficiency before distributed-system complexity',
+];
+
+const aiPerformancePhases: Phase[] = [
+  {
+    title: 'Book Spine',
+    period: 'Start here',
+    summary:
+      'Use the book as the organizing thread, then branch into profiling and systems work as the concepts become concrete.',
+    groups: [
+      {
+        resources: [
+          {
+            title: 'AI Systems Performance Engineering',
+            href: 'https://www.amazon.com/Systems-Performance-Engineering-Optimizing-Inference/dp/B0F47689K8',
+            meta: 'Chris Fregly',
+            notes: [
+              'A practical entry point for optimizing model training and inference workloads.',
+              'Use Chapter 1 to frame the AI systems engineer role and the shape of large-model infrastructure.',
+              'Use Chapter 2 to connect NVIDIA GPU architecture, systems topology, and workload behavior.',
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: 'System Mental Model',
+    period: 'Core notes',
+    summary:
+      'Turn the reading into a performance map: hardware limits, software stacks, and bottlenecks that can be measured.',
+    groups: [
+      {
+        resources: [
+          {
+            title: 'Chapter 1. Introduction and AI System Overview',
+            href: 'https://www.amazon.com/Systems-Performance-Engineering-Optimizing-Inference/dp/B0F47689K8',
+            meta: 'Reading note',
+            notes: [
+              'Clarifies why AI performance work sits between model development, infrastructure, and hardware.',
+              'Frames future systems around extremely large parameter counts and the infrastructure needed to serve them.',
+            ],
+          },
+          {
+            title: 'Chapter 2. AI System Hardware Overview',
+            href: 'https://www.amazon.com/Systems-Performance-Engineering-Optimizing-Inference/dp/B0F47689K8',
+            meta: 'Reading note',
+            notes: [
+              'Focuses on NVIDIA GPU generations and what changes from H100-class systems to B200/NVL72-style systems.',
+              'Connects accelerator architecture, memory capacity, bandwidth, and multi-GPU communication to model workloads.',
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
+
+const aiPerformancePracticePath = [
+  'Read Chapter 1 and write down what the performance engineer owns in the stack',
+  'Read Chapter 2 and build a hardware checklist for GPU, memory, and interconnect bottlenecks',
+  'Pick one small training or inference workload and profile before changing code',
+  'Separate bottlenecks into compute-bound, memory-bound, communication-bound, and scheduling-bound',
+];
+
+const aiPerformanceMinimalPath = [
+  'Chapter 1 for role and system overview',
+  'Chapter 2 for hardware architecture',
+  'One profiler pass on a real model workload',
+];
+
+const aiPerformanceTopThree = [
+  'Chapter 1 system overview',
+  'Chapter 2 hardware overview',
+  'Profiler-first bottleneck taxonomy',
+];
+
+const aiPerformanceConcepts = `AI Performance Engineering
+|-- Workloads
+|   |-- Training: throughput, memory pressure, communication
+|   |-- Inference: latency, batching, KV cache, serving utilization
+|-- Hardware
+|   |-- GPU architecture, tensor cores, HBM, interconnect
+|-- Method
+    |-- Measure, classify bottleneck, optimize, re-measure`;
+
+const kernelBasicsReadingChecklist = [
+  'Programming model: blocks, warps, memory movement, and vectorized operations',
+  'Compiler stack: Triton, JAX, XLA, and generated kernels',
+  'Attention: IO-awareness, tiling, parallelism, and work partitioning',
+  'Serving memory: KV cache layout and paging for LLM inference',
+  'Practice: implement small kernels before reading production code',
+];
+
+const kernelBasicsPhases: Phase[] = [
+  {
+    title: 'Kernel Programming Tools',
+    period: 'Foundations',
+    summary:
+      'Start with Triton for explicit GPU kernel thinking, then use JAX to understand compiled array programs and XLA-oriented workflows.',
+    groups: [
+      {
+        resources: [
+          {
+            title: 'Learning Triton GPU Kernels',
+            href: 'https://triton-lang.org/main/getting-started/tutorials/',
+            meta: 'Official tutorials',
+            notes: [
+              'Triton is the most direct bridge from Python to custom GPU kernels for deep learning primitives.',
+              'Focus on how programs map to tiles, memory movement, and parallel execution.',
+              'Use the tutorials as implementation checkpoints rather than passive reading.',
+            ],
+          },
+          {
+            title: 'My Triton Implementations',
+            href: 'https://github.com/ssydyc2/learn_triton',
+            meta: 'Practice repository',
+            notes: [
+              'Use this as the hands-on track for writing and comparing kernels.',
+              'Keep implementations small enough that memory access patterns remain visible.',
+            ],
+          },
+          {
+            title: 'Learning JAX',
+            href: 'https://jax.readthedocs.io/en/latest/tutorials.html',
+            meta: 'Official tutorials',
+            notes: [
+              'JAX combines NumPy-style code, automatic differentiation, and XLA compilation.',
+              'Read it as a way to understand compiled ML programs and accelerator portability.',
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: 'Attention & Serving Papers',
+    period: 'Core papers',
+    summary:
+      'Use these papers to connect kernel-level optimization to the LLM workloads that make those kernels matter.',
+    groups: [
+      {
+        resources: [
+          {
+            title: 'FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness',
+            href: 'https://arxiv.org/abs/2205.14135',
+            meta: 'Tri Dao et al., NeurIPS 2022',
+            notes: [
+              'Foundational paper for IO-aware exact attention.',
+              'Read for the tiling and memory movement argument, not just the benchmark results.',
+            ],
+          },
+          {
+            title: 'FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning',
+            href: 'https://arxiv.org/abs/2307.08691',
+            meta: 'Tri Dao, ICLR 2024',
+            notes: [
+              'Improves attention performance through better parallelism and work partitioning.',
+              'Use it to understand why the first fast kernel is rarely the final fast kernel.',
+            ],
+          },
+          {
+            title: 'Efficient Memory Management for Large Language Model Serving with PagedAttention',
+            href: 'https://arxiv.org/abs/2309.06180',
+            meta: 'vLLM, SOSP 2023',
+            notes: [
+              'Moves from kernels into serving memory management.',
+              'Explains why KV cache layout and allocation are first-order inference performance problems.',
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
+
+const kernelBasicsPracticePath = [
+  'Implement one Triton vector add or matmul-style kernel and inspect the memory pattern',
+  'Run a JAX tutorial and inspect how jit changes execution behavior',
+  'Read FlashAttention v1 for IO-awareness, then FlashAttention v2 for parallelism',
+  'Read PagedAttention to connect kernels with LLM serving memory pressure',
+];
+
+const kernelBasicsMinimalPath = [
+  'Triton tutorials',
+  'JAX jit and array programming basics',
+  'FlashAttention v1',
+  'PagedAttention',
+];
+
+const kernelBasicsTopThree = [
+  'Triton tutorials',
+  'FlashAttention v1',
+  'PagedAttention',
+];
+
+const kernelBasicsConcepts = `LLM Kernel & Runtime Basics
+|-- Kernel Tools
+|   |-- Triton: explicit custom GPU kernels
+|   |-- JAX/XLA: compiled array programs
+|-- Attention
+|   |-- IO-aware tiling
+|   |-- Parallelism and work partitioning
+|-- Serving Runtime
+    |-- KV cache layout
+    |-- Memory paging and batching`;
+
+const aiPerformanceBook = {
+  title: 'AI Systems Performance Engineering',
+  author: 'Chris Fregly',
+  href: 'https://www.amazon.com/Systems-Performance-Engineering-Optimizing-Inference/dp/B0F47689K8',
+  description:
+    'This section is a reading log for one book. The goal is to turn each chapter into a practical systems-performance mental model for training and inference work.',
+  focusAreas: [
+    'What an AI systems performance engineer is responsible for',
+    'How GPU hardware, memory, and interconnect limits shape model workloads',
+    'How to move from vague slowness to measurable bottleneck categories',
+  ],
+  chapters: [
+    {
+      number: '01',
+      title: 'Introduction and AI System Overview',
+      status: 'Reading note',
+      notes: [
+        'Frames AI performance work as an engineering role between model development, infrastructure, and hardware.',
+        'Introduces the scale pressure behind modern AI systems, including infrastructure for much larger future models.',
+      ],
+    },
+    {
+      number: '02',
+      title: 'AI System Hardware Overview',
+      status: 'Reading note',
+      notes: [
+        'Connects NVIDIA GPU generations, memory capacity, bandwidth, and multi-GPU topology to real model workloads.',
+        'Useful for building a hardware checklist before profiling training or inference performance.',
+      ],
+    },
+  ],
+};
+
+const kernelLearningMap = [
+  {
+    title: 'Triton',
+    subtitle: 'Write kernels directly',
+    href: 'https://triton-lang.org/main/getting-started/tutorials/',
+    details:
+      'Use Triton to learn tiling, memory movement, parallel execution, and the shape of custom deep learning primitives.',
+    actions: ['Run official tutorials', 'Implement small kernels', 'Compare memory access patterns'],
+  },
+  {
+    title: 'JAX',
+    subtitle: 'Understand compiled array programs',
+    href: 'https://jax.readthedocs.io/en/latest/tutorials.html',
+    details:
+      'Use JAX to understand jit, automatic differentiation, XLA compilation, and accelerator-portable ML code.',
+    actions: ['Study jit behavior', 'Trace array programs', 'Connect code shape to compiler output'],
+  },
+  {
+    title: 'Core LLM Papers',
+    subtitle: 'Read why kernels matter',
+    href: 'https://arxiv.org/abs/2205.14135',
+    details:
+      'Use FlashAttention and PagedAttention to connect kernel work with attention IO, KV cache pressure, and serving throughput.',
+    actions: ['Read FlashAttention v1', 'Read FlashAttention v2', 'Read PagedAttention'],
+  },
+];
+
+const kernelPaperList = [
+  {
+    title: 'FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness',
+    href: 'https://arxiv.org/abs/2205.14135',
+    meta: 'NeurIPS 2022',
+    why: 'Start here for IO-aware attention and the core tiling argument.',
+  },
+  {
+    title: 'FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning',
+    href: 'https://arxiv.org/abs/2307.08691',
+    meta: 'ICLR 2024',
+    why: 'Read next to see how parallelism and work partitioning improve the first design.',
+  },
+  {
+    title: 'Efficient Memory Management for Large Language Model Serving with PagedAttention',
+    href: 'https://arxiv.org/abs/2309.06180',
+    meta: 'SOSP 2023',
+    why: 'Use this to move from kernels into KV cache layout and inference-serving memory management.',
+  },
+];
+
+const kernelPracticeSequence = [
+  'Implement one small Triton kernel so memory movement is visible.',
+  'Run a JAX jit example and observe how eager code changes under compilation.',
+  'Read FlashAttention v1 for IO-awareness, then FlashAttention v2 for work partitioning.',
+  'Read PagedAttention to connect kernel-level thinking with LLM serving runtime behavior.',
+];
+
 const studyPlans: StudyPlan[] = [
   {
     id: 'efficient-rl-for-llms',
@@ -340,7 +643,67 @@ const studyPlans: StudyPlan[] = [
     topThree,
     keyConcepts,
   },
+  {
+    id: 'ai-performance-engineer',
+    title: 'AI Systems Performance Engineering',
+    eyebrow: 'Book notes',
+    summary:
+      "Reading notes for Chris Fregly's book, focused on the systems-performance mental model behind AI training and inference workloads.",
+    readingChecklist: aiPerformanceReadingChecklist,
+    phases: aiPerformancePhases,
+    frameworkRows: [],
+    practicePath: aiPerformancePracticePath,
+    minimalPath: aiPerformanceMinimalPath,
+    topThree: aiPerformanceTopThree,
+    keyConcepts: aiPerformanceConcepts,
+  },
+  {
+    id: 'llm-kernel-runtime-basics',
+    title: 'LLM Kernel & Runtime Basics',
+    eyebrow: 'Learning map',
+    summary:
+      'A learning map for Triton, JAX, and the core attention and serving papers behind modern LLM performance work.',
+    readingChecklist: kernelBasicsReadingChecklist,
+    phases: kernelBasicsPhases,
+    frameworkRows: [],
+    practicePath: kernelBasicsPracticePath,
+    minimalPath: kernelBasicsMinimalPath,
+    topThree: kernelBasicsTopThree,
+    keyConcepts: kernelBasicsConcepts,
+  },
 ];
+
+const planImages: Record<string, { src: string; alt: string }> = {
+  'efficient-rl-for-llms': {
+    src: rlForLlmsImage,
+    alt: 'Editorial illustration of an RL pipeline for LLM training systems',
+  },
+  'ai-performance-engineer': {
+    src: aiPerformanceImage,
+    alt: 'Open technical book with AI performance charts, GPU hardware, and profiling notes',
+  },
+  'llm-kernel-runtime-basics': {
+    src: kernelRuntimeImage,
+    alt: 'Technical illustration of GPU kernels, attention tiles, and LLM runtime cache pages',
+  },
+};
+
+function PlanVisual({ planId, compact = false }: { planId: string; compact?: boolean }) {
+  const image = planImages[planId] ?? planImages['efficient-rl-for-llms'];
+  const className = compact
+    ? 'h-28 w-full border border-gray-200 bg-gray-50 object-cover'
+    : 'aspect-[16/9] w-full border border-gray-200 bg-gray-50 object-cover';
+
+  return (
+    <img
+      src={image.src}
+      alt={image.alt}
+      className={className}
+      loading={compact ? 'lazy' : 'eager'}
+      decoding="async"
+    />
+  );
+}
 
 function ResourceCard({ resource }: { resource: Resource }) {
   return (
@@ -499,41 +862,452 @@ function KeyConcepts({ concepts }: { concepts: string }) {
   );
 }
 
-function StudyPlanDetail({ plan }: { plan: StudyPlan }) {
+function EfficientRlResourceCard({ resource }: { resource: Resource }) {
   return (
-    <article className="mx-auto max-w-3xl space-y-12">
-      <header className="border-b border-gray-200 pb-8">
-        <p className="text-sm uppercase tracking-wide text-gray-400">{plan.eyebrow}</p>
-        <h1 className="mt-3 text-4xl font-light leading-tight text-gray-900">{plan.title}</h1>
-        <p className="mt-4 text-lg leading-8 text-gray-600">{plan.summary}</p>
+    <article className="border border-gray-200 bg-white p-5">
+      <a
+        href={resource.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-lg font-light leading-snug text-gray-900 transition-colors hover:text-sky-700"
+      >
+        {resource.title}
+      </a>
+      {resource.meta && (
+        <p className="mt-2 text-sm text-gray-400">{resource.meta}</p>
+      )}
+      <ul className="mt-4 space-y-2">
+        {resource.notes.map((note) => (
+          <li key={note} className="text-sm leading-6 text-gray-600">
+            {note}
+          </li>
+        ))}
+      </ul>
+    </article>
+  );
+}
 
-        <nav aria-label="Study plan phases" className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-gray-400">
-          {plan.phases.map((phase, index) => (
-            <a key={phase.title} href={`#phase-${index + 1}`} className="transition-colors hover:text-gray-700">
-              {phase.title}
-            </a>
+function EfficientRlPhaseSection({ phase, index }: { phase: Phase; index: number }) {
+  return (
+    <section id={`phase-${index + 1}`} className="scroll-mt-8 border-t border-gray-200 pt-8">
+      <div className="grid gap-6 md:grid-cols-[11rem_minmax(0,1fr)]">
+        <aside>
+          <p className="text-sm text-gray-400">{phase.period}</p>
+          <p className="mt-2 text-sm uppercase tracking-wide text-gray-400">Phase {index + 1}</p>
+        </aside>
+        <div>
+          <h2 className="text-2xl font-light text-gray-900">{phase.title}</h2>
+          <p className="mt-3 max-w-2xl text-base leading-7 text-gray-600">{phase.summary}</p>
+
+          <div className="mt-6 space-y-8">
+            {phase.groups.map((group) => (
+              <div key={group.title ?? phase.title}>
+                {group.title && (
+                  <h3 className="mb-3 text-sm font-medium uppercase tracking-wide text-gray-400">
+                    {group.title}
+                  </h3>
+                )}
+                <div className="grid gap-4">
+                  {group.resources.map((resource) => (
+                    <EfficientRlResourceCard key={resource.title} resource={resource} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function EfficientRlChecklist({ items }: { items: string[] }) {
+  return (
+    <section className="border-y border-gray-200 py-8">
+      <div className="grid gap-6 md:grid-cols-[11rem_minmax(0,1fr)]">
+        <div>
+          <p className="text-sm uppercase tracking-wide text-gray-400">Reading lens</p>
+          <h2 className="mt-2 text-2xl font-light text-gray-900">What to track</h2>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {items.map((item) => (
+            <p key={item} className="border-l border-gray-200 pl-4 text-sm leading-6 text-gray-600">
+              {item}
+            </p>
           ))}
-        </nav>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function EfficientRlFrameworkComparison({ rows }: { rows: string[][] }) {
+  return (
+    <section className="border-t border-gray-200 pt-8">
+      <div className="flex flex-col gap-2 border-b border-gray-200 pb-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-sm uppercase tracking-wide text-gray-400">Systems view</p>
+          <h2 className="mt-2 text-2xl font-light text-gray-900">Framework Comparison</h2>
+        </div>
+        <span className="text-sm text-gray-400">{rows.length} frameworks</span>
+      </div>
+      <div className="mt-5 grid gap-4 md:grid-cols-2">
+        {rows.map(([framework, paper, syncAsync, placement, readFirst]) => (
+          <article key={framework} className="border border-gray-200 bg-white p-5">
+            <div className="flex items-baseline justify-between gap-4">
+              <h3 className="text-xl font-light text-gray-900">{framework}</h3>
+              <p className="text-sm text-gray-400">{paper}</p>
+            </div>
+            <dl className="mt-4 grid gap-3 text-sm">
+              <div>
+                <dt className="text-gray-400">Execution</dt>
+                <dd className="mt-1 text-gray-600">{syncAsync}</dd>
+              </div>
+              <div>
+                <dt className="text-gray-400">Placement</dt>
+                <dd className="mt-1 text-gray-600">{placement}</dd>
+              </div>
+              <div>
+                <dt className="text-gray-400">Read first</dt>
+                <dd className="mt-1 text-gray-600">{readFirst}</dd>
+              </div>
+            </dl>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function EfficientRlPathSection({
+  practicePath,
+  minimalPath,
+  topThree,
+}: {
+  practicePath: string[];
+  minimalPath: string[];
+  topThree: string[];
+}) {
+  return (
+    <section className="border-t border-gray-200 pt-8">
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+        <div>
+          <p className="text-sm uppercase tracking-wide text-gray-400">Practice</p>
+          <h2 className="mt-2 text-2xl font-light text-gray-900">Suggested path</h2>
+          <ol className="mt-5 space-y-4">
+            {practicePath.map((item, index) => (
+              <li key={item} className="grid gap-4 border-b border-gray-100 pb-4 last:border-b-0 sm:grid-cols-[3rem_minmax(0,1fr)]">
+                <span className="text-2xl font-light text-gray-300">0{index + 1}</span>
+                <p className="text-base leading-7 text-gray-600">{item}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <aside className="space-y-8">
+          <div>
+            <p className="text-sm uppercase tracking-wide text-gray-400">Minimal path</p>
+            <ul className="mt-4 space-y-3">
+              {minimalPath.map((item) => (
+                <li key={item} className="border-l border-gray-200 pl-4 text-sm leading-6 text-gray-600">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="text-sm uppercase tracking-wide text-gray-400">If short on time</p>
+            <div className="mt-4 space-y-3">
+              {topThree.map((item, index) => (
+                <p key={item} className="border border-gray-200 bg-white p-4 text-sm leading-6 text-gray-600">
+                  <span className="mr-2 text-gray-400">{index + 1}.</span>
+                  {item}
+                </p>
+              ))}
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  );
+}
+
+function EfficientRlDetail({ plan }: { plan: StudyPlan }) {
+  return (
+    <article className="mx-auto max-w-4xl space-y-12">
+      <header className="grid gap-8 md:grid-cols-[minmax(0,1fr)_18rem] md:items-start">
+        <div className="max-w-3xl">
+          <p className="text-sm uppercase tracking-wide text-gray-400">{plan.eyebrow}</p>
+          <h1 className="mt-3 text-4xl font-light leading-tight text-gray-900">{plan.title}</h1>
+          <p className="mt-4 text-lg leading-8 text-gray-600">{plan.summary}</p>
+
+          <nav aria-label="Study plan phases" className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-gray-400">
+            {plan.phases.map((phase, index) => (
+              <a key={phase.title} href={`#phase-${index + 1}`} className="transition-colors hover:text-gray-700">
+                {phase.title}
+              </a>
+            ))}
+          </nav>
+        </div>
+        <PlanVisual planId={plan.id} />
       </header>
 
-      <ReadingChecklist items={plan.readingChecklist} />
+      <EfficientRlChecklist items={plan.readingChecklist} />
+
+      <section className="space-y-10">
+        {plan.phases.map((phase, index) => (
+          <EfficientRlPhaseSection key={phase.title} phase={phase} index={index} />
+        ))}
+      </section>
+
+      <EfficientRlFrameworkComparison rows={plan.frameworkRows} />
+
+      <EfficientRlPathSection
+        practicePath={plan.practicePath}
+        minimalPath={plan.minimalPath}
+        topThree={plan.topThree}
+      />
+
+      <KeyConcepts concepts={plan.keyConcepts} />
+    </article>
+  );
+}
+
+function StructuredStudyPlanDetail({ plan }: { plan: StudyPlan }) {
+  return (
+    <article className="mx-auto max-w-3xl space-y-12">
+      <header className="grid gap-8 border-b border-gray-200 pb-8 md:grid-cols-[minmax(0,1fr)_16rem] md:items-start">
+        <div>
+          <p className="text-sm uppercase tracking-wide text-gray-400">{plan.eyebrow}</p>
+          <h1 className="mt-3 text-4xl font-light leading-tight text-gray-900">{plan.title}</h1>
+          <p className="mt-4 text-lg leading-8 text-gray-600">{plan.summary}</p>
+
+          <nav aria-label="Study plan phases" className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-gray-400">
+            {plan.phases.map((phase, index) => (
+              <a key={phase.title} href={`#phase-${index + 1}`} className="transition-colors hover:text-gray-700">
+                {phase.title}
+              </a>
+            ))}
+          </nav>
+        </div>
+        <PlanVisual planId={plan.id} compact />
+      </header>
+
+      {plan.readingChecklist.length > 0 && (
+        <ReadingChecklist items={plan.readingChecklist} />
+      )}
 
       {plan.phases.map((phase, index) => (
         <PhaseSection key={phase.title} phase={phase} index={index} />
       ))}
 
-      <FrameworkComparison rows={plan.frameworkRows} />
+      {plan.frameworkRows.length > 0 && (
+        <FrameworkComparison rows={plan.frameworkRows} />
+      )}
 
-      <div className="grid gap-10 md:grid-cols-2">
-        <NumberedList title="Suggested Practice Path" items={plan.practicePath} />
-        <NumberedList title="Minimal Path" items={plan.minimalPath} />
-      </div>
+      {(plan.practicePath.length > 0 || plan.minimalPath.length > 0) && (
+        <div className="grid gap-10 md:grid-cols-2">
+          {plan.practicePath.length > 0 && (
+            <NumberedList title="Suggested Practice Path" items={plan.practicePath} />
+          )}
+          {plan.minimalPath.length > 0 && (
+            <NumberedList title="Minimal Path" items={plan.minimalPath} />
+          )}
+        </div>
+      )}
 
-      <TopThree items={plan.topThree} />
+      {plan.topThree.length > 0 && (
+        <TopThree items={plan.topThree} />
+      )}
 
-      <KeyConcepts concepts={plan.keyConcepts} />
+      {plan.keyConcepts && (
+        <KeyConcepts concepts={plan.keyConcepts} />
+      )}
     </article>
   );
+}
+
+function AIPerformanceBookDetail({ plan }: { plan: StudyPlan }) {
+  return (
+    <article className="mx-auto max-w-4xl space-y-12">
+      <header className="grid gap-8 md:grid-cols-[minmax(0,1fr)_18rem] md:items-start">
+        <div className="max-w-3xl">
+          <p className="text-sm uppercase tracking-wide text-gray-400">{plan.eyebrow}</p>
+          <h1 className="mt-3 text-4xl font-light leading-tight text-gray-900">{plan.title}</h1>
+          <p className="mt-4 text-lg leading-8 text-gray-600">{plan.summary}</p>
+        </div>
+        <PlanVisual planId={plan.id} />
+      </header>
+
+      <section className="grid gap-8 border-y border-gray-200 py-8 md:grid-cols-[minmax(0,1fr)_16rem]">
+        <div>
+          <p className="text-sm uppercase tracking-wide text-gray-400">Book note</p>
+          <h2 className="mt-3 text-3xl font-light leading-tight text-gray-900">
+            {aiPerformanceBook.title}
+          </h2>
+          <p className="mt-2 text-base text-gray-500">by {aiPerformanceBook.author}</p>
+          <p className="mt-5 max-w-2xl text-base leading-7 text-gray-600">
+            {aiPerformanceBook.description}
+          </p>
+          <a
+            href={aiPerformanceBook.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 inline-flex text-sm text-sky-700 transition-colors hover:text-sky-900"
+          >
+            View book &rarr;
+          </a>
+        </div>
+
+        <aside className="border-l border-gray-200 pl-6">
+          <h3 className="text-sm font-medium uppercase tracking-wide text-gray-400">
+            What I am extracting
+          </h3>
+          <ul className="mt-4 space-y-4">
+            {aiPerformanceBook.focusAreas.map((area) => (
+              <li key={area} className="text-sm leading-6 text-gray-600">
+                {area}
+              </li>
+            ))}
+          </ul>
+        </aside>
+      </section>
+
+      <section>
+        <div className="flex flex-col gap-2 border-b border-gray-200 pb-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-sm uppercase tracking-wide text-gray-400">Current notes</p>
+            <h2 className="mt-2 text-2xl font-light text-gray-900">Chapter Notes</h2>
+          </div>
+          <span className="text-sm text-gray-400">{aiPerformanceBook.chapters.length} chapters</span>
+        </div>
+
+        <div className="mt-6 grid gap-5 md:grid-cols-2">
+          {aiPerformanceBook.chapters.map((chapter) => (
+            <article key={chapter.number} className="border border-gray-200 bg-white p-5">
+              <div className="flex items-start gap-4">
+                <span className="shrink-0 text-3xl font-light text-gray-300">
+                  {chapter.number}
+                </span>
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-gray-400">{chapter.status}</p>
+                  <h3 className="mt-2 text-lg font-medium leading-snug text-gray-900">
+                    {chapter.title}
+                  </h3>
+                </div>
+              </div>
+              <ul className="mt-5 space-y-3">
+                {chapter.notes.map((note) => (
+                  <li key={note} className="border-l border-gray-200 pl-4 text-sm leading-6 text-gray-600">
+                    {note}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </section>
+    </article>
+  );
+}
+
+function KernelBasicsDetail({ plan }: { plan: StudyPlan }) {
+  return (
+    <article className="mx-auto max-w-4xl space-y-12">
+      <header className="grid gap-8 md:grid-cols-[minmax(0,1fr)_18rem] md:items-start">
+        <div className="max-w-3xl">
+          <p className="text-sm uppercase tracking-wide text-gray-400">{plan.eyebrow}</p>
+          <h1 className="mt-3 text-4xl font-light leading-tight text-gray-900">{plan.title}</h1>
+          <p className="mt-4 text-lg leading-8 text-gray-600">{plan.summary}</p>
+        </div>
+        <PlanVisual planId={plan.id} />
+      </header>
+
+      <section className="border-y border-gray-200 py-8">
+        <p className="text-sm uppercase tracking-wide text-gray-400">Learning map</p>
+        <div className="mt-5 grid gap-5 md:grid-cols-3">
+          {kernelLearningMap.map((track) => (
+            <a
+              key={track.title}
+              href={track.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex min-h-full flex-col border border-gray-200 bg-white p-5 transition-colors hover:border-sky-200 hover:bg-sky-50/40"
+            >
+              <p className="text-sm text-gray-400">{track.subtitle}</p>
+              <h2 className="mt-2 text-2xl font-light text-gray-900 transition-colors group-hover:text-sky-700">
+                {track.title}
+              </h2>
+              <p className="mt-4 flex-1 text-sm leading-6 text-gray-600">{track.details}</p>
+              <ul className="mt-5 space-y-2">
+                {track.actions.map((action) => (
+                  <li key={action} className="text-sm leading-5 text-gray-500">
+                    {action}
+                  </li>
+                ))}
+              </ul>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section className="grid gap-8 md:grid-cols-[16rem_minmax(0,1fr)]">
+        <div>
+          <p className="text-sm uppercase tracking-wide text-gray-400">Sequence</p>
+          <h2 className="mt-2 text-2xl font-light text-gray-900">How to study it</h2>
+        </div>
+        <ol className="space-y-4">
+          {kernelPracticeSequence.map((item, index) => (
+            <li key={item} className="grid gap-4 border-b border-gray-100 pb-4 last:border-b-0 sm:grid-cols-[3rem_minmax(0,1fr)]">
+              <span className="text-2xl font-light text-gray-300">0{index + 1}</span>
+              <p className="text-base leading-7 text-gray-600">{item}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section>
+        <div className="border-b border-gray-200 pb-4">
+          <p className="text-sm uppercase tracking-wide text-gray-400">Papers</p>
+          <h2 className="mt-2 text-2xl font-light text-gray-900">Core LLM Performance Papers</h2>
+        </div>
+        <div className="divide-y divide-gray-100">
+          {kernelPaperList.map((paper) => (
+            <article key={paper.title} className="grid gap-4 py-6 md:grid-cols-[minmax(0,1fr)_8rem]">
+              <div>
+                <a
+                  href={paper.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xl font-light leading-snug text-gray-900 transition-colors hover:text-sky-700"
+                >
+                  {paper.title}
+                </a>
+                <p className="mt-3 text-base leading-7 text-gray-600">{paper.why}</p>
+              </div>
+              <p className="text-sm text-gray-400 md:text-right">{paper.meta}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+    </article>
+  );
+}
+
+function StudyPlanDetail({ plan }: { plan: StudyPlan }) {
+  if (plan.id === 'efficient-rl-for-llms') {
+    return <EfficientRlDetail plan={plan} />;
+  }
+
+  if (plan.id === 'ai-performance-engineer') {
+    return <AIPerformanceBookDetail plan={plan} />;
+  }
+
+  if (plan.id === 'llm-kernel-runtime-basics') {
+    return <KernelBasicsDetail plan={plan} />;
+  }
+
+  return <StructuredStudyPlanDetail plan={plan} />;
 }
 
 function StudyPlanIndex({ plans }: { plans: StudyPlan[] }) {
@@ -551,8 +1325,9 @@ function StudyPlanIndex({ plans }: { plans: StudyPlan[] }) {
           <Link
             key={plan.id}
             to={`/study-plans/${plan.id}`}
-            className="group grid gap-5 border-b border-gray-100 py-8 transition-colors last:border-b-0 hover:bg-gray-50/70 sm:grid-cols-[minmax(0,1fr)_2rem] sm:items-center sm:px-4"
+            className="group grid gap-5 border-b border-gray-100 py-8 transition-colors last:border-b-0 hover:bg-gray-50/70 sm:grid-cols-[9rem_minmax(0,1fr)_2rem] sm:items-center sm:px-4"
           >
+            <PlanVisual planId={plan.id} compact />
             <article className="min-w-0">
               <h2 className="text-2xl font-light leading-snug text-gray-900 transition-colors group-hover:text-sky-700">
                 {plan.title}
