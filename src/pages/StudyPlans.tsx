@@ -864,9 +864,10 @@ function KeyConcepts({ concepts }: { concepts: string }) {
   );
 }
 
-function EfficientRlDetail() {
+function EfficientRlDetail({ plan }: { plan: StudyPlan }) {
   return (
-    <div>
+    <div className="mx-auto max-w-4xl space-y-8">
+      <PlanVisual planId={plan.id} />
       <MarkdownDocument markdown={efficientRlMarkdown} />
     </div>
   );
@@ -1095,7 +1096,7 @@ function KernelBasicsDetail({ plan }: { plan: StudyPlan }) {
 
 function StudyPlanDetail({ plan }: { plan: StudyPlan }) {
   if (plan.id === 'efficient-rl-for-llms') {
-    return <EfficientRlDetail />;
+    return <EfficientRlDetail plan={plan} />;
   }
 
   if (plan.id === 'ai-performance-engineer') {
