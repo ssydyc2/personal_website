@@ -27,7 +27,7 @@ export default function Layout() {
                 }`
               }
             >
-              Background
+              About Me
             </NavLink>
             <NavLink
               to="/reading-list"

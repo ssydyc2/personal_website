@@ -40,8 +40,23 @@ const timelineData: TimelineItem[] = [
   {
     period: "2013 - 2018",
     title: "Ph.D. in Operations Research",
+    company: "University of Southern California",
     description: "Focused on theoretical optimization and algorithmic research",
     tags: ["Optimization", "Mathematical Modeling", "Research"]
+  },
+  {
+    period: "2010 - 2013",
+    title: "M.A. in Mathematics",
+    company: "Indiana University Bloomington",
+    description: "Ph.D dropout",
+    tags: ["Mathematics", "Graduate Study"]
+  },
+  {
+    period: "2006 - 2010",
+    title: "B.S. in Mathematics and Applied Mathematics",
+    company: "University of Science and Technology of China",
+    description: "",
+    tags: ["Mathematics", "Applied Mathematics"]
   }
 ];
 
@@ -50,6 +65,19 @@ function TimelineCard({ item, index, isVisible }: { item: TimelineItem; index: n
 
   return (
     <div className={`relative flex items-center ${isLeft ? 'justify-start' : 'justify-end'} mb-3`}>
+      {/* Node on center line */}
+      <div
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-white border-2 border-indigo-400 shadow-sm z-10"
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0)',
+          transition: 'all 0.4s ease-out',
+          transitionDelay: `${index * 0.15 + 0.3}s`
+        }}
+      >
+        <div className="absolute inset-0.5 rounded-full bg-gradient-to-r from-indigo-400 to-purple-400" />
+      </div>
+
       {/* Connector to center line */}
       <div
         className={`absolute top-1/2 w-6 h-0.5 bg-gradient-to-r from-indigo-400 to-purple-400
@@ -89,7 +117,9 @@ function TimelineCard({ item, index, isVisible }: { item: TimelineItem; index: n
             )}
 
             {/* Description */}
-            <p className="text-gray-600 text-xs leading-relaxed mb-2">{item.description}</p>
+            {item.description && (
+              <p className="text-gray-600 text-xs leading-relaxed mb-2">{item.description}</p>
+            )}
 
             {/* Tags */}
             <div className="flex flex-wrap gap-1">
@@ -133,9 +163,29 @@ export default function Background() {
               transition: 'all 0.6s ease-out'
             }}
           >
-            Background
+            About Me
           </h1>
         </div>
+
+        {/* Summary */}
+        <section
+          className="max-w-3xl mx-auto mb-10"
+          style={{
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(16px)',
+            transition: 'all 0.6s ease-out',
+            transitionDelay: '0.15s'
+          }}
+        >
+          <p className="text-base leading-8 text-gray-700">
+            I earned my Ph.D. from the University of Southern California, where my research
+            focused on theoretical optimization problems and algorithmic methods. I have 8
+            years of industry experience spanning product-facing machine learning models and AI
+            platform infrastructure, including recommendation systems, ads models, notification
+            optimization, and recent work on LLM post-training, serving frameworks, and
+            performance optimization.
+          </p>
+        </section>
 
         {/* Timeline */}
         <div className="relative max-w-5xl mx-auto">
@@ -149,23 +199,6 @@ export default function Background() {
               transition: 'all 0.8s ease-out'
             }}
           />
-
-          {/* Timeline nodes on center line */}
-          {timelineData.map((_, index) => (
-            <div
-              key={index}
-              className="absolute left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-white border-2 border-indigo-400 shadow-sm z-10"
-              style={{
-                top: `${index * 100 + 36}px`,
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? 'translateX(-50%) scale(1)' : 'translateX(-50%) scale(0)',
-                transition: 'all 0.4s ease-out',
-                transitionDelay: `${index * 0.15 + 0.3}s`
-              }}
-            >
-              <div className="absolute inset-0.5 rounded-full bg-gradient-to-r from-indigo-400 to-purple-400" />
-            </div>
-          ))}
 
           {/* Cards */}
           {timelineData.map((item, index) => (
