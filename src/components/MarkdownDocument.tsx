@@ -1,8 +1,11 @@
 import type { ReactNode } from 'react';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
 
 type InlineNode =
   | { type: 'text'; value: string }
   | { type: 'code'; value: string }
+  | { type: 'math'; value: string }
   | { type: 'strong'; children: InlineNode[] }
   | { type: 'em'; children: InlineNode[] }
   | { type: 'link'; href: string; children: InlineNode[] };
@@ -67,6 +70,18 @@ function findNextInlineToken(
       }
     }
 
+    if (text.startsWith('\\(', index)) {
+      const end = text.indexOf('\\)', index + 2);
+
+      if (end > index) {
+        return {
+          start: index,
+          end: end + 2,
+          node: { type: 'math', value: text.slice(index + 2, end) },
+        };
+      }
+    }
+
     if (text.startsWith('**', index)) {
       const end = text.indexOf('**', index + 2);
 
@@ -111,6 +126,14 @@ function findNextInlineToken(
   }
 
   return null;
+}
+
+function renderMathToHtml(value: string, displayMode: boolean) {
+  return katex.renderToString(value, {
+    displayMode,
+    throwOnError: false,
+    strict: false,
+  });
 }
 
 function parseMarkdown(markdown: string): Block[] {
@@ -314,6 +337,16 @@ function renderInline(nodes: InlineNode[]): ReactNode {
       );
     }
 
+    if (node.type === 'math') {
+      return (
+        <span
+          key={index}
+          className="text-gray-800"
+          dangerouslySetInnerHTML={{ __html: renderMathToHtml(node.value, false) }}
+        />
+      );
+    }
+
     if (node.type === 'strong') {
       return (
         <strong key={index} className="font-semibold text-gray-900">
@@ -378,6 +411,26 @@ function MarkdownList({ block }: { block: Extract<Block, { type: 'list' }> }) {
   );
 }
 
+function MathBlock({ value }: { value: string }) {
+  const formulas = value
+    .split(/\n\s*\n/)
+    .map((formula) => formula.trim())
+    .filter(Boolean);
+
+  return (
+    <div className="my-6 overflow-x-auto border-y border-gray-200 bg-gray-50 px-4 py-5">
+      <div className="min-w-max space-y-5 text-gray-800">
+        {formulas.map((formula, index) => (
+          <div
+            key={`${formula}-${index}`}
+            dangerouslySetInnerHTML={{ __html: renderMathToHtml(formula, true) }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function MarkdownBlock({ block }: { block: Block }) {
   if (block.type === 'heading') {
     const content = renderInline(parseInline(block.text));
@@ -410,6 +463,10 @@ function MarkdownBlock({ block }: { block: Block }) {
   }
 
   if (block.type === 'code') {
+    if (block.language === 'latex') {
+      return <MathBlock value={block.value} />;
+    }
+
     return (
       <pre className="my-6 overflow-x-auto border border-gray-200 bg-gray-50 px-4 py-5 text-sm leading-7 text-gray-700">
         <code>{block.value}</code>

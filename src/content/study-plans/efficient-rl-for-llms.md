@@ -1,6 +1,6 @@
-# Efficient RL for LLMs Study Plan
+# Efficient RL for LLMs
 
-A structured plan for learning RLHF/RL systems and algorithms for LLM alignment, organized in 4 phases across ~2 weeks.
+A structured plan for learning RLHF/RL systems and algorithms for LLM alignment, organized in 5 phases across ~2 weeks.
 
 ---
 
@@ -13,6 +13,136 @@ For each paper, track:
 - **Communication?** How are weights and experiences transferred between components?
 - **Scalability story?** What's the bottleneck and how is it addressed?
 - **Algorithm support?** PPO, DPO, GRPO, or others?
+
+---
+
+## Phase 0: RL Foundations
+
+Build the RL vocabulary needed before reading RLHF and reasoning-RL papers.
+
+- [ ] **[A Long Peek into Reinforcement Learning](https://lilianweng.github.io/posts/2018-02-19-rl-overview/)** (Lilian Weng)
+  - Foundation for MDPs, value functions, policy gradients, and actor-critic methods
+  - Use this to connect RL notation to the later PPO and GRPO objectives
+
+- [ ] **[Hugging Face Deep RL Course](https://huggingface.co/learn/deep-rl-course/unit0/introduction)** (Hugging Face)
+  - Hands-on introduction to RL concepts and training loops
+  - Good companion for turning formulas into implementation intuition
+
+### Important Formulas
+
+#### 1. Policy Gradient Theorem
+
+```latex
+J(\theta) = \mathbb{E}_{\tau \sim \pi_\theta}
+\left[\sum_{t=0}^{T} \gamma^t r_t\right]
+
+\nabla_\theta J(\theta)
+= \mathbb{E}_{s_t \sim d^{\pi_\theta}, a_t \sim \pi_\theta}
+\left[
+  \nabla_\theta \log \pi_\theta(a_t \mid s_t)
+  Q^{\pi_\theta}(s_t, a_t)
+\right]
+
+\nabla_\theta J(\theta)
+= \mathbb{E}_{t}
+\left[
+  \nabla_\theta \log \pi_\theta(a_t \mid s_t)
+  A^{\pi_\theta}(s_t, a_t)
+\right]
+```
+
+High-level meaning: instead of differentiating through \(Q^{\pi}(s,a)\) or the environment dynamics, the theorem rewrites the objective gradient as a gradient of the policy log-probability weighted by \(Q^{\pi}(s,a)\) or advantage. In practice, \(Q\) / advantage tells the update direction, while \(\nabla_\theta \log \pi_\theta(a \mid s)\) is the differentiable part.
+
+#### 2. Actor-Critic
+
+```latex
+\delta_t = r_t + \gamma V_\phi(s_{t+1}) - V_\phi(s_t)
+
+\hat{A}_t \approx \delta_t
+\quad \text{or} \quad
+\hat{A}^{\mathrm{GAE}}_t
+= \sum_{l=0}^{\infty}(\gamma \lambda)^l \delta_{t+l}
+
+\mathcal{L}_{\mathrm{actor}}(\theta)
+= -\mathbb{E}_t
+\left[
+  \log \pi_\theta(a_t \mid s_t) \hat{A}_t
+\right]
+
+\mathcal{L}_{\mathrm{critic}}(\phi)
+= \mathbb{E}_t
+\left[
+  \left(V_\phi(s_t) - \hat{R}_t\right)^2
+\right]
+```
+
+High-level meaning: the actor updates the policy using the critic's advantage estimate; the critic learns to predict future return.
+
+#### 3. PPO
+
+```latex
+r_t(\theta)
+= \frac{\pi_\theta(a_t \mid s_t)}
+       {\pi_{\theta_{\mathrm{old}}}(a_t \mid s_t)}
+
+\mathcal{L}^{\mathrm{CLIP}}_{\mathrm{PPO}}(\theta)
+= \mathbb{E}_t
+\left[
+  \min
+  \left(
+    r_t(\theta)\hat{A}_t,
+    \operatorname{clip}(r_t(\theta), 1-\epsilon, 1+\epsilon)\hat{A}_t
+  \right)
+\right]
+
+\mathcal{L}_{\mathrm{RLHF}}(\theta)
+\approx
+\mathcal{L}^{\mathrm{CLIP}}_{\mathrm{PPO}}(\theta)
+- \beta \,
+D_{\mathrm{KL}}
+\left(
+  \pi_\theta(\cdot \mid x)
+  \,\|\, \pi_{\mathrm{ref}}(\cdot \mid x)
+\right)
+```
+
+High-level meaning: PPO takes policy-gradient steps but clips the probability ratio so the new policy cannot move too far from the rollout policy; RLHF usually adds a KL penalty to stay near the reference model.
+
+#### 4. GRPO
+
+For one prompt \(x\), sample a group of completions \(\{y_i\}_{i=1}^{G}\), score them with rewards \(\{r_i\}_{i=1}^{G}\), then normalize rewards inside the group:
+
+```latex
+\hat{A}_i
+= \frac{r_i - \operatorname{mean}(\{r_j\}_{j=1}^{G})}
+       {\operatorname{std}(\{r_j\}_{j=1}^{G})}
+
+\rho_{i,t}(\theta)
+=
+\frac{
+  \pi_\theta(y_{i,t} \mid x, y_{i,<t})
+}{
+  \pi_{\theta_{\mathrm{old}}}(y_{i,t} \mid x, y_{i,<t})
+}
+
+\mathcal{J}_{\mathrm{GRPO}}(\theta)
+=
+\mathbb{E}_{x, \{y_i\}_{i=1}^{G}}
+\left[
+  \frac{1}{G}
+  \sum_{i=1}^{G}
+  \frac{1}{|y_i|}
+  \sum_{t=1}^{|y_i|}
+  \min
+  \left(
+    \rho_{i,t}(\theta)\hat{A}_i,
+    \operatorname{clip}(\rho_{i,t}(\theta), 1-\epsilon, 1+\epsilon)\hat{A}_i
+  \right)
+  - \beta D_{\mathrm{KL}}(\pi_\theta \,\|\, \pi_{\mathrm{ref}})
+\right]
+```
+
+High-level meaning: GRPO removes the learned critic by using relative rewards within a group of completions as the advantage signal.
 
 ---
 
@@ -196,6 +326,9 @@ These are primarily libraries/toolkits — read docs and code, not papers.
 
 ```
 Efficient RL for LLMs
+|-- RL Foundations
+|   |-- MDPs, returns, value functions, advantage estimation
+|   |-- Policy gradient theorem, actor-critic, PPO, GRPO
 |-- Algorithms
 |   |-- PPO-based RLHF (InstructGPT)
 |   |   |-- Reward model training
