@@ -15,6 +15,7 @@ interface Resource {
 interface Phase {
   title: string;
   period: string;
+  label?: string;
   summary: string;
   groups: {
     title?: string;
@@ -46,6 +47,36 @@ const readingChecklist = [
 ];
 
 const phases: Phase[] = [
+  {
+    title: 'RL Foundations',
+    period: 'Phase 0',
+    label: 'Phase 0',
+    summary: 'Build the RL vocabulary needed before reading RLHF and reasoning-RL papers.',
+    groups: [
+      {
+        resources: [
+          {
+            title: 'A Long Peek into Reinforcement Learning',
+            href: 'https://lilianweng.github.io/posts/2018-02-19-rl-overview/',
+            meta: 'Lilian Weng',
+            notes: [
+              'Concise foundation for MDPs, value functions, policy gradients, and actor-critic methods.',
+              'Use this to connect RL notation to the later PPO and GRPO objectives.',
+            ],
+          },
+          {
+            title: 'Hugging Face Deep RL Course',
+            href: 'https://huggingface.co/learn/deep-rl-course/unit0/introduction',
+            meta: 'Hugging Face',
+            notes: [
+              'Hands-on introduction to RL concepts and training loops.',
+              'Good companion for turning formulas into implementation intuition.',
+            ],
+          },
+        ],
+      },
+    ],
+  },
   {
     title: 'Algorithm Foundations',
     period: 'Days 1-3',
@@ -633,10 +664,10 @@ const kernelPracticeSequence = [
 const studyPlans: StudyPlan[] = [
   {
     id: 'efficient-rl-for-llms',
-    title: 'Efficient RL for LLMs Study Plan',
+    title: 'Efficient RL for LLMs',
     eyebrow: 'Two-week plan',
     summary:
-      'A structured plan for learning RLHF/RL systems and algorithms for LLM alignment, organized in 4 phases across ~2 weeks.',
+      'A structured plan for learning RLHF/RL systems and algorithms for LLM alignment, organized in 5 phases across ~2 weeks.',
     readingChecklist,
     phases,
     frameworkRows,
@@ -742,7 +773,7 @@ function PhaseSection({ phase, index }: { phase: Phase; index: number }) {
         <p className="text-sm text-gray-400">{phase.period}</p>
         <div className="mt-1 flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
           <h2 className="text-2xl font-light text-gray-900">{phase.title}</h2>
-          <span className="text-sm text-gray-400">Phase {index + 1}</span>
+          <span className="text-sm text-gray-400">{phase.label ?? `Phase ${index + 1}`}</span>
         </div>
         <p className="mt-3 max-w-3xl text-base leading-7 text-gray-600">{phase.summary}</p>
       </div>
