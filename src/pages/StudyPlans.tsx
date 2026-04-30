@@ -2,6 +2,8 @@ import { Link, useParams } from 'react-router-dom';
 import aiPerformanceImage from '../assets/study-plans/ai-systems-performance-engineering.webp';
 import rlForLlmsImage from '../assets/study-plans/efficient-rl-for-llms.webp';
 import kernelRuntimeImage from '../assets/study-plans/llm-kernel-runtime-basics.webp';
+import MarkdownDocument from '../components/MarkdownDocument';
+import efficientRlMarkdown from '../content/study-plans/efficient-rl-for-llms.md?raw';
 
 interface Resource {
   title: string;
@@ -631,10 +633,10 @@ const kernelPracticeSequence = [
 const studyPlans: StudyPlan[] = [
   {
     id: 'efficient-rl-for-llms',
-    title: 'Efficient RL for LLMs',
+    title: 'Efficient RL for LLMs Study Plan',
     eyebrow: 'Two-week plan',
     summary:
-      'A structured path for learning RLHF and RL systems for LLM alignment, moving from algorithms to distributed systems, frameworks, and hands-on practice.',
+      'A structured plan for learning RLHF/RL systems and algorithms for LLM alignment, organized in 4 phases across ~2 weeks.',
     readingChecklist,
     phases,
     frameworkRows,
@@ -862,214 +864,11 @@ function KeyConcepts({ concepts }: { concepts: string }) {
   );
 }
 
-function EfficientRlResourceCard({ resource }: { resource: Resource }) {
+function EfficientRlDetail() {
   return (
-    <article className="border border-gray-200 bg-white p-5">
-      <a
-        href={resource.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-lg font-light leading-snug text-gray-900 transition-colors hover:text-sky-700"
-      >
-        {resource.title}
-      </a>
-      {resource.meta && (
-        <p className="mt-2 text-sm text-gray-400">{resource.meta}</p>
-      )}
-      <ul className="mt-4 space-y-2">
-        {resource.notes.map((note) => (
-          <li key={note} className="text-sm leading-6 text-gray-600">
-            {note}
-          </li>
-        ))}
-      </ul>
-    </article>
-  );
-}
-
-function EfficientRlPhaseSection({ phase, index }: { phase: Phase; index: number }) {
-  return (
-    <section id={`phase-${index + 1}`} className="scroll-mt-8 border-t border-gray-200 pt-8">
-      <div className="grid gap-6 md:grid-cols-[11rem_minmax(0,1fr)]">
-        <aside>
-          <p className="text-sm text-gray-400">{phase.period}</p>
-          <p className="mt-2 text-sm uppercase tracking-wide text-gray-400">Phase {index + 1}</p>
-        </aside>
-        <div>
-          <h2 className="text-2xl font-light text-gray-900">{phase.title}</h2>
-          <p className="mt-3 max-w-2xl text-base leading-7 text-gray-600">{phase.summary}</p>
-
-          <div className="mt-6 space-y-8">
-            {phase.groups.map((group) => (
-              <div key={group.title ?? phase.title}>
-                {group.title && (
-                  <h3 className="mb-3 text-sm font-medium uppercase tracking-wide text-gray-400">
-                    {group.title}
-                  </h3>
-                )}
-                <div className="grid gap-4">
-                  {group.resources.map((resource) => (
-                    <EfficientRlResourceCard key={resource.title} resource={resource} />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function EfficientRlChecklist({ items }: { items: string[] }) {
-  return (
-    <section className="border-y border-gray-200 py-8">
-      <div className="grid gap-6 md:grid-cols-[11rem_minmax(0,1fr)]">
-        <div>
-          <p className="text-sm uppercase tracking-wide text-gray-400">Reading lens</p>
-          <h2 className="mt-2 text-2xl font-light text-gray-900">What to track</h2>
-        </div>
-        <div className="grid gap-3 sm:grid-cols-2">
-          {items.map((item) => (
-            <p key={item} className="border-l border-gray-200 pl-4 text-sm leading-6 text-gray-600">
-              {item}
-            </p>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function EfficientRlFrameworkComparison({ rows }: { rows: string[][] }) {
-  return (
-    <section className="border-t border-gray-200 pt-8">
-      <div className="flex flex-col gap-2 border-b border-gray-200 pb-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-sm uppercase tracking-wide text-gray-400">Systems view</p>
-          <h2 className="mt-2 text-2xl font-light text-gray-900">Framework Comparison</h2>
-        </div>
-        <span className="text-sm text-gray-400">{rows.length} frameworks</span>
-      </div>
-      <div className="mt-5 grid gap-4 md:grid-cols-2">
-        {rows.map(([framework, paper, syncAsync, placement, readFirst]) => (
-          <article key={framework} className="border border-gray-200 bg-white p-5">
-            <div className="flex items-baseline justify-between gap-4">
-              <h3 className="text-xl font-light text-gray-900">{framework}</h3>
-              <p className="text-sm text-gray-400">{paper}</p>
-            </div>
-            <dl className="mt-4 grid gap-3 text-sm">
-              <div>
-                <dt className="text-gray-400">Execution</dt>
-                <dd className="mt-1 text-gray-600">{syncAsync}</dd>
-              </div>
-              <div>
-                <dt className="text-gray-400">Placement</dt>
-                <dd className="mt-1 text-gray-600">{placement}</dd>
-              </div>
-              <div>
-                <dt className="text-gray-400">Read first</dt>
-                <dd className="mt-1 text-gray-600">{readFirst}</dd>
-              </div>
-            </dl>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function EfficientRlPathSection({
-  practicePath,
-  minimalPath,
-  topThree,
-}: {
-  practicePath: string[];
-  minimalPath: string[];
-  topThree: string[];
-}) {
-  return (
-    <section className="border-t border-gray-200 pt-8">
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
-        <div>
-          <p className="text-sm uppercase tracking-wide text-gray-400">Practice</p>
-          <h2 className="mt-2 text-2xl font-light text-gray-900">Suggested path</h2>
-          <ol className="mt-5 space-y-4">
-            {practicePath.map((item, index) => (
-              <li key={item} className="grid gap-4 border-b border-gray-100 pb-4 last:border-b-0 sm:grid-cols-[3rem_minmax(0,1fr)]">
-                <span className="text-2xl font-light text-gray-300">0{index + 1}</span>
-                <p className="text-base leading-7 text-gray-600">{item}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-
-        <aside className="space-y-8">
-          <div>
-            <p className="text-sm uppercase tracking-wide text-gray-400">Minimal path</p>
-            <ul className="mt-4 space-y-3">
-              {minimalPath.map((item) => (
-                <li key={item} className="border-l border-gray-200 pl-4 text-sm leading-6 text-gray-600">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <p className="text-sm uppercase tracking-wide text-gray-400">If short on time</p>
-            <div className="mt-4 space-y-3">
-              {topThree.map((item, index) => (
-                <p key={item} className="border border-gray-200 bg-white p-4 text-sm leading-6 text-gray-600">
-                  <span className="mr-2 text-gray-400">{index + 1}.</span>
-                  {item}
-                </p>
-              ))}
-            </div>
-          </div>
-        </aside>
-      </div>
-    </section>
-  );
-}
-
-function EfficientRlDetail({ plan }: { plan: StudyPlan }) {
-  return (
-    <article className="mx-auto max-w-4xl space-y-12">
-      <header className="grid gap-8 md:grid-cols-[minmax(0,1fr)_18rem] md:items-start">
-        <div className="max-w-3xl">
-          <p className="text-sm uppercase tracking-wide text-gray-400">{plan.eyebrow}</p>
-          <h1 className="mt-3 text-4xl font-light leading-tight text-gray-900">{plan.title}</h1>
-          <p className="mt-4 text-lg leading-8 text-gray-600">{plan.summary}</p>
-
-          <nav aria-label="Study plan phases" className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-gray-400">
-            {plan.phases.map((phase, index) => (
-              <a key={phase.title} href={`#phase-${index + 1}`} className="transition-colors hover:text-gray-700">
-                {phase.title}
-              </a>
-            ))}
-          </nav>
-        </div>
-        <PlanVisual planId={plan.id} />
-      </header>
-
-      <EfficientRlChecklist items={plan.readingChecklist} />
-
-      <section className="space-y-10">
-        {plan.phases.map((phase, index) => (
-          <EfficientRlPhaseSection key={phase.title} phase={phase} index={index} />
-        ))}
-      </section>
-
-      <EfficientRlFrameworkComparison rows={plan.frameworkRows} />
-
-      <EfficientRlPathSection
-        practicePath={plan.practicePath}
-        minimalPath={plan.minimalPath}
-        topThree={plan.topThree}
-      />
-
-      <KeyConcepts concepts={plan.keyConcepts} />
-    </article>
+    <div>
+      <MarkdownDocument markdown={efficientRlMarkdown} />
+    </div>
   );
 }
 
@@ -1296,7 +1095,7 @@ function KernelBasicsDetail({ plan }: { plan: StudyPlan }) {
 
 function StudyPlanDetail({ plan }: { plan: StudyPlan }) {
   if (plan.id === 'efficient-rl-for-llms') {
-    return <EfficientRlDetail plan={plan} />;
+    return <EfficientRlDetail />;
   }
 
   if (plan.id === 'ai-performance-engineer') {
