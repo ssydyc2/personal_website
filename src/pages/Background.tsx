@@ -185,6 +185,15 @@ export default function Background() {
             optimization, and recent work on LLM post-training, serving frameworks, and
             performance optimization.
           </p>
+          <p className="mt-4 text-sm text-gray-600">
+            Contact:{' '}
+            <a
+              href="mailto:ssydyc@gmail.com"
+              className="font-medium text-indigo-600 transition-colors hover:text-indigo-700"
+            >
+              ssydyc@gmail.com
+            </a>
+          </p>
         </section>
 
         {/* Timeline */}
