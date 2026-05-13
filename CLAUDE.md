@@ -9,11 +9,11 @@ This is a personal website built with Vite + React 19 + TypeScript, documenting 
 ## Commands
 
 ```bash
-npm install        # Install dependencies
-npm run dev        # Start dev server at http://localhost:5173
-npm run build      # Type-check and build for production (outputs to dist/)
-npm run lint       # Run ESLint
-npm run preview    # Preview production build locally
+bun install        # Install dependencies
+bun run dev        # Start dev server at http://localhost:5173
+bun run build      # Type-check and build for production (outputs to dist/)
+bun run lint       # Run ESLint
+bun run preview    # Preview production build locally
 ```
 
 ## Architecture

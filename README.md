@@ -7,8 +7,8 @@ A personal website documenting my journey to becoming a performance engineer.
 ## Run Locally
 
 ```bash
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
 Then open [http://localhost:5173](http://localhost:5173) in your browser.
