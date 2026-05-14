@@ -10,6 +10,11 @@ const books: Book[] = [
     title: 'The Almanack of Naval Ravikant: A Guide to Wealth and Happiness',
     comment: 'Must read for how to build wealth (on specific knowledge) and happiness',
   },
+  {
+    id: 'the-psychology-of-money',
+    title: 'The Psychology of Money',
+    comment: 'Must read on how to keep wealth.',
+  },
 ];
 
 export default function Books() {
