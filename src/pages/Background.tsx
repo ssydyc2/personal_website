@@ -67,7 +67,7 @@ function TimelineCard({ item, index, isVisible }: { item: TimelineItem; index: n
     <div className={`relative flex items-center ${isLeft ? 'justify-start' : 'justify-end'} mb-3`}>
       {/* Node on center line */}
       <div
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-white border-2 border-indigo-400 shadow-sm z-10"
+        className="absolute left-1/2 top-1/2 z-10 h-3 w-3 -translate-x-1/2 rounded-full border-2 border-[#0f766e] bg-[#fffdf7]"
         style={{
           opacity: isVisible ? 1 : 0,
           transform: isVisible ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0)',
@@ -75,12 +75,12 @@ function TimelineCard({ item, index, isVisible }: { item: TimelineItem; index: n
           transitionDelay: `${index * 0.15 + 0.3}s`
         }}
       >
-        <div className="absolute inset-0.5 rounded-full bg-gradient-to-r from-indigo-400 to-purple-400" />
+        <div className="absolute inset-0.5 rounded-full bg-[#b7791f]" />
       </div>
 
       {/* Connector to center line */}
       <div
-        className={`absolute top-1/2 w-6 h-0.5 bg-gradient-to-r from-indigo-400 to-purple-400
+        className={`absolute top-1/2 h-px w-6 bg-[#958979]
           ${isLeft ? 'right-1/2 mr-3' : 'left-1/2 ml-3'}`}
         style={{
           opacity: isVisible ? 1 : 0,
@@ -100,25 +100,22 @@ function TimelineCard({ item, index, isVisible }: { item: TimelineItem; index: n
         }}
       >
         <div className="relative group">
-          {/* Glow effect */}
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg opacity-0 group-hover:opacity-20 blur transition-opacity duration-300" />
-
-          <div className="relative bg-white border border-gray-100 rounded-lg p-4 shadow-sm hover:shadow-lg transition-shadow duration-300">
+          <div className="relative border border-[#d8cec0] bg-[#fffdf7] p-4 shadow-[3px_3px_0_#d8cec0] transition-colors duration-300 group-hover:border-[#958979]">
             {/* Period badge */}
-            <div className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700 mb-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 mr-1.5 animate-pulse" />
+            <div className="mb-2 inline-flex items-center border border-[#d8cec0] bg-[#eee7da] px-2 py-0.5 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-[#0f766e]">
+              <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-[#b7791f]" />
               {item.period}
             </div>
 
             {/* Title & Company */}
-            <h3 className="text-base font-semibold text-gray-900 mb-0.5">{item.title}</h3>
+            <h3 className="mb-0.5 text-base font-semibold text-[#20231f]">{item.title}</h3>
             {item.company && (
-              <p className="text-sm font-medium text-indigo-600 mb-1">{item.company}</p>
+              <p className="mb-1 font-mono text-xs text-[#0f766e]">{item.company}</p>
             )}
 
             {/* Description */}
             {item.description && (
-              <p className="text-gray-600 text-xs leading-relaxed mb-2">{item.description}</p>
+              <p className="mb-2 text-xs leading-relaxed text-[#61685f]">{item.description}</p>
             )}
 
             {/* Tags */}
@@ -126,7 +123,7 @@ function TimelineCard({ item, index, isVisible }: { item: TimelineItem; index: n
               {item.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-1.5 py-0.5 text-xs rounded bg-gray-50 text-gray-500 border border-gray-100"
+                  className="border border-[#d8cec0] bg-[#f7f3ea] px-1.5 py-0.5 font-mono text-[0.68rem] text-[#61685f]"
                 >
                   {tag}
                 </span>
@@ -156,7 +153,7 @@ export default function Background() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1
-            className="text-3xl font-light text-gray-900 mb-2"
+            className="mb-2 font-serif text-3xl font-normal text-[#20231f]"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(-20px)',
@@ -169,7 +166,7 @@ export default function Background() {
 
         {/* Summary */}
         <section
-          className="max-w-3xl mx-auto mb-10"
+          className="mx-auto mb-10 max-w-3xl border-y border-[#d8cec0] bg-[#fffdf7]/70 px-1 py-6"
           style={{
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(16px)',
@@ -177,7 +174,7 @@ export default function Background() {
             transitionDelay: '0.15s'
           }}
         >
-          <p className="text-base leading-8 text-gray-700">
+          <p className="text-base leading-8 text-[#454b44]">
             I earned my Ph.D. from the University of Southern California, where my research
             focused on theoretical optimization problems and algorithmic methods. I have 8
             years of industry experience spanning product-facing machine learning models and AI
@@ -185,11 +182,11 @@ export default function Background() {
             optimization, and recent work on LLM post-training, serving frameworks, and
             performance optimization.
           </p>
-          <p className="mt-4 text-sm text-gray-600">
+          <p className="mt-4 font-mono text-sm text-[#61685f]">
             Contact:{' '}
             <a
               href="mailto:ssydyc@gmail.com"
-              className="font-medium text-indigo-600 transition-colors hover:text-indigo-700"
+              className="font-medium text-[#0f766e] transition-colors hover:text-[#0b5f59]"
             >
               ssydyc@gmail.com
             </a>
@@ -200,7 +197,7 @@ export default function Background() {
         <div className="relative max-w-5xl mx-auto">
           {/* Center line */}
           <div
-            className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-indigo-200 via-purple-300 to-indigo-200"
+            className="absolute bottom-0 left-1/2 top-0 w-px bg-[#958979]"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'scaleY(1)' : 'scaleY(0)',

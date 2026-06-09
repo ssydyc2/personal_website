@@ -2,16 +2,16 @@ import { NavLink, Outlet } from 'react-router-dom';
 
 export default function Layout() {
   return (
-    <div className="min-h-screen bg-white">
-      <header className="border-b border-gray-100">
-        <div className="max-w-4xl mx-auto px-6 py-8">
+    <div className="min-h-screen text-[#20231f]">
+      <header className="border-b border-[#958979] bg-[#fffdf7]/80">
+        <div className="mx-auto max-w-5xl px-6 py-8">
           <div className="mb-8">
-            <h1 className="text-5xl font-extralight tracking-widest text-gray-900">
+            <h1 className="font-serif text-5xl font-normal tracking-tight text-[#20231f]">
               Siyuan Song
             </h1>
             <div className="mt-3 flex items-center gap-4">
-              <div className="h-px w-12 bg-gray-300"></div>
-              <span className="text-2xl tracking-[0.3em] text-gray-400 font-light">
+              <div className="h-px w-14 bg-[#958979]"></div>
+              <span className="font-mono text-xl tracking-[0.24em] text-[#61685f]">
                 宋思源
               </span>
             </div>
@@ -20,10 +20,10 @@ export default function Layout() {
             <NavLink
               to="/"
               className={({ isActive }) =>
-                `text-sm tracking-wide transition-colors ${
+                `font-mono text-xs uppercase tracking-[0.18em] transition-colors ${
                   isActive
-                    ? 'text-gray-900 font-medium'
-                    : 'text-gray-400 hover:text-gray-600'
+                    ? 'text-[#0f766e]'
+                    : 'text-[#61685f] hover:text-[#20231f]'
                 }`
               }
             >
@@ -32,10 +32,10 @@ export default function Layout() {
             <NavLink
               to="/reading-list"
               className={({ isActive }) =>
-                `text-sm tracking-wide transition-colors ${
+                `font-mono text-xs uppercase tracking-[0.18em] transition-colors ${
                   isActive
-                    ? 'text-gray-900 font-medium'
-                    : 'text-gray-400 hover:text-gray-600'
+                    ? 'text-[#0f766e]'
+                    : 'text-[#61685f] hover:text-[#20231f]'
                 }`
               }
             >
@@ -44,10 +44,10 @@ export default function Layout() {
             <NavLink
               to="/study-plans"
               className={({ isActive }) =>
-                `text-sm tracking-wide transition-colors ${
+                `font-mono text-xs uppercase tracking-[0.18em] transition-colors ${
                   isActive
-                    ? 'text-gray-900 font-medium'
-                    : 'text-gray-400 hover:text-gray-600'
+                    ? 'text-[#0f766e]'
+                    : 'text-[#61685f] hover:text-[#20231f]'
                 }`
               }
             >
@@ -56,7 +56,7 @@ export default function Layout() {
           </nav>
         </div>
       </header>
-      <main className="max-w-4xl mx-auto px-6 py-12">
+      <main className="mx-auto max-w-5xl px-6 py-12">
         <Outlet />
       </main>
     </div>
