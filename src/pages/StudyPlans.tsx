@@ -724,8 +724,8 @@ const planImages: Record<string, { src: string; alt: string }> = {
 function PlanVisual({ planId, compact = false }: { planId: string; compact?: boolean }) {
   const image = planImages[planId] ?? planImages['efficient-rl-for-llms'];
   const className = compact
-    ? 'h-28 w-full border border-gray-200 bg-gray-50 object-cover'
-    : 'aspect-[16/9] w-full border border-gray-200 bg-gray-50 object-cover';
+    ? 'h-28 w-full border border-[#d8cec0] bg-[#eee7da] object-cover'
+    : 'aspect-[16/9] w-full border border-[#d8cec0] bg-[#eee7da] object-cover';
 
   return (
     <img
@@ -740,24 +740,24 @@ function PlanVisual({ planId, compact = false }: { planId: string; compact?: boo
 
 function ResourceCard({ resource }: { resource: Resource }) {
   return (
-    <article className="border-b border-gray-100 py-7 last:border-b-0">
+    <article className="border-b border-[#d8cec0] py-7 last:border-b-0">
       <div className="space-y-2.5">
         <a
           href={resource.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="block text-xl font-light leading-snug text-gray-900 transition-colors hover:text-sky-700"
+          className="block text-xl font-light leading-snug text-[#20231f] transition-colors hover:text-[#0f766e]"
         >
           {resource.title}
         </a>
         {resource.meta && (
-          <p className="text-sm text-gray-400">{resource.meta}</p>
+          <p className="font-mono text-xs text-[#8a9188]">{resource.meta}</p>
         )}
       </div>
       <ul className="mt-4 space-y-2.5">
         {resource.notes.map((note) => (
-          <li key={note} className="flex gap-3 text-base leading-7 text-gray-600">
-            <span className="mt-3 h-1 w-1 shrink-0 rounded-full bg-gray-300" />
+          <li key={note} className="flex gap-3 text-base leading-7 text-[#61685f]">
+            <span className="mt-3 h-1 w-1 shrink-0 rounded-full bg-[#b7791f]" />
             <span>{note}</span>
           </li>
         ))}
@@ -769,19 +769,19 @@ function ResourceCard({ resource }: { resource: Resource }) {
 function PhaseSection({ phase, index }: { phase: Phase; index: number }) {
   return (
     <section id={`phase-${index + 1}`} className="scroll-mt-8 space-y-5">
-      <div className="border-b border-gray-200 pb-5">
-        <p className="text-sm text-gray-400">{phase.period}</p>
+      <div className="border-b border-[#958979] pb-5">
+        <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#8a9188]">{phase.period}</p>
         <div className="mt-1 flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
-          <h2 className="text-2xl font-light text-gray-900">{phase.title}</h2>
-          <span className="text-sm text-gray-400">{phase.label ?? `Phase ${index + 1}`}</span>
+          <h2 className="font-serif text-2xl font-normal text-[#20231f]">{phase.title}</h2>
+          <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#8a9188]">{phase.label ?? `Phase ${index + 1}`}</span>
         </div>
-        <p className="mt-3 max-w-3xl text-base leading-7 text-gray-600">{phase.summary}</p>
+        <p className="mt-3 max-w-3xl text-base leading-7 text-[#61685f]">{phase.summary}</p>
       </div>
       <div className="space-y-8">
         {phase.groups.map((group) => (
           <div key={group.title ?? phase.title}>
             {group.title && (
-              <h3 className="mb-1 text-sm font-medium uppercase tracking-wide text-gray-400">
+              <h3 className="mb-1 font-mono text-xs uppercase tracking-[0.16em] text-[#8a9188]">
                 {group.title}
               </h3>
             )}
@@ -799,12 +799,12 @@ function PhaseSection({ phase, index }: { phase: Phase; index: number }) {
 
 function NumberedList({ title, items }: { title: string; items: string[] }) {
   return (
-    <section className="border-t border-gray-200 pt-7">
-      <h2 className="text-xl font-light text-gray-900">{title}</h2>
+    <section className="border-t border-[#958979] pt-7">
+      <h2 className="font-serif text-xl font-normal text-[#20231f]">{title}</h2>
       <ol className="mt-4 space-y-3">
         {items.map((item, index) => (
-          <li key={item} className="flex gap-4 text-base leading-7 text-gray-600">
-            <span className="w-6 shrink-0 text-right text-sm text-gray-400">
+          <li key={item} className="flex gap-4 text-base leading-7 text-[#61685f]">
+            <span className="w-6 shrink-0 text-right font-mono text-xs text-[#8a9188]">
               {index + 1}.
             </span>
             <span>{item}</span>
@@ -817,12 +817,12 @@ function NumberedList({ title, items }: { title: string; items: string[] }) {
 
 function ReadingChecklist({ items }: { items: string[] }) {
   return (
-    <section className="border-y border-gray-200 py-7">
-      <h2 className="text-xl font-light text-gray-900">Reading Checklist</h2>
+    <section className="border-y border-[#958979] bg-[#fffdf7]/60 py-7">
+      <h2 className="font-serif text-xl font-normal text-[#20231f]">Reading Checklist</h2>
       <ul className="mt-4 grid gap-x-8 gap-y-3 md:grid-cols-2">
         {items.map((item) => (
-          <li key={item} className="flex gap-3 text-base leading-7 text-gray-600">
-            <span className="mt-3 h-px w-4 shrink-0 bg-gray-300" />
+          <li key={item} className="flex gap-3 text-base leading-7 text-[#61685f]">
+            <span className="mt-3 h-px w-4 shrink-0 bg-[#0f766e]" />
             <span>{item}</span>
           </li>
         ))}
@@ -833,12 +833,12 @@ function ReadingChecklist({ items }: { items: string[] }) {
 
 function FrameworkComparison({ rows }: { rows: string[][] }) {
   return (
-    <section className="space-y-4 border-t border-gray-200 pt-7">
-      <h2 className="text-xl font-light text-gray-900">Framework Comparison</h2>
+    <section className="space-y-4 border-t border-[#958979] pt-7">
+      <h2 className="font-serif text-xl font-normal text-[#20231f]">Framework Comparison</h2>
       <div className="overflow-x-auto">
-        <table className="min-w-full border-y border-gray-200 text-left text-sm">
-          <thead className="text-gray-500">
-            <tr className="border-b border-gray-200">
+        <table className="min-w-full border-y border-[#958979] bg-[#fffdf7]/70 text-left text-sm">
+          <thead className="font-mono text-xs uppercase tracking-[0.14em] text-[#61685f]">
+            <tr className="border-b border-[#d8cec0]">
               <th className="py-3 pr-5 font-medium">Framework</th>
               <th className="px-5 py-3 font-medium">Canonical Paper</th>
               <th className="px-5 py-3 font-medium">Sync/Async</th>
@@ -846,14 +846,14 @@ function FrameworkComparison({ rows }: { rows: string[][] }) {
               <th className="py-3 pl-5 font-medium">Read First</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100 text-gray-600">
+          <tbody className="divide-y divide-[#d8cec0] text-[#61685f]">
             {rows.map((row) => (
               <tr key={row[0]}>
                 {row.map((cell, index) => (
                   <td
                     key={`${row[0]}-${cell}`}
                     className={`py-3 align-top leading-6 ${
-                      index === 0 ? 'pr-5 text-gray-900' : index === row.length - 1 ? 'pl-5' : 'px-5'
+                      index === 0 ? 'pr-5 font-mono text-[#20231f]' : index === row.length - 1 ? 'pl-5' : 'px-5'
                     }`}
                   >
                     {cell}
@@ -870,12 +870,12 @@ function FrameworkComparison({ rows }: { rows: string[][] }) {
 
 function TopThree({ items }: { items: string[] }) {
   return (
-    <section className="border-t border-gray-200 pt-7">
-      <h2 className="text-xl font-light text-gray-900">Top 3 If Short on Time</h2>
+    <section className="border-t border-[#958979] pt-7">
+      <h2 className="font-serif text-xl font-normal text-[#20231f]">Top 3 If Short on Time</h2>
       <div className="mt-4 grid gap-4 sm:grid-cols-3">
         {items.map((item, index) => (
-          <p key={item} className="border-l border-gray-200 pl-4 text-base leading-7 text-gray-600">
-            <span className="block text-sm text-gray-400">{index + 1}</span>
+          <p key={item} className="border-l border-[#d8cec0] pl-4 text-base leading-7 text-[#61685f]">
+            <span className="block font-mono text-xs text-[#8a9188]">{index + 1}</span>
             {item}
           </p>
         ))}
@@ -886,9 +886,9 @@ function TopThree({ items }: { items: string[] }) {
 
 function KeyConcepts({ concepts }: { concepts: string }) {
   return (
-    <section className="border-t border-gray-200 pt-7">
-      <h2 className="text-xl font-light text-gray-900">Key Concepts Map</h2>
-      <pre className="mt-4 overflow-x-auto border-y border-gray-200 bg-gray-50 px-4 py-5 text-sm leading-7 text-gray-600">
+    <section className="border-t border-[#958979] pt-7">
+      <h2 className="font-serif text-xl font-normal text-[#20231f]">Key Concepts Map</h2>
+      <pre className="mt-4 overflow-x-auto border-y border-[#958979] bg-[#eee7da] px-4 py-5 text-sm leading-7 text-[#454b44]">
         {concepts}
       </pre>
     </section>
@@ -907,15 +907,15 @@ function EfficientRlDetail({ plan }: { plan: StudyPlan }) {
 function StructuredStudyPlanDetail({ plan }: { plan: StudyPlan }) {
   return (
     <article className="mx-auto max-w-3xl space-y-12">
-      <header className="grid gap-8 border-b border-gray-200 pb-8 md:grid-cols-[minmax(0,1fr)_16rem] md:items-start">
+      <header className="grid gap-8 border-b border-[#958979] pb-8 md:grid-cols-[minmax(0,1fr)_16rem] md:items-start">
         <div>
-          <p className="text-sm uppercase tracking-wide text-gray-400">{plan.eyebrow}</p>
-          <h1 className="mt-3 text-4xl font-light leading-tight text-gray-900">{plan.title}</h1>
-          <p className="mt-4 text-lg leading-8 text-gray-600">{plan.summary}</p>
+          <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#8a9188]">{plan.eyebrow}</p>
+          <h1 className="mt-3 font-serif text-4xl font-normal leading-tight text-[#20231f]">{plan.title}</h1>
+          <p className="mt-4 text-lg leading-8 text-[#61685f]">{plan.summary}</p>
 
-          <nav aria-label="Study plan phases" className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-gray-400">
+          <nav aria-label="Study plan phases" className="mt-6 flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs text-[#8a9188]">
             {plan.phases.map((phase, index) => (
-              <a key={phase.title} href={`#phase-${index + 1}`} className="transition-colors hover:text-gray-700">
+              <a key={phase.title} href={`#phase-${index + 1}`} className="transition-colors hover:text-[#0f766e]">
                 {phase.title}
               </a>
             ))}
@@ -963,40 +963,40 @@ function AIPerformanceBookDetail({ plan }: { plan: StudyPlan }) {
     <article className="mx-auto max-w-4xl space-y-12">
       <header className="grid gap-8 md:grid-cols-[minmax(0,1fr)_18rem] md:items-start">
         <div className="max-w-3xl">
-          <p className="text-sm uppercase tracking-wide text-gray-400">{plan.eyebrow}</p>
-          <h1 className="mt-3 text-4xl font-light leading-tight text-gray-900">{plan.title}</h1>
-          <p className="mt-4 text-lg leading-8 text-gray-600">{plan.summary}</p>
+          <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#8a9188]">{plan.eyebrow}</p>
+          <h1 className="mt-3 font-serif text-4xl font-normal leading-tight text-[#20231f]">{plan.title}</h1>
+          <p className="mt-4 text-lg leading-8 text-[#61685f]">{plan.summary}</p>
         </div>
         <PlanVisual planId={plan.id} />
       </header>
 
-      <section className="grid gap-8 border-y border-gray-200 py-8 md:grid-cols-[minmax(0,1fr)_16rem]">
+      <section className="grid gap-8 border-y border-[#958979] bg-[#fffdf7]/60 py-8 md:grid-cols-[minmax(0,1fr)_16rem]">
         <div>
-          <p className="text-sm uppercase tracking-wide text-gray-400">Book note</p>
-          <h2 className="mt-3 text-3xl font-light leading-tight text-gray-900">
+          <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#8a9188]">Book note</p>
+          <h2 className="mt-3 font-serif text-3xl font-normal leading-tight text-[#20231f]">
             {aiPerformanceBook.title}
           </h2>
-          <p className="mt-2 text-base text-gray-500">by {aiPerformanceBook.author}</p>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-gray-600">
+          <p className="mt-2 font-mono text-sm text-[#61685f]">by {aiPerformanceBook.author}</p>
+          <p className="mt-5 max-w-2xl text-base leading-7 text-[#61685f]">
             {aiPerformanceBook.description}
           </p>
           <a
             href={aiPerformanceBook.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-6 inline-flex text-sm text-sky-700 transition-colors hover:text-sky-900"
+            className="mt-6 inline-flex font-mono text-sm text-[#0f766e] transition-colors hover:text-[#0b5f59]"
           >
             View book &rarr;
           </a>
         </div>
 
-        <aside className="border-l border-gray-200 pl-6">
-          <h3 className="text-sm font-medium uppercase tracking-wide text-gray-400">
+        <aside className="border-l border-[#d8cec0] pl-6">
+          <h3 className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-[#8a9188]">
             What I am extracting
           </h3>
           <ul className="mt-4 space-y-4">
             {aiPerformanceBook.focusAreas.map((area) => (
-              <li key={area} className="text-sm leading-6 text-gray-600">
+              <li key={area} className="text-sm leading-6 text-[#61685f]">
                 {area}
               </li>
             ))}
@@ -1005,31 +1005,31 @@ function AIPerformanceBookDetail({ plan }: { plan: StudyPlan }) {
       </section>
 
       <section>
-        <div className="flex flex-col gap-2 border-b border-gray-200 pb-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex flex-col gap-2 border-b border-[#958979] pb-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-sm uppercase tracking-wide text-gray-400">Current notes</p>
-            <h2 className="mt-2 text-2xl font-light text-gray-900">Chapter Notes</h2>
+            <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#8a9188]">Current notes</p>
+            <h2 className="mt-2 font-serif text-2xl font-normal text-[#20231f]">Chapter Notes</h2>
           </div>
-          <span className="text-sm text-gray-400">{aiPerformanceBook.chapters.length} chapters</span>
+          <span className="font-mono text-xs text-[#8a9188]">{aiPerformanceBook.chapters.length} chapters</span>
         </div>
 
         <div className="mt-6 grid gap-5 md:grid-cols-2">
           {aiPerformanceBook.chapters.map((chapter) => (
-            <article key={chapter.number} className="border border-gray-200 bg-white p-5">
+            <article key={chapter.number} className="border border-[#d8cec0] bg-[#fffdf7] p-5 shadow-[3px_3px_0_#d8cec0]">
               <div className="flex items-start gap-4">
-                <span className="shrink-0 text-3xl font-light text-gray-300">
+                <span className="shrink-0 font-mono text-3xl font-light text-[#b7791f]">
                   {chapter.number}
                 </span>
                 <div>
-                  <p className="text-xs uppercase tracking-wide text-gray-400">{chapter.status}</p>
-                  <h3 className="mt-2 text-lg font-medium leading-snug text-gray-900">
+                  <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#8a9188]">{chapter.status}</p>
+                  <h3 className="mt-2 text-lg font-medium leading-snug text-[#20231f]">
                     {chapter.title}
                   </h3>
                 </div>
               </div>
               <ul className="mt-5 space-y-3">
                 {chapter.notes.map((note) => (
-                  <li key={note} className="border-l border-gray-200 pl-4 text-sm leading-6 text-gray-600">
+                  <li key={note} className="border-l border-[#d8cec0] pl-4 text-sm leading-6 text-[#61685f]">
                     {note}
                   </li>
                 ))}
@@ -1047,15 +1047,15 @@ function KernelBasicsDetail({ plan }: { plan: StudyPlan }) {
     <article className="mx-auto max-w-4xl space-y-12">
       <header className="grid gap-8 md:grid-cols-[minmax(0,1fr)_18rem] md:items-start">
         <div className="max-w-3xl">
-          <p className="text-sm uppercase tracking-wide text-gray-400">{plan.eyebrow}</p>
-          <h1 className="mt-3 text-4xl font-light leading-tight text-gray-900">{plan.title}</h1>
-          <p className="mt-4 text-lg leading-8 text-gray-600">{plan.summary}</p>
+          <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#8a9188]">{plan.eyebrow}</p>
+          <h1 className="mt-3 font-serif text-4xl font-normal leading-tight text-[#20231f]">{plan.title}</h1>
+          <p className="mt-4 text-lg leading-8 text-[#61685f]">{plan.summary}</p>
         </div>
         <PlanVisual planId={plan.id} />
       </header>
 
-      <section className="border-y border-gray-200 py-8">
-        <p className="text-sm uppercase tracking-wide text-gray-400">Learning map</p>
+      <section className="border-y border-[#958979] py-8">
+        <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#8a9188]">Learning map</p>
         <div className="mt-5 grid gap-5 md:grid-cols-3">
           {kernelLearningMap.map((track) => (
             <a
@@ -1063,16 +1063,16 @@ function KernelBasicsDetail({ plan }: { plan: StudyPlan }) {
               href={track.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex min-h-full flex-col border border-gray-200 bg-white p-5 transition-colors hover:border-sky-200 hover:bg-sky-50/40"
+              className="group flex min-h-full flex-col border border-[#d8cec0] bg-[#fffdf7] p-5 shadow-[3px_3px_0_#d8cec0] transition-colors hover:border-[#958979]"
             >
-              <p className="text-sm text-gray-400">{track.subtitle}</p>
-              <h2 className="mt-2 text-2xl font-light text-gray-900 transition-colors group-hover:text-sky-700">
+              <p className="font-mono text-xs text-[#8a9188]">{track.subtitle}</p>
+              <h2 className="mt-2 font-serif text-2xl font-normal text-[#20231f] transition-colors group-hover:text-[#0f766e]">
                 {track.title}
               </h2>
-              <p className="mt-4 flex-1 text-sm leading-6 text-gray-600">{track.details}</p>
+              <p className="mt-4 flex-1 text-sm leading-6 text-[#61685f]">{track.details}</p>
               <ul className="mt-5 space-y-2">
                 {track.actions.map((action) => (
-                  <li key={action} className="text-sm leading-5 text-gray-500">
+                  <li key={action} className="font-mono text-xs leading-5 text-[#61685f]">
                     {action}
                   </li>
                 ))}
@@ -1084,25 +1084,25 @@ function KernelBasicsDetail({ plan }: { plan: StudyPlan }) {
 
       <section className="grid gap-8 md:grid-cols-[16rem_minmax(0,1fr)]">
         <div>
-          <p className="text-sm uppercase tracking-wide text-gray-400">Sequence</p>
-          <h2 className="mt-2 text-2xl font-light text-gray-900">How to study it</h2>
+          <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#8a9188]">Sequence</p>
+          <h2 className="mt-2 font-serif text-2xl font-normal text-[#20231f]">How to study it</h2>
         </div>
         <ol className="space-y-4">
           {kernelPracticeSequence.map((item, index) => (
-            <li key={item} className="grid gap-4 border-b border-gray-100 pb-4 last:border-b-0 sm:grid-cols-[3rem_minmax(0,1fr)]">
-              <span className="text-2xl font-light text-gray-300">0{index + 1}</span>
-              <p className="text-base leading-7 text-gray-600">{item}</p>
+            <li key={item} className="grid gap-4 border-b border-[#d8cec0] pb-4 last:border-b-0 sm:grid-cols-[3rem_minmax(0,1fr)]">
+              <span className="font-mono text-2xl font-light text-[#b7791f]">0{index + 1}</span>
+              <p className="text-base leading-7 text-[#61685f]">{item}</p>
             </li>
           ))}
         </ol>
       </section>
 
       <section>
-        <div className="border-b border-gray-200 pb-4">
-          <p className="text-sm uppercase tracking-wide text-gray-400">Papers</p>
-          <h2 className="mt-2 text-2xl font-light text-gray-900">Core LLM Performance Papers</h2>
+        <div className="border-b border-[#958979] pb-4">
+          <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#8a9188]">Papers</p>
+          <h2 className="mt-2 font-serif text-2xl font-normal text-[#20231f]">Core LLM Performance Papers</h2>
         </div>
-        <div className="divide-y divide-gray-100">
+        <div className="divide-y divide-[#d8cec0]">
           {kernelPaperList.map((paper) => (
             <article key={paper.title} className="grid gap-4 py-6 md:grid-cols-[minmax(0,1fr)_8rem]">
               <div>
@@ -1110,13 +1110,13 @@ function KernelBasicsDetail({ plan }: { plan: StudyPlan }) {
                   href={paper.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xl font-light leading-snug text-gray-900 transition-colors hover:text-sky-700"
+                  className="text-xl font-light leading-snug text-[#20231f] transition-colors hover:text-[#0f766e]"
                 >
                   {paper.title}
                 </a>
-                <p className="mt-3 text-base leading-7 text-gray-600">{paper.why}</p>
+                <p className="mt-3 text-base leading-7 text-[#61685f]">{paper.why}</p>
               </div>
-              <p className="text-sm text-gray-400 md:text-right">{paper.meta}</p>
+              <p className="font-mono text-xs text-[#8a9188] md:text-right">{paper.meta}</p>
             </article>
           ))}
         </div>
@@ -1145,31 +1145,31 @@ function StudyPlanIndex({ plans }: { plans: StudyPlan[] }) {
   return (
     <div className="mx-auto max-w-4xl space-y-10">
       <header className="max-w-3xl">
-        <h1 className="text-4xl font-light leading-tight text-gray-900">Study Plans</h1>
-        <p className="mt-4 text-lg leading-8 text-gray-600">
+        <h1 className="font-serif text-4xl font-normal leading-tight text-[#20231f]">Study Plans</h1>
+        <p className="mt-4 text-lg leading-8 text-[#61685f]">
           Study Plans for interesting LLM topics
         </p>
       </header>
 
-      <div className="border-y border-gray-200">
+      <div className="border-y border-[#958979]">
         {plans.map((plan) => (
           <Link
             key={plan.id}
             to={`/study-plans/${plan.id}`}
-            className="group grid gap-5 border-b border-gray-100 py-8 transition-colors last:border-b-0 hover:bg-gray-50/70 sm:grid-cols-[9rem_minmax(0,1fr)_2rem] sm:items-center sm:px-4"
+            className="group grid gap-5 border-b border-[#d8cec0] py-8 transition-colors last:border-b-0 hover:bg-[#fffdf7]/70 sm:grid-cols-[9rem_minmax(0,1fr)_2rem] sm:items-center sm:px-4"
           >
             <PlanVisual planId={plan.id} compact />
             <article className="min-w-0">
-              <h2 className="text-2xl font-light leading-snug text-gray-900 transition-colors group-hover:text-sky-700">
+              <h2 className="font-serif text-2xl font-normal leading-snug text-[#20231f] transition-colors group-hover:text-[#0f766e]">
                 {plan.title}
               </h2>
-              <p className="mt-4 max-w-3xl text-base leading-7 text-gray-600">
+              <p className="mt-4 max-w-3xl text-base leading-7 text-[#61685f]">
                 {plan.summary}
               </p>
             </article>
             <span
               aria-hidden="true"
-              className="text-2xl font-light text-gray-300 transition-all group-hover:translate-x-1 group-hover:text-sky-700"
+              className="font-mono text-2xl font-light text-[#8a9188] transition-all group-hover:translate-x-1 group-hover:text-[#0f766e]"
             >
               &rarr;
             </span>
@@ -1189,7 +1189,7 @@ export default function StudyPlans() {
       <div className="space-y-8">
         <Link
           to="/study-plans"
-          className="text-sm text-gray-400 transition-colors hover:text-gray-700"
+          className="font-mono text-xs uppercase tracking-[0.16em] text-[#8a9188] transition-colors hover:text-[#0f766e]"
         >
           Back to study plans
         </Link>

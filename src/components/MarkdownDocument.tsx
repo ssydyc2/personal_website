@@ -331,7 +331,7 @@ function renderInline(nodes: InlineNode[]): ReactNode {
 
     if (node.type === 'code') {
       return (
-        <code key={index} className="rounded bg-gray-100 px-1.5 py-0.5 text-[0.92em] text-gray-800">
+        <code key={index} className="border border-[#d8cec0] bg-[#eee7da] px-1.5 py-0.5 text-[0.92em] text-[#454b44]">
           {node.value}
         </code>
       );
@@ -341,7 +341,7 @@ function renderInline(nodes: InlineNode[]): ReactNode {
       return (
         <span
           key={index}
-          className="text-gray-800"
+          className="text-[#20231f]"
           dangerouslySetInnerHTML={{ __html: renderMathToHtml(node.value, false) }}
         />
       );
@@ -349,7 +349,7 @@ function renderInline(nodes: InlineNode[]): ReactNode {
 
     if (node.type === 'strong') {
       return (
-        <strong key={index} className="font-semibold text-gray-900">
+        <strong key={index} className="font-semibold text-[#20231f]">
           {renderInline(node.children)}
         </strong>
       );
@@ -357,7 +357,7 @@ function renderInline(nodes: InlineNode[]): ReactNode {
 
     if (node.type === 'em') {
       return (
-        <em key={index} className="text-gray-700">
+        <em key={index} className="text-[#454b44]">
           {renderInline(node.children)}
         </em>
       );
@@ -369,7 +369,7 @@ function renderInline(nodes: InlineNode[]): ReactNode {
         href={node.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="font-medium text-sky-700 underline decoration-sky-200 underline-offset-2 transition-colors hover:text-sky-900"
+        className="font-medium text-[#0f766e] underline decoration-[#9cc8bf] underline-offset-2 transition-colors hover:text-[#0b5f59]"
       >
         {renderInline(node.children)}
       </a>
@@ -381,15 +381,15 @@ function MarkdownList({ block }: { block: Extract<Block, { type: 'list' }> }) {
   const Tag = block.ordered ? 'ol' : 'ul';
   const hasCheckboxes = block.items.some((item) => item.checked !== undefined);
   const listClass = block.ordered
-    ? 'my-5 list-decimal space-y-3 pl-6 text-gray-600'
+    ? 'my-5 list-decimal space-y-3 pl-6 text-[#61685f]'
     : hasCheckboxes
-      ? 'my-5 list-none space-y-4 pl-0 text-gray-600'
-      : 'my-5 list-disc space-y-3 pl-6 text-gray-600';
+      ? 'my-5 list-none space-y-4 pl-0 text-[#61685f]'
+      : 'my-5 list-disc space-y-3 pl-6 text-[#61685f]';
 
   return (
     <Tag className={listClass}>
       {block.items.map((item, index) => (
-        <li key={`${item.text}-${index}`} className="leading-7 marker:text-gray-300">
+        <li key={`${item.text}-${index}`} className="leading-7 marker:text-[#b7791f]">
           <span className={item.checked === undefined ? '' : 'flex gap-3'}>
             {item.checked !== undefined && (
               <input
@@ -397,7 +397,7 @@ function MarkdownList({ block }: { block: Extract<Block, { type: 'list' }> }) {
                 type="checkbox"
                 checked={item.checked}
                 readOnly
-                className="mt-2 h-4 w-4 shrink-0 rounded border-gray-300 accent-sky-700"
+                className="mt-2 h-4 w-4 shrink-0 border-[#958979] accent-[#0f766e]"
               />
             )}
             <span>{renderInline(parseInline(item.text))}</span>
@@ -418,8 +418,8 @@ function MathBlock({ value }: { value: string }) {
     .filter(Boolean);
 
   return (
-    <div className="my-6 overflow-x-auto border-y border-gray-200 bg-gray-50 px-4 py-5">
-      <div className="min-w-max space-y-5 text-gray-800">
+    <div className="my-6 overflow-x-auto border-y border-[#958979] bg-[#eee7da] px-4 py-5">
+      <div className="min-w-max space-y-5 text-[#20231f]">
         {formulas.map((formula, index) => (
           <div
             key={`${formula}-${index}`}
@@ -437,7 +437,7 @@ function MarkdownBlock({ block }: { block: Block }) {
 
     if (block.level === 1) {
       return (
-        <h1 className="mb-5 border-b border-gray-200 pb-5 text-4xl font-light leading-tight text-gray-900">
+        <h1 className="mb-5 border-b border-[#958979] pb-5 font-serif text-4xl font-normal leading-tight text-[#20231f]">
           {content}
         </h1>
       );
@@ -445,21 +445,21 @@ function MarkdownBlock({ block }: { block: Block }) {
 
     if (block.level === 2) {
       return (
-        <h2 className="mt-11 border-b border-gray-200 pb-3 text-2xl font-light text-gray-900">
+        <h2 className="mt-11 border-b border-[#958979] pb-3 font-serif text-2xl font-normal text-[#20231f]">
           {content}
         </h2>
       );
     }
 
-    return <h3 className="mt-8 text-xl font-medium text-gray-900">{content}</h3>;
+    return <h3 className="mt-8 text-xl font-medium text-[#20231f]">{content}</h3>;
   }
 
   if (block.type === 'paragraph') {
-    return <p className="my-5 text-base leading-8 text-gray-600">{renderInline(parseInline(block.text))}</p>;
+    return <p className="my-5 text-base leading-8 text-[#61685f]">{renderInline(parseInline(block.text))}</p>;
   }
 
   if (block.type === 'hr') {
-    return <hr className="my-9 border-gray-200" />;
+    return <hr className="my-9 border-[#958979]" />;
   }
 
   if (block.type === 'code') {
@@ -468,7 +468,7 @@ function MarkdownBlock({ block }: { block: Block }) {
     }
 
     return (
-      <pre className="my-6 overflow-x-auto border border-gray-200 bg-gray-50 px-4 py-5 text-sm leading-7 text-gray-700">
+      <pre className="my-6 overflow-x-auto border border-[#958979] bg-[#eee7da] px-4 py-5 text-sm leading-7 text-[#454b44]">
         <code>{block.value}</code>
       </pre>
     );
@@ -480,17 +480,17 @@ function MarkdownBlock({ block }: { block: Block }) {
 
   return (
     <div className="my-6 overflow-x-auto">
-      <table className="min-w-full border-y border-gray-200 text-left text-sm">
-        <thead className="bg-gray-50 text-gray-700">
+      <table className="min-w-full border-y border-[#958979] bg-[#fffdf7]/70 text-left text-sm">
+        <thead className="bg-[#eee7da] font-mono text-xs uppercase tracking-[0.12em] text-[#454b44]">
           <tr>
             {block.headers.map((header) => (
-              <th key={header} className="border-b border-gray-200 px-4 py-3 font-medium">
+              <th key={header} className="border-b border-[#d8cec0] px-4 py-3 font-medium">
                 {renderInline(parseInline(header))}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-100 text-gray-600">
+        <tbody className="divide-y divide-[#d8cec0] text-[#61685f]">
           {block.rows.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {row.map((cell, cellIndex) => (

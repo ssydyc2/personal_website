@@ -20,22 +20,22 @@ const books: Book[] = [
 export default function Books() {
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-light text-gray-900">Reading List</h1>
+      <h1 className="font-serif text-3xl font-normal text-[#20231f]">Reading List</h1>
 
       <div className="space-y-4">
         {books.map((book) => (
           <article
             key={book.id}
-            className="border border-gray-100 rounded-lg bg-white p-6 shadow-sm"
+            className="border border-[#d8cec0] bg-[#fffdf7] p-6 shadow-[3px_3px_0_#d8cec0]"
           >
-            <h2 className="text-xl font-medium text-gray-900 leading-snug">
+            <h2 className="text-xl font-medium leading-snug text-[#20231f]">
               {book.title}
             </h2>
-            <div className="mt-4 border-l-2 border-indigo-200 pl-4">
-              <p className="text-sm uppercase tracking-wide text-gray-400 mb-1">
+            <div className="mt-4 border-l-2 border-[#0f766e] pl-4">
+              <p className="mb-1 font-mono text-xs uppercase tracking-[0.16em] text-[#8a9188]">
                 My Comment
               </p>
-              <p className="text-gray-600 leading-relaxed">{book.comment}</p>
+              <p className="leading-relaxed text-[#61685f]">{book.comment}</p>
             </div>
           </article>
         ))}
