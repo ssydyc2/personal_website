@@ -1188,10 +1188,10 @@ function PixelStudyScene() {
 function StudyPlanIndex({ plans }: { plans: StudyPlan[] }) {
   return (
     <div className="mx-auto max-w-4xl space-y-10">
-      <header className="max-w-3xl">
+      <header>
         <PixelStudyScene />
         <h1 className="font-serif text-4xl font-normal leading-tight text-[#20231f]">Study Plans</h1>
-        <p className="mt-4 text-lg leading-8 text-[#61685f]">
+        <p className="mt-4 max-w-3xl text-lg leading-8 text-[#61685f]">
           Study Plans for interesting LLM topics
         </p>
       </header>
