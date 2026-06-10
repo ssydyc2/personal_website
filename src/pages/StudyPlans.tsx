@@ -1141,10 +1141,55 @@ function StudyPlanDetail({ plan }: { plan: StudyPlan }) {
   return <StructuredStudyPlanDetail plan={plan} />;
 }
 
+function PixelStudyScene() {
+  const renderWindowLights = () => (
+    <>
+      <span className="pixel-study__window-light" />
+      <span className="pixel-study__window-light" />
+      <span className="pixel-study__window-light" />
+      <span className="pixel-study__window-light" />
+      <span className="pixel-study__window-light" />
+      <span className="pixel-study__window-light" />
+    </>
+  );
+
+  return (
+    <div className="pixel-scene pixel-study" aria-hidden="true">
+      <span className="pixel-study__moon" />
+      <span className="pixel-study__star pixel-study__star--first" />
+      <span className="pixel-study__star pixel-study__star--second" />
+      <span className="pixel-study__star pixel-study__star--third" />
+      <div className="pixel-study__window">
+        <div className="pixel-study__skyline">
+          <span className="pixel-study__building pixel-study__building--short">{renderWindowLights()}</span>
+          <span className="pixel-study__building pixel-study__building--tall">{renderWindowLights()}</span>
+          <span className="pixel-study__building pixel-study__building--mid">{renderWindowLights()}</span>
+          <span className="pixel-study__building pixel-study__building--wide">{renderWindowLights()}</span>
+        </div>
+      </div>
+      <span className="pixel-study__desk" />
+      <span className="pixel-study__mug" />
+      <div className="pixel-study__person">
+        <span className="pixel-study__head" />
+        <span className="pixel-study__hair" />
+        <span className="pixel-study__body" />
+        <span className="pixel-study__arm pixel-study__arm--left" />
+        <span className="pixel-study__arm pixel-study__arm--right" />
+      </div>
+      <div className="pixel-study__laptop">
+        <span className="pixel-study__screen" />
+        <span className="pixel-study__cursor" />
+        <span className="pixel-study__keyboard" />
+      </div>
+    </div>
+  );
+}
+
 function StudyPlanIndex({ plans }: { plans: StudyPlan[] }) {
   return (
     <div className="mx-auto max-w-4xl space-y-10">
       <header className="max-w-3xl">
+        <PixelStudyScene />
         <h1 className="font-serif text-4xl font-normal leading-tight text-[#20231f]">Study Plans</h1>
         <p className="mt-4 text-lg leading-8 text-[#61685f]">
           Study Plans for interesting LLM topics
