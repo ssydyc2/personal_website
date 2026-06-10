@@ -1,19 +1,27 @@
 import { NavLink, Outlet } from 'react-router-dom';
+import geekAvatar from '../assets/avatars/geek-avatar.png';
 
 export default function Layout() {
   return (
     <div className="min-h-screen text-[#20231f]">
       <header className="border-b border-[#958979] bg-[#fffdf7]/80">
         <div className="mx-auto max-w-5xl px-6 py-8">
-          <div className="mb-8">
-            <h1 className="font-serif text-5xl font-normal tracking-tight text-[#20231f]">
-              Siyuan Song
-            </h1>
-            <div className="mt-3 flex items-center gap-4">
-              <div className="h-px w-14 bg-[#958979]"></div>
-              <span className="font-mono text-xl tracking-[0.24em] text-[#61685f]">
-                宋思源
-              </span>
+          <div className="mb-8 flex items-center gap-4 sm:gap-5">
+            <img
+              src={geekAvatar}
+              alt="Pixel avatar of Siyuan Song"
+              className="h-20 w-20 shrink-0 object-contain [image-rendering:pixelated] sm:h-24 sm:w-24"
+            />
+            <div>
+              <h1 className="font-serif text-4xl font-normal tracking-tight text-[#20231f] sm:text-5xl">
+                Siyuan Song
+              </h1>
+              <div className="mt-3 flex items-center gap-4">
+                <div className="h-px w-12 bg-[#958979] sm:w-14"></div>
+                <span className="font-mono text-lg tracking-[0.24em] text-[#61685f] sm:text-xl">
+                  宋思源
+                </span>
+              </div>
             </div>
           </div>
           <nav className="flex flex-wrap gap-x-8 gap-y-3">

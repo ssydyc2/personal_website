@@ -47,8 +47,8 @@ samp {
 .pixel-journey {
   --pixel: 4px;
   position: relative;
-  width: min(100%, 42rem);
-  height: 8.5rem;
+  width: min(100%, 56rem);
+  height: 10.75rem;
   margin: 0 auto 1.25rem;
   overflow: hidden;
   border: 1px solid rgba(149, 137, 121, 0.38);
@@ -461,7 +461,7 @@ samp {
 
 @media (max-width: 640px) {
   .pixel-journey {
-    height: 7.25rem;
+    height: 8.75rem;
     margin-bottom: 1rem;
   }
 
@@ -491,8 +491,8 @@ samp {
 .pixel-scene {
   --pixel: 4px;
   position: relative;
-  width: min(100%, 42rem);
-  height: 8.5rem;
+  width: min(100%, 56rem);
+  height: 10.75rem;
   margin: 0 auto 1.25rem;
   overflow: hidden;
   border: 1px solid rgba(149, 137, 121, 0.38);
@@ -525,7 +525,7 @@ samp {
 
 .pixel-books__shelf-row {
   position: absolute;
-  top: 2.15rem;
+  top: 3.25rem;
   right: 0.75rem;
   left: 0.75rem;
   height: 4rem;
@@ -1109,7 +1109,11 @@ samp {
 
 @media (max-width: 640px) {
   .pixel-scene {
-    height: 7.25rem;
+    height: 8.75rem;
+  }
+
+  .pixel-books__shelf-row {
+    top: 2.75rem;
   }
 
   .pixel-books__featured-book {
