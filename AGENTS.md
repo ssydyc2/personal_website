@@ -76,23 +76,13 @@ Use this classification prefix system for PR titles:
 - **[Refactoring]** - Code restructuring without changing functionality
 - **[Documentation]** - Updates to docs, comments, or README
 
-Print PR text in this exact shape:
+Print PR text in this exact shape, with the body always provided as a fenced
+Markdown block so it can be copied directly into GitHub:
 
-```markdown
+````markdown
 Title: [Feature] Short imperative title
 
 Body:
-### Context
-- Concise explanation of why this PR exists.
-
-### Changes
-- Concrete change made.
-- Another concrete change made.
-```
-
-When the user asks for the PR body as a standalone Markdown file/body, print
-only this body content:
-
 ```markdown
 ### Context
 - Concise explanation of why this PR exists.
@@ -101,6 +91,7 @@ only this body content:
 - Concrete change made.
 - Another concrete change made.
 ```
+````
 
 If a branch has already been pushed, include the PR URL separately after the
 copyable title/body. Do not let a missing PR URL block providing the copyable
