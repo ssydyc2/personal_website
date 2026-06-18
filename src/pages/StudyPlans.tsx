@@ -2,7 +2,8 @@ import { Link, useParams } from 'react-router-dom';
 import aiPerformanceImage from '../assets/study-plans/ai-systems-performance-engineering-2d-hd.webp';
 import rlForLlmsImage from '../assets/study-plans/efficient-rl-for-llms-2d-hd.webp';
 import kernelRuntimeImage from '../assets/study-plans/llm-kernel-runtime-basics-2d-hd.webp';
-import nightLaptopStudy from '../assets/study-plans/night-laptop-study.svg';
+import studyHeroImage from '../assets/hero/study-systems-anime.webp';
+import HeroScene from '../components/HeroScene';
 import MarkdownDocument from '../components/MarkdownDocument';
 import efficientRlMarkdown from '../content/study-plans/efficient-rl-for-llms.md?raw';
 
@@ -1136,11 +1137,11 @@ function StudyPlanDetail({ plan }: { plan: StudyPlan }) {
 
 function StudyHeroScene() {
   return (
-    <div className="study-hero-scene" aria-hidden="true">
-      <img src={nightLaptopStudy} alt="" className="study-hero-scene__image" draggable="false" />
-      <span className="study-hero-scene__shine" />
-      <span className="study-hero-scene__grain" />
-    </div>
+    <HeroScene
+      src={studyHeroImage}
+      alt="Anime-style LLM systems study scene with GPU kernels, attention tiles, and runtime diagrams"
+      variant="study"
+    />
   );
 }
 

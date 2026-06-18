@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import aboutPerformanceJourney from '../assets/about/about-performance-journey.svg';
+import aboutAnimeJourney from '../assets/hero/about-anime-journey.webp';
+import HeroScene from '../components/HeroScene';
 
 interface TimelineItem {
   period: string;
@@ -140,7 +141,7 @@ function TimelineCard({ item, index, isVisible }: { item: TimelineItem; index: n
 function AboutHeroScene({ isVisible }: { isVisible: boolean }) {
   return (
     <div
-      className="about-hero-scene"
+      className="about-hero-enter"
       aria-hidden="true"
       style={{
         opacity: isVisible ? 1 : 0,
@@ -149,14 +150,11 @@ function AboutHeroScene({ isVisible }: { isVisible: boolean }) {
         transitionDelay: '0.05s'
       }}
     >
-      <img
-        src={aboutPerformanceJourney}
-        alt=""
-        className="about-hero-scene__image"
-        draggable="false"
+      <HeroScene
+        src={aboutAnimeJourney}
+        alt="Anime-style walking journey with trees, houses, sky, and a quiet path"
+        variant="about"
       />
-      <span className="about-hero-scene__shine" />
-      <span className="about-hero-scene__grain" />
     </div>
   );
 }

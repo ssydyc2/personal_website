@@ -1,4 +1,5 @@
-import readingLibrary from '../assets/reading-list/reading-library.svg';
+import readingLibrary from '../assets/hero/reading-library-anime.webp';
+import HeroScene from '../components/HeroScene';
 
 interface Book {
   id: string;
@@ -38,11 +39,11 @@ const books: Book[] = [
 
 function ReadingHeroScene() {
   return (
-    <div className="reading-hero-scene" aria-hidden="true">
-      <img src={readingLibrary} alt="" className="reading-hero-scene__image" draggable="false" />
-      <span className="reading-hero-scene__shine" />
-      <span className="reading-hero-scene__grain" />
-    </div>
+    <HeroScene
+      src={readingLibrary}
+      alt="Anime-style reading room with bookshelves, warm lamp light, and an open book"
+      variant="reading"
+    />
   );
 }
 
