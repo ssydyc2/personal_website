@@ -56,7 +56,7 @@ export default function Layout() {
               Reading List
             </NavLink>
             <NavLink
-              to="/study-plans"
+              to="/blog"
               className={({ isActive }) =>
                 `font-mono text-xs uppercase tracking-[0.18em] transition-colors ${
                   isActive
@@ -65,7 +65,7 @@ export default function Layout() {
                 }`
               }
             >
-              Study Plans
+              Blog <span aria-hidden="true">&rarr;</span>
             </NavLink>
           </nav>
         </div>

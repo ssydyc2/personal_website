@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Navigate, Routes, Route, useParams } from 'react-router-dom';
 import Layout from './components/Layout';
 import Background from './pages/Background';
 import Books from './pages/Books';
@@ -10,13 +10,20 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Background />} />
-          <Route path="journey" element={<Navigate to="/study-plans" replace />} />
+          <Route path="journey" element={<Navigate to="/blog" replace />} />
           <Route path="books" element={<Books />} />
           <Route path="reading-list" element={<Books />} />
-          <Route path="study-plans" element={<StudyPlans />} />
+          <Route path="study-plans" element={<Navigate to="/blog" replace />} />
         </Route>
-        <Route path="study-plans/:planId" element={<StudyPlans />} />
+        <Route path="blog" element={<StudyPlans />} />
+        <Route path="blog/:planId" element={<StudyPlans />} />
+        <Route path="study-plans/:planId" element={<StudyPlansRedirect />} />
       </Routes>
     </BrowserRouter>
   );
+}
+
+function StudyPlansRedirect() {
+  const { planId } = useParams();
+  return <Navigate to={`/blog/${planId ?? ''}`} replace />;
 }

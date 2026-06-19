@@ -666,7 +666,7 @@ const kernelPracticeSequence = [
 const studyPlans: StudyPlan[] = [
   {
     id: 'efficient-rl-for-llms',
-    title: 'Efficient RL for LLMs',
+    title: 'Study Plan: Efficient RL for LLMs',
     eyebrow: 'Two-week plan',
     summary:
       'A structured plan for learning RLHF/RL systems and algorithms for LLM alignment, organized in 5 phases across ~2 weeks.',
@@ -680,7 +680,7 @@ const studyPlans: StudyPlan[] = [
   },
   {
     id: 'ai-performance-engineer',
-    title: 'AI Systems Performance Engineering',
+    title: 'Book Reading Notes: AI Systems Performance Engineering',
     eyebrow: 'Book notes',
     summary:
       "Reading notes for Chris Fregly's book, focused on the systems-performance mental model behind AI training and inference workloads.",
@@ -694,7 +694,7 @@ const studyPlans: StudyPlan[] = [
   },
   {
     id: 'llm-kernel-runtime-basics',
-    title: 'LLM Kernel & Runtime Basics',
+    title: 'Study Plan: LLM Kernel & Runtime Basics',
     eyebrow: 'Learning map',
     summary:
       'A learning map for Triton, JAX, and the core attention and serving papers behind modern LLM performance work.',
@@ -1150,9 +1150,9 @@ function StudyPlanIndex({ plans }: { plans: StudyPlan[] }) {
     <div className="mx-auto max-w-4xl space-y-10">
       <header>
         <StudyHeroScene />
-        <h1 className="font-serif text-4xl font-normal leading-tight text-[#20231f]">Study Plans</h1>
+        <h1 className="font-serif text-4xl font-normal leading-tight text-[#20231f]">Blog</h1>
         <p className="mt-4 max-w-3xl text-lg leading-8 text-[#61685f]">
-          Study Plans for interesting LLM topics
+          Welcome 👋, this is my Blog 📝, a place to share and learn AI 🤖
         </p>
       </header>
 
@@ -1160,7 +1160,7 @@ function StudyPlanIndex({ plans }: { plans: StudyPlan[] }) {
         {plans.map((plan) => (
           <Link
             key={plan.id}
-            to={`/study-plans/${plan.id}`}
+            to={`/blog/${plan.id}`}
             className="group grid gap-5 border-b border-[#d8cec0] py-8 transition-colors last:border-b-0 hover:bg-[#fffdf7]/70 sm:grid-cols-[9rem_minmax(0,1fr)_2rem] sm:items-center sm:px-4"
           >
             <PlanVisual planId={plan.id} compact />
@@ -1195,10 +1195,10 @@ export default function StudyPlans() {
         <main className="mx-auto max-w-5xl px-6 py-12">
           <div className="space-y-8">
             <Link
-              to="/study-plans"
+              to="/blog"
               className="font-mono text-xs uppercase tracking-[0.16em] text-[#8a9188] transition-colors hover:text-[#0f766e]"
             >
-              Back to study plans
+              Back to blog
             </Link>
             <StudyPlanDetail plan={activePlan} />
           </div>
