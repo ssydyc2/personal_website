@@ -136,6 +136,14 @@ function renderMathToHtml(value: string, displayMode: boolean) {
   });
 }
 
+function slugifyHeading(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+}
+
 function parseMarkdown(markdown: string): Block[] {
   const lines = markdown.replace(/\r\n/g, '\n').split('\n');
   const blocks: Block[] = [];
@@ -363,12 +371,14 @@ function renderInline(nodes: InlineNode[]): ReactNode {
       );
     }
 
+    const isSamePageAnchor = node.href.startsWith('#');
+
     return (
       <a
         key={index}
         href={node.href}
-        target="_blank"
-        rel="noopener noreferrer"
+        target={isSamePageAnchor ? undefined : '_blank'}
+        rel={isSamePageAnchor ? undefined : 'noopener noreferrer'}
         className="font-medium text-[var(--accent)] underline decoration-[var(--accent-decoration)] underline-offset-2 transition-colors hover:text-[var(--accent-strong)]"
       >
         {renderInline(node.children)}
@@ -434,10 +444,11 @@ function MathBlock({ value }: { value: string }) {
 function MarkdownBlock({ block }: { block: Block }) {
   if (block.type === 'heading') {
     const content = renderInline(parseInline(block.text));
+    const headingId = slugifyHeading(block.text);
 
     if (block.level === 1) {
       return (
-        <h1 className="mb-5 border-b border-[var(--rule-strong)] pb-5 font-serif text-4xl font-normal leading-tight text-[var(--ink)]">
+        <h1 id={headingId} className="mb-5 scroll-mt-8 border-b border-[var(--rule-strong)] pb-5 font-serif text-4xl font-normal leading-tight text-[var(--ink)]">
           {content}
         </h1>
       );
@@ -445,13 +456,13 @@ function MarkdownBlock({ block }: { block: Block }) {
 
     if (block.level === 2) {
       return (
-        <h2 className="mt-11 border-b border-[var(--rule-strong)] pb-3 font-serif text-2xl font-normal text-[var(--ink)]">
+        <h2 id={headingId} className="mt-11 scroll-mt-8 border-b border-[var(--rule-strong)] pb-3 font-serif text-2xl font-normal text-[var(--ink)]">
           {content}
         </h2>
       );
     }
 
-    return <h3 className="mt-8 text-xl font-medium text-[var(--ink)]">{content}</h3>;
+    return <h3 id={headingId} className="mt-8 scroll-mt-8 text-xl font-medium text-[var(--ink)]">{content}</h3>;
   }
 
   if (block.type === 'paragraph') {
