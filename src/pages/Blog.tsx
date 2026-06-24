@@ -582,11 +582,6 @@ const aiPerformanceBook = {
   href: 'https://www.amazon.com/Systems-Performance-Engineering-Optimizing-Inference/dp/B0F47689K8',
   description:
     'This section is a reading log for one book. The goal is to turn each chapter into a practical systems-performance mental model for training and inference work.',
-  focusAreas: [
-    'What an AI systems performance engineer is responsible for',
-    'How GPU hardware, memory, and interconnect limits shape model workloads',
-    'How to move from vague slowness to measurable bottleneck categories',
-  ],
   chapters: [
     {
       number: '01',
@@ -968,7 +963,7 @@ function AIPerformanceBookDetail({ post }: { post: BlogPost }) {
         <p className="mt-4 text-lg leading-8 text-[var(--ink-muted)]">{post.summary}</p>
       </header>
 
-      <section className="grid gap-8 border-y border-[var(--rule-strong)] bg-[var(--paper-elevated)] py-8 md:grid-cols-[minmax(0,1fr)_16rem]">
+      <section className="border-y border-[var(--rule-strong)] bg-[var(--paper-elevated)] py-8">
         <div>
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-[var(--ink-faint)]">Book note</p>
           <h2 className="mt-3 font-serif text-3xl font-normal leading-tight text-[var(--ink)]">
@@ -987,19 +982,6 @@ function AIPerformanceBookDetail({ post }: { post: BlogPost }) {
             View book &rarr;
           </a>
         </div>
-
-        <aside className="border-l border-[var(--rule)] pl-6">
-          <h3 className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-[var(--ink-faint)]">
-            What I am extracting
-          </h3>
-          <ul className="mt-4 space-y-4">
-            {aiPerformanceBook.focusAreas.map((area) => (
-              <li key={area} className="text-sm leading-6 text-[var(--ink-muted)]">
-                {area}
-              </li>
-            ))}
-          </ul>
-        </aside>
       </section>
 
       <section>
