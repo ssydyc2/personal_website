@@ -2,6 +2,18 @@
 
 A structured plan for learning RLHF/RL systems and algorithms for LLM alignment, organized in 5 phases across ~2 weeks.
 
+## Contents
+
+- [Phase 0: RL Foundations](#phase-0-rl-foundations) — build the RL vocabulary and formulas used by PPO and GRPO.
+- [Phase 1: Algorithm Foundations](#phase-1-algorithm-foundations-days-13) — read PPO/RLHF, DPO, and GRPO before systems papers.
+- [Phase 2: RLHF Systems & Frameworks](#phase-2-rlhf-systems-frameworks-days-48) — compare colocated, async, disaggregated, and dynamic allocation designs.
+- [Phase 3: Library-Based Frameworks](#phase-3-library-based-frameworks-days-911) — inspect TRL, NeMo-Aligner, and torchtune as practical toolkits.
+- [Phase 4: Synthesis & Practice](#phase-4-synthesis-practice-days-1214) — turn the map into hands-on GRPO work, scaling notes, and code reading.
+- [Framework Comparison Table](#framework-comparison-table) — jump straight to the sync/async and placement matrix.
+- [Suggested Practice Path](#suggested-practice-path) — follow a short hands-on sequence.
+- [Top 3 If Short on Time](#top-3-if-short-on-time) — pick the highest-value reads.
+- [Recommended Reading Order](#recommended-reading-order-minimal-path) — use the compact paper path.
+
 ---
 
 ## Reading Checklist (per paper)
@@ -319,41 +331,3 @@ These are primarily libraries/toolkits — read docs and code, not papers.
 4. AReaL (systems: async)
 5. OpenRLHF (systems: disaggregated, practical)
 6. GRPO / DeepSeekMath (modern reasoning RL)
-
----
-
-## Key Concepts Map
-
-```
-Efficient RL for LLMs
-|-- RL Foundations
-|   |-- MDPs, returns, value functions, advantage estimation
-|   |-- Policy gradient theorem, actor-critic, PPO, GRPO
-|-- Algorithms
-|   |-- PPO-based RLHF (InstructGPT)
-|   |   |-- Reward model training
-|   |   |-- KL-constrained policy optimization
-|   |   |-- Critic / value function
-|   |-- DPO (reward-free alignment)
-|   |   |-- Preference pairs → classification loss
-|   |-- GRPO (critic-free RL)
-|       |-- Group-relative advantage estimation
-|-- System Design Axes
-|   |-- Sync vs Async
-|   |   |-- Synchronous: simple, bubble time waste
-|   |   |-- Asynchronous: better utilization, staleness tradeoff
-|   |-- Resource Placement
-|   |   |-- Colocated: same GPUs for gen + train (verl)
-|   |   |-- Disaggregated: separate clusters (OpenRLHF)
-|   |   |-- Dynamic reallocation (ReaLHF)
-|   |-- Communication
-|       |-- Weight broadcasting
-|       |-- Experience transfer
-|       |-- Parameter server vs all-reduce
-|-- Practical Stacks
-    |-- verl (HybridFlow, Ray + FSDP/Megatron)
-    |-- OpenRLHF (Ray + vLLM)
-    |-- TRL (HuggingFace, single/multi-GPU)
-    |-- NeMo-Aligner (Megatron-scale)
-    |-- torchtune (PyTorch-native recipes)
-```
