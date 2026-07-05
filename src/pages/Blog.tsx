@@ -175,16 +175,27 @@ const phases: Phase[] = [
     ],
   },
   {
-    title: 'Library-Based Frameworks',
-    period: 'Tooling',
-    summary: 'These are mostly toolkits. Read docs and code, then run at least one small example.',
+    title: 'Popular RLHF/RL Post-Training Frameworks',
+    period: 'Top 5 frameworks',
+    summary:
+      'Ranked by current visibility plus practical relevance: stars, maintenance, ecosystem usage, and systems importance.',
     groups: [
       {
         resources: [
           {
+            title: 'verl',
+            href: 'https://github.com/verl-project/verl',
+            meta: '#1',
+            notes: [
+              'Strongest current open RL post-training systems framework.',
+              'Canonical paper: HybridFlow.',
+              'Action: trace one GRPO or PPO example after reading the HybridFlow paper.',
+            ],
+          },
+          {
             title: 'TRL (Transformer Reinforcement Learning)',
             href: 'https://huggingface.co/docs/trl/',
-            meta: 'HuggingFace',
+            meta: '#2',
             notes: [
               'Post-training library with DPO, PPO, GRPO, KTO, and more.',
               'Best for quick experiments and single-node or small multi-GPU setups.',
@@ -192,23 +203,48 @@ const phases: Phase[] = [
             ],
           },
           {
-            title: 'NeMo-Aligner',
-            href: 'https://github.com/NVIDIA/NeMo-Aligner',
-            meta: 'NVIDIA',
+            title: 'OpenRLHF',
+            href: 'https://github.com/OpenRLHF/OpenRLHF',
+            meta: '#3',
             notes: [
-              'Scalable alignment toolkit built on NeMo.',
-              'Supports DPO, PPO, and RLHF at scale with Megatron parallelism.',
-              'Action: understand how it handles model parallelism for RLHF.',
+              'Practical Ray and vLLM distributed RLHF stack.',
+              'Strong reference for disaggregated actor, critic, reward, and reference placement.',
+              "Action: compare its Ray/vLLM pipeline with verl's colocated design.",
             ],
           },
           {
-            title: 'torchtune',
-            href: 'https://github.com/pytorch/torchtune',
-            meta: 'PyTorch',
+            title: 'slime',
+            href: 'https://github.com/THUDM/slime',
+            meta: '#4',
             notes: [
-              'PyTorch-native post-training library.',
-              'Includes DPO, PPO, and GRPO recipes.',
-              'Action: read the recipe structure and config system.',
+              'Rising Megatron and SGLang large-scale RL framework.',
+              'Focuses on high-performance training plus flexible rollout and data generation workflows.',
+              "Action: compare its Megatron/SGLang path with OpenRLHF's Ray/vLLM path.",
+            ],
+          },
+          {
+            title: 'AReaL',
+            href: 'https://github.com/areal-project/AReaL',
+            meta: '#5',
+            notes: [
+              'Important async RL framework for reasoning and agentic training.',
+              'Decouples generation from training to improve utilization.',
+              'Action: inspect how it bounds staleness in async training.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Excluded from the current top list',
+        resources: [
+          {
+            title: 'NeMo-Aligner and torchtune',
+            href: 'https://github.com/NVIDIA/NeMo-Aligner',
+            meta: 'Historical references',
+            notes: [
+              'NeMo-Aligner is archived and points users to NeMo RL.',
+              'torchtune development wound down in 2025.',
+              'Useful ecosystem context, but not strong current main recommendations.',
             ],
           },
         ],
@@ -322,12 +358,10 @@ const phases: Phase[] = [
 
 const frameworkRows = [
   ['verl', 'HybridFlow', 'Synchronous colocated', 'Same GPUs', 'HybridFlow paper'],
-  ['AReaL', 'AReaL', 'Asynchronous', 'Disaggregated', 'AReaL paper'],
+  ['TRL', 'No system paper', 'Single-node / small-cluster focused', 'Colocated', 'Docs plus recipes'],
   ['OpenRLHF', 'OpenRLHF', 'Synchronous disaggregated', 'Separate GPU clusters', 'OpenRLHF paper'],
-  ['ReaLHF', 'ReaLHF', 'Synchronous dynamic realloc', 'Dynamically reallocated', 'ReaLHF paper'],
-  ['TRL', 'No system paper', 'Single-node focused', 'Colocated', 'Docs plus DPO/PPO papers'],
-  ['NeMo-Aligner', 'No system paper', 'Scale-focused toolkit', 'Megatron-scale', 'Docs plus algorithm papers'],
-  ['torchtune', 'No system paper', 'Recipe-focused toolkit', 'PyTorch-native', 'Docs plus recipes'],
+  ['slime', 'No system paper', 'Large-scale RL post-training', 'Megatron + SGLang', 'Docs plus source'],
+  ['AReaL', 'AReaL', 'Asynchronous', 'Disaggregated', 'AReaL paper'],
 ];
 
 const practicePath = [
@@ -363,7 +397,7 @@ const keyConcepts = `Efficient RL for LLMs
 |   |-- Resource Placement: colocated, disaggregated, dynamic reallocation
 |   |-- Communication: weights, experiences, parameter server vs all-reduce
 |-- Practical Stacks
-    |-- verl, OpenRLHF, TRL, NeMo-Aligner, torchtune`;
+    |-- verl, TRL, OpenRLHF, slime, AReaL`;
 
 const aiPerformanceReadingChecklist = [
   'Role definition: what an AI systems performance engineer owns',
