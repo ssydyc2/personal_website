@@ -7,7 +7,7 @@ A structured guide for learning RLHF/RL systems and algorithms for LLM alignment
 - [Phase 0: RL Foundations](#phase-0-rl-foundations) — build the RL vocabulary and formulas used by PPO and GRPO.
 - [Phase 1: Algorithm Foundations](#phase-1-algorithm-foundations) — read PPO/RLHF, DPO, and GRPO before systems papers.
 - [Phase 2: RLHF Systems & Frameworks](#phase-2-rlhf-systems-frameworks) — compare colocated, async, disaggregated, and dynamic allocation designs.
-- [Phase 3: Library-Based Frameworks](#phase-3-library-based-frameworks) — inspect TRL, NeMo-Aligner, and torchtune as practical toolkits.
+- [Phase 3: Popular RLHF/RL Post-Training Frameworks](#phase-3-popular-rlhfrl-post-training-frameworks) — compare the top current frameworks by visibility and practical relevance.
 - [Phase 4: Synthesis & Practice](#phase-4-synthesis-practice) — turn the map into hands-on GRPO work, scaling notes, and code reading.
 - [Framework Comparison Table](#framework-comparison-table) — jump straight to the sync/async and placement matrix.
 
@@ -208,34 +208,48 @@ Read in this order: one flexible dataflow view, one async systems view, one prac
 | Framework | Canonical Paper | Sync/Async | Actor-Critic Placement | Read First |
 |-----------|----------------|------------|----------------------|------------|
 | verl | HybridFlow | Synchronous (colocated) | Colocated on same GPUs | HybridFlow paper |
-| AReaL | AReaL | Asynchronous | Disaggregated | AReaL paper |
+| TRL | (no system paper) | Single-node / small-cluster focused | Colocated | Docs + DPO/PPO/GRPO recipes |
 | OpenRLHF | OpenRLHF | Synchronous (disaggregated) | Separate GPU clusters | OpenRLHF paper |
-| ReaLHF | ReaLHF | Synchronous (dynamic realloc) | Dynamically reallocated | ReaLHF paper |
-| TRL | (no system paper) | Single-node focused | Colocated | Docs + DPO/PPO papers |
-| NeMo-Aligner | (no system paper) | — | — | Docs + algorithm papers |
-| torchtune | (no system paper) | — | — | Docs + recipe papers |
+| slime | (no system paper) | Large-scale RL post-training | Megatron + SGLang | Docs + source |
+| AReaL | AReaL | Asynchronous | Disaggregated | AReaL paper |
 
 ---
 
-## Phase 3: Library-Based Frameworks
+## Phase 3: Popular RLHF/RL Post-Training Frameworks
 
-These are primarily libraries/toolkits — read docs and code, not papers.
+This list is ranked by current visibility plus practical relevance: stars, active maintenance, ecosystem usage, and systems importance.
 
-- **[TRL (Transformer Reinforcement Learning)](https://huggingface.co/docs/trl/)**
+- **1. [verl](https://github.com/verl-project/verl)**
+  - Strongest current open RL post-training systems framework
+  - Canonical paper: HybridFlow
+  - Good for studying colocated rollout/training, 3D-HybridEngine, and production-scale RL dataflow
+  - *Action*: read the HybridFlow paper, then trace one GRPO or PPO example in the repo
+
+- **2. [TRL (Transformer Reinforcement Learning)](https://huggingface.co/docs/trl/)**
   - HuggingFace post-training library
   - Supports DPO, PPO, GRPO, KTO, and more
-  - Best for: quick experiments, single-node or small-scale multi-GPU
+  - Best for quick experiments, single-node, or small-scale multi-GPU work
   - *Action*: read the docs, run a DPO or GRPO example end-to-end
 
-- **[NeMo-Aligner](https://github.com/NVIDIA/NeMo-Aligner)**
-  - NVIDIA's scalable alignment toolkit built on NeMo
-  - Supports DPO, PPO, RLHF at scale with Megatron parallelism
-  - *Action*: read the docs, understand how it handles model parallelism for RLHF
+- **3. [OpenRLHF](https://github.com/OpenRLHF/OpenRLHF)**
+  - Practical Ray + vLLM distributed RLHF stack
+  - Strong reference for disaggregated actor, critic, reward, and reference placement
+  - Good bridge from paper concepts to runnable open-source infrastructure
+  - *Action*: compare its Ray/vLLM pipeline with verl's colocated design
 
-- **[torchtune](https://github.com/pytorch/torchtune)**
-  - PyTorch-native post-training library
-  - Supports DPO, PPO, GRPO recipes
-  - *Action*: read the repo, understand recipe structure and config system
+- **4. [slime](https://github.com/THUDM/slime)**
+  - Rising Megatron + SGLang large-scale RL framework
+  - Focuses on high-performance training plus flexible rollout/data generation workflows
+  - Useful for understanding the SGLang side of modern RL post-training systems
+  - *Action*: read the architecture docs and compare its Megatron/SGLang path with OpenRLHF's Ray/vLLM path
+
+- **5. [AReaL](https://github.com/areal-project/AReaL)**
+  - Important async RL framework for reasoning and agentic training
+  - Decouples generation from training to improve utilization
+  - Best read as the async counterpart to synchronous colocated/disaggregated frameworks
+  - *Action*: read the AReaL paper and inspect how it bounds staleness in async training
+
+Not in the current top list: **NeMo-Aligner** is archived and points users to NeMo RL, while **torchtune** development wound down in 2025. Both are useful historical/ecosystem references, but not good main recommendations for a current framework shortlist.
 
 ---
 
