@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { motion, useMotionValueEvent, useReducedMotion, useScroll } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import rlForLlmsImage from '../assets/blog/efficient-rl-for-llms-2d-hd.webp';
 import kernelRuntimeImage from '../assets/blog/llm-kernel-runtime-basics-2d-hd.webp';
 import blogHeroImage from '../assets/hero/study-systems-anime.webp';
@@ -477,8 +477,6 @@ const blogPostImages: Record<string, { src: string; alt: string }> = {
   },
 };
 
-const MotionLink = motion.create(Link);
-
 function BlogPostVisual({ postId, compact = false }: { postId: string; compact?: boolean }) {
   const image = blogPostImages[postId] ?? blogPostImages['efficient-rl-for-llms'];
   const className = compact
@@ -537,11 +535,11 @@ function getBlogPreviewItems(post: BlogPost): { label: string; title: string; su
   return [{ label: 'Overview', title: post.summary, summary: '' }];
 }
 
-function BlogPostPreview({ post }: { post: BlogPost }) {
+function BlogPostPreview({ id, post }: { id: string; post: BlogPost }) {
   const previewItems = getBlogPreviewItems(post);
 
   return (
-    <div className="blog-post-preview" aria-label={`${post.title} preview`}>
+    <div id={id} className="blog-post-preview" aria-label={`${post.title} preview`}>
       <div className="flex flex-wrap items-center gap-2">
         <span className="border border-[var(--rule)] bg-[var(--paper)] px-2 py-0.5 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-[var(--accent)]">
           {post.eyebrow}
@@ -823,60 +821,13 @@ function BlogHeroScene() {
 }
 
 function BlogPostIndex({ posts }: { posts: BlogPost[] }) {
-  const [activePostIndex, setActivePostIndex] = useState(0);
-  const { scrollY } = useScroll();
-  const postRefs = useRef<Array<HTMLAnchorElement | null>>([]);
+  const [expandedPostId, setExpandedPostId] = useState<string | null>(null);
   const reduceMotion = useReducedMotion();
   const prefersReducedMotion = reduceMotion ?? false;
 
-  const updateActivePost = useCallback(() => {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    const documentHeight = document.documentElement.scrollHeight;
-    const scrollBottom = window.scrollY + window.innerHeight;
-
-    if (documentHeight - scrollBottom <= 8) {
-      setActivePostIndex(Math.max(posts.length - 1, 0));
-      return;
-    }
-
-    const focalLine = window.innerHeight * 0.48;
-    let nextActiveIndex = 0;
-    let shortestDistance = Number.POSITIVE_INFINITY;
-
-    postRefs.current.forEach((node, index) => {
-      if (!node) {
-        return;
-      }
-
-      const rect = node.getBoundingClientRect();
-      const nodeCenter = rect.top + rect.height / 2;
-      const distance = Math.abs(nodeCenter - focalLine);
-
-      if (distance < shortestDistance) {
-        shortestDistance = distance;
-        nextActiveIndex = index;
-      }
-    });
-
-    setActivePostIndex((current) => {
-      return current === nextActiveIndex ? current : nextActiveIndex;
-    });
-  }, [posts.length]);
-
-  useMotionValueEvent(scrollY, 'change', updateActivePost);
-
-  useEffect(() => {
-    const frameId = window.requestAnimationFrame(updateActivePost);
-    window.addEventListener('resize', updateActivePost);
-
-    return () => {
-      window.cancelAnimationFrame(frameId);
-      window.removeEventListener('resize', updateActivePost);
-    };
-  }, [updateActivePost]);
+  const togglePost = (postId: string) => {
+    setExpandedPostId((current) => (current === postId ? null : postId));
+  };
 
   return (
     <div className="mx-auto max-w-4xl space-y-10">
@@ -900,21 +851,18 @@ function BlogPostIndex({ posts }: { posts: BlogPost[] }) {
       </header>
 
       <div className="blog-post-list border-y border-[var(--rule-strong)]">
-        {posts.map((post, index) => {
-          const isActive = activePostIndex === index;
+        {posts.map((post) => {
+          const isActive = expandedPostId === post.id;
+          const previewId = `blog-preview-${post.id}`;
+          const titleId = `blog-title-${post.id}`;
 
           return (
-            <MotionLink
+            <motion.article
               key={post.id}
-              ref={(node) => {
-                postRefs.current[index] = node;
-              }}
-              to={`/blog/${post.id}`}
-              className="blog-post-list__item group grid gap-5 border-b border-[var(--rule)] py-8 transition-colors last:border-b-0 hover:bg-[var(--paper-elevated)] focus-visible:bg-[var(--paper-elevated)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)] sm:grid-cols-[9rem_minmax(0,1fr)_2rem] sm:items-start sm:px-4"
+              className="blog-post-list__item group grid gap-5 border-b border-[var(--rule)] py-8 transition-colors last:border-b-0 hover:bg-[var(--paper-elevated)] sm:grid-cols-[9rem_minmax(0,1fr)_4.5rem] sm:items-start sm:px-4"
               data-active={isActive}
-              aria-current={isActive ? 'true' : undefined}
               animate={{
-                opacity: isActive ? 1 : 0.52,
+                opacity: isActive ? 1 : 0.82,
                 backgroundColor: isActive ? 'var(--paper-elevated)' : 'transparent',
                 boxShadow: isActive
                   ? '0 12px 28px color-mix(in srgb, var(--ink) 8%, transparent)'
@@ -928,22 +876,39 @@ function BlogPostIndex({ posts }: { posts: BlogPost[] }) {
               }
             >
               <BlogPostVisual postId={post.id} compact />
-              <article className="min-w-0">
-                <h2 className="font-serif text-2xl font-normal leading-snug text-[var(--ink)] transition-colors group-hover:text-[var(--accent)]">
-                  {post.title}
-                </h2>
-                <p className="mt-4 max-w-3xl text-base leading-7 text-[var(--ink-muted)]">
-                  {post.summary}
-                </p>
-                <BlogPostPreview post={post} />
-              </article>
-              <span
-                aria-hidden="true"
-                className="font-mono text-2xl font-light text-[var(--ink-faint)] transition-all group-hover:translate-x-1 group-hover:text-[var(--accent)]"
+              <div className="min-w-0">
+                <button
+                  type="button"
+                  className="block w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]"
+                  aria-expanded={isActive}
+                  aria-controls={previewId}
+                  onClick={() => togglePost(post.id)}
+                >
+                  <span
+                    id={titleId}
+                    role="heading"
+                    aria-level={2}
+                    className="blog-post-title block font-serif text-2xl font-normal leading-snug text-[var(--ink)] transition-colors group-hover:text-[var(--accent)]"
+                  >
+                    {post.title}
+                  </span>
+                  <span className="mt-4 block max-w-3xl text-base leading-7 text-[var(--ink-muted)]">
+                    {post.summary}
+                  </span>
+                </button>
+                <BlogPostPreview id={previewId} post={post} />
+              </div>
+              <Link
+                to={`/blog/${post.id}`}
+                aria-labelledby={titleId}
+                className="inline-flex w-max items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-[var(--ink-faint)] transition-all hover:translate-x-1 hover:text-[var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)] sm:justify-self-end"
               >
-                &rarr;
-              </span>
-            </MotionLink>
+                <span>Read</span>
+                <span aria-hidden="true" className="text-2xl font-light leading-none">
+                  &rarr;
+                </span>
+              </Link>
+            </motion.article>
           );
         })}
       </div>
