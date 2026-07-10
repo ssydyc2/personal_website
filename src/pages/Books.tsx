@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
-import readingLibrary from '../assets/hero/reading-library-anime.webp';
-import HeroScene from '../components/HeroScene';
+import RpgHeroScene from '../components/RpgHeroScene';
 
 type ReadingTopic = 'self-improvement' | 'wealth' | 'happiness';
 
@@ -49,13 +48,7 @@ const books: Book[] = [
 ];
 
 function ReadingHeroScene() {
-  return (
-    <HeroScene
-      src={readingLibrary}
-      alt="Anime-style reading room with bookshelves, warm lamp light, and an open book"
-      variant="reading"
-    />
-  );
+  return <RpgHeroScene variant="reading" />;
 }
 
 function TopicButton({

@@ -3,9 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import rlForLlmsImage from '../assets/blog/efficient-rl-for-llms-2d-hd.webp';
 import kernelRuntimeImage from '../assets/blog/llm-kernel-runtime-basics-2d-hd.webp';
-import blogHeroImage from '../assets/hero/study-systems-anime.webp';
-import HeroScene from '../components/HeroScene';
 import MarkdownDocument from '../components/MarkdownDocument';
+import RpgHeroScene from '../components/RpgHeroScene';
 import ThemeToggle from '../components/ThemeToggle';
 import efficientRlMarkdown from '../content/blog/efficient-rl-for-llms.md?raw';
 import kernelBasicsMarkdown from '../content/blog/llm-kernel-runtime-basics.md?raw';
@@ -832,13 +831,7 @@ function BlogPostDetail({ post }: { post: BlogPost }) {
 }
 
 function BlogHeroScene() {
-  return (
-    <HeroScene
-      src={blogHeroImage}
-      alt="Anime-style nighttime study scene with a back-facing person working on a laptop"
-      variant="study"
-    />
-  );
+  return <RpgHeroScene variant="study" />;
 }
 
 function BlogPostIndex({ posts }: { posts: BlogPost[] }) {

@@ -72,15 +72,15 @@ samp {
   margin: 0 auto;
 }
 
-.hero-scene {
+.rpg-hero {
   position: relative;
   width: min(100%, 56rem);
   aspect-ratio: 16 / 7;
   min-height: 13rem;
   margin: 0 auto 1.5rem;
   overflow: hidden;
-  border: 1px solid rgba(149, 137, 121, 0.38);
-  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--rule-strong) 48%, transparent);
+  border-radius: 7px;
   background: var(--paper-elevated);
   box-shadow:
     0 20px 48px color-mix(in srgb, var(--ink) 12%, transparent),
@@ -88,24 +88,297 @@ samp {
   isolation: isolate;
 }
 
-.hero-scene__image {
+.rpg-hero__camera {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.rpg-hero__stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 106%;
+  transform: translate3d(-50%, -50%, 0) scale(1.01);
+  transform-origin: center;
+}
+
+.rpg-hero--about .rpg-hero__stage {
+  aspect-ratio: 1935 / 813;
+}
+
+.rpg-hero--reading .rpg-hero__stage,
+.rpg-hero--study .rpg-hero__stage {
+  aspect-ratio: 1896 / 830;
+}
+
+.rpg-hero__image {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transform-origin: center;
-  filter: saturate(1.08) contrast(1.03);
+  object-fit: fill;
+  filter: saturate(1.05) contrast(1.025);
+  user-select: none;
 }
 
-.hero-scene__vignette {
+.rpg-hero__glow,
+.rpg-hero__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.rpg-hero__glow {
+  z-index: 5;
+  opacity: 0.42;
+  background:
+    radial-gradient(circle at 28% 20%, rgba(255, 250, 202, 0.48), transparent 34%),
+    linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.2) 50%, transparent 66%);
+  background-size: auto, 220% 100%;
+  animation: rpg-hero-glow 8s ease-in-out infinite;
+}
+
+.rpg-hero--study .rpg-hero__glow {
+  background:
+    radial-gradient(circle at 62% 58%, rgba(255, 205, 116, 0.36), transparent 32%),
+    linear-gradient(115deg, transparent 35%, rgba(158, 231, 223, 0.18) 50%, transparent 66%);
+  background-size: auto, 220% 100%;
+}
+
+.rpg-hero__particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.rpg-hero__particles {
+  z-index: 2;
+  overflow: hidden;
+}
+
+.rpg-hero__particles > span {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  opacity: 0;
+  background: rgba(255, 250, 202, 0.92);
+  box-shadow: 5px 3px 0 rgba(188, 234, 168, 0.72);
+  animation: rpg-particle-float 6.8s linear infinite;
+  image-rendering: pixelated;
+}
+
+.rpg-hero--reading .rpg-hero__particles > span {
+  background: rgba(255, 235, 167, 0.94);
+  box-shadow: 4px 3px 0 rgba(255, 253, 247, 0.58);
+}
+
+.rpg-hero--study .rpg-hero__particles > span {
+  background: rgba(158, 231, 223, 0.94);
+  box-shadow: 5px 2px 0 rgba(226, 181, 95, 0.78);
+}
+
+.rpg-hero__particles > span:nth-child(1) { left: 7%; top: 78%; animation-delay: -1.2s; }
+.rpg-hero__particles > span:nth-child(2) { left: 15%; top: 55%; animation-delay: -4.8s; animation-duration: 8.2s; }
+.rpg-hero__particles > span:nth-child(3) { left: 24%; top: 82%; animation-delay: -2.9s; }
+.rpg-hero__particles > span:nth-child(4) { left: 34%; top: 66%; animation-delay: -6.1s; animation-duration: 7.6s; }
+.rpg-hero__particles > span:nth-child(5) { left: 43%; top: 88%; animation-delay: -3.7s; }
+.rpg-hero__particles > span:nth-child(6) { left: 51%; top: 61%; animation-delay: -0.6s; animation-duration: 8.8s; }
+.rpg-hero__particles > span:nth-child(7) { left: 59%; top: 84%; animation-delay: -5.4s; }
+.rpg-hero__particles > span:nth-child(8) { left: 68%; top: 70%; animation-delay: -2.1s; animation-duration: 7.9s; }
+.rpg-hero__particles > span:nth-child(9) { left: 76%; top: 90%; animation-delay: -6.5s; }
+.rpg-hero__particles > span:nth-child(10) { left: 84%; top: 62%; animation-delay: -3.1s; animation-duration: 8.5s; }
+.rpg-hero__particles > span:nth-child(11) { left: 91%; top: 80%; animation-delay: -4.2s; }
+.rpg-hero__particles > span:nth-child(12) { left: 47%; top: 74%; animation-delay: -7.1s; animation-duration: 9.1s; }
+
+.rpg-hero__vignette {
+  z-index: 6;
+  background:
+    linear-gradient(180deg, transparent 64%, color-mix(in srgb, var(--ink) 12%, transparent)),
+    radial-gradient(circle at 50% 50%, transparent 62%, rgba(20, 24, 20, 0.16) 100%);
+}
+
+@keyframes rpg-hero-glow {
+  0%,
+  100% {
+    opacity: 0.32;
+    background-position: 0 0, 0 0;
+  }
+
+  50% {
+    opacity: 0.54;
+    background-position: 0 0, 100% 0;
+  }
+}
+
+@keyframes rpg-particle-float {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) rotate(0deg);
+  }
+
+  18% {
+    opacity: 0.8;
+  }
+
+  78% {
+    opacity: 0.58;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(12px, -38px, 0) rotate(90deg);
+  }
+}
+
+/* Two-layer RPG scenes: a fixed background plate and one complete framed subject. */
+.rpg-hero__subject {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  overflow: hidden;
+  pointer-events: none;
+  image-rendering: pixelated;
+  transform: translateX(-50%);
+  transform-origin: bottom center;
+}
+
+.rpg-hero__sprite-strip {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 400%;
+  max-width: none;
+  height: 100%;
+  object-fit: fill;
+  user-select: none;
+  will-change: transform;
+}
+
+.rpg-hero__cloud-field {
   position: absolute;
   inset: 0;
   z-index: 1;
+  overflow: hidden;
   pointer-events: none;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--paper-elevated) 4%, transparent), color-mix(in srgb, var(--ink) 8%, transparent)),
-    radial-gradient(circle at 50% 46%, transparent 54%, color-mix(in srgb, var(--ink) 16%, transparent) 100%);
+}
+
+.rpg-hero__clouds {
+  position: absolute;
+  left: -62%;
+  height: auto;
+  opacity: 0;
+  image-rendering: pixelated;
+  will-change: transform, opacity;
+}
+
+.rpg-hero__clouds--far {
+  top: -1%;
+  width: 43%;
+  filter: saturate(0.82) brightness(1.05);
+  animation: rpg-cloud-crossing 38s linear -14s infinite;
+}
+
+.rpg-hero__clouds--near {
+  top: -5%;
+  width: 58%;
+  animation: rpg-cloud-crossing 27s linear -7s infinite;
+}
+
+.rpg-hero__resting-traveler {
+  position: absolute;
+  z-index: 3;
+  left: 39%;
+  bottom: 17%;
+  width: 10%;
+  height: auto;
+  image-rendering: pixelated;
+  pointer-events: none;
+  user-select: none;
+}
+
+.rpg-hero--reading .rpg-hero__subject {
+  bottom: 18%;
+  width: 22%;
+  aspect-ratio: 400 / 297;
+}
+
+.rpg-hero--reading .rpg-hero__sprite-strip {
+  animation: rpg-book-frames 4.8s steps(1, end) -1.55s infinite;
+}
+
+.rpg-hero--study .rpg-hero__subject {
+  bottom: 14%;
+  width: 17%;
+  aspect-ratio: 400 / 303;
+}
+
+.rpg-hero--study .rpg-hero__sprite-strip {
+  animation: rpg-writing-frames 2.4s steps(1, end) -0.2s infinite;
+}
+
+@keyframes rpg-cloud-crossing {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  9%,
+  89% {
+    opacity: 0.94;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(270%, 0, 0);
+  }
+}
+
+@keyframes rpg-book-frames {
+  0%,
+  33.99%,
+  64%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  34%,
+  43.99% {
+    transform: translate3d(-25%, 0, 0);
+  }
+
+  44%,
+  53.99% {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  54%,
+  63.99% {
+    transform: translate3d(-75%, 0, 0);
+  }
+}
+
+@keyframes rpg-writing-frames {
+  0%,
+  19.99%,
+  80%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  20%,
+  39.99% {
+    transform: translate3d(-25%, 0, 0);
+  }
+
+  40%,
+  59.99% {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  60%,
+  79.99% {
+    transform: translate3d(-75%, 0, 0);
+  }
 }
 
 .timeline-card-panel {
@@ -672,13 +945,13 @@ samp {
 }
 
 @media (max-width: 640px) {
-  .hero-scene {
+  .rpg-hero {
     aspect-ratio: 4 / 3;
     min-height: 14rem;
   }
 
-  .hero-scene__image {
-    object-position: 51% center;
+  .rpg-hero__stage {
+    height: 104%;
   }
 
   .pixel-journey {
@@ -726,6 +999,48 @@ samp {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .about-hero-enter {
+    transition: none !important;
+  }
+
+  .rpg-hero__stage,
+  .rpg-hero__glow,
+  .rpg-hero__particles > span,
+  .rpg-hero__subject,
+  .rpg-hero__sprite-strip,
+  .rpg-hero__clouds {
+    animation: none;
+  }
+
+  .rpg-hero__stage {
+    transform: translate3d(-50%, -50%, 0) scale(1.01);
+  }
+
+  .rpg-hero__particles {
+    display: none;
+  }
+
+  .rpg-hero__subject {
+    transform: translateX(-50%);
+  }
+
+  .rpg-hero__sprite-strip {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .rpg-hero__clouds {
+    opacity: 0.88;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .rpg-hero__clouds--far {
+    left: 4%;
+  }
+
+  .rpg-hero__clouds--near {
+    left: 42%;
+  }
+
   .timeline-node--active::after {
     animation: none;
   }
