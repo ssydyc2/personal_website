@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from 'motion/react';
-import aboutAnimeJourney from '../assets/hero/about-anime-journey.webp';
-import HeroScene from '../components/HeroScene';
+import RpgHeroScene from '../components/RpgHeroScene';
 
 interface TimelineItem {
   period: string;
@@ -202,11 +201,7 @@ function AboutHeroScene({ isVisible }: { isVisible: boolean }) {
         transitionDelay: '0.05s'
       }}
     >
-      <HeroScene
-        src={aboutAnimeJourney}
-        alt="Anime-style walking journey with trees, houses, sky, and a quiet path"
-        variant="about"
-      />
+      <RpgHeroScene variant="about" />
     </div>
   );
 }
