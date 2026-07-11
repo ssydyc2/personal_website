@@ -64,7 +64,20 @@ Every mathematical step is paired with the exact Lean code compiled by the compa
 
 ### Groups, rings, fields, and type classes
 
-A **group** is a set with an associative multiplication, an identity, and inverses. A **commutative ring** has addition, subtraction, and multiplication with the usual compatibility laws. A **field** is a commutative ring in which every nonzero element has a multiplicative inverse.
+A **group** is a set \(G\) equipped with a binary operation \(\cdot:G\times G\to G\), a distinguished element \(e\in G\), and an inverse operation \((-)^{-1}:G\to G\), satisfying, for every \(a,b,c\in G\):
+
+- **Associativity:** \((a\cdot b)\cdot c=a\cdot(b\cdot c)\).
+- **Identity:** \(e\cdot a=a=a\cdot e\).
+- **Inverses:** \(a^{-1}\cdot a=e=a\cdot a^{-1}\).
+
+A **commutative ring** is a tuple \((R,+,\cdot,-,0,1)\) such that:
+
+- \((R,+,0,-)\) is an abelian group;
+- \((R,\cdot,1)\) is a commutative monoid; and
+- multiplication distributes over addition on both sides:
+  \(a\cdot(b+c)=a\cdot b+a\cdot c\) and \((a+b)\cdot c=a\cdot c+b\cdot c\).
+
+A **field** is a commutative ring \(F\) with \(0\ne1\) such that every \(a\in F\setminus\{0\}\) has a multiplicative inverse. Equivalently, \((F\setminus\{0\},\cdot,1)\) is an abelian group.
 
 Lean separates the carrier type from the structure placed on it. In `[Field F]`, the square brackets ask type-class inference to supply a field structure on the type `F`. A theorem written for an arbitrary `F : Type*` with `[Field F]` therefore works for \(\mathbb Q\), \(\mathbb R\), finite fields, and many other fields without repeating their axioms.
 
