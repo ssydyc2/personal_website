@@ -177,6 +177,36 @@ This is the **minimal polynomial** of \(\alpha\) over \(F\). It divides every po
 m_{\alpha,F}=\frac{1}{\operatorname{leadingCoeff}(p)}p.
 ```
 
+### Why is the minimal polynomial not always \(X-\alpha\)?
+
+The coefficients of the minimal polynomial must lie in the **base field** \(F\). The expression \(X-\alpha\) belongs to \(F[X]\) only when \(\alpha\in F\).
+
+For example, take \(F=\mathbb Q\) and \(\alpha=\sqrt2\). The linear polynomial
+
+```latex
+X-\sqrt2
+```
+
+has \(\sqrt2\) as a root, but it is not an element of \(\mathbb Q[X]\), because its constant coefficient \(-\sqrt2\) is not rational. The polynomial
+
+```latex
+X^2-2\in\mathbb Q[X]
+```
+
+does have \(\sqrt2\) as a root, is monic, and is irreducible over \(\mathbb Q\). Therefore
+
+```latex
+m_{\sqrt2,\mathbb Q}(X)=X^2-2.
+```
+
+If we change the base field to \(\mathbb R\), then \(\sqrt2\in\mathbb R\), so the minimal polynomial becomes
+
+```latex
+m_{\sqrt2,\mathbb R}(X)=X-\sqrt2.
+```
+
+Thus the minimal polynomial depends not only on \(\alpha\), but also on the chosen base field.
+
 ### Separable polynomial
 
 A nonzero polynomial is **separable over \(F\)** if, in a field where it splits completely into linear factors, no root occurs with multiplicity greater than one. Equivalently,
