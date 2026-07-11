@@ -177,9 +177,7 @@ This is the **minimal polynomial** of \(\alpha\) over \(F\). It divides every po
 m_{\alpha,F}=\frac{1}{\operatorname{leadingCoeff}(p)}p.
 ```
 
-### Why is the minimal polynomial not always \(X-\alpha\)?
-
-The coefficients of the minimal polynomial must lie in the **base field** \(F\). The expression \(X-\alpha\) belongs to \(F[X]\) only when \(\alpha\in F\).
+Why is the minimal polynomial not always \(X-\alpha\)? Its coefficients must lie in the **base field** \(F\), and \(X-\alpha\) belongs to \(F[X]\) only when \(\alpha\in F\).
 
 For example, take \(F=\mathbb Q\) and \(\alpha=\sqrt2\). The linear polynomial
 
