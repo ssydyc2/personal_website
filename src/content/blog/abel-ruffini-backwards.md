@@ -510,7 +510,7 @@ Define the concrete rational polynomial
 This is the only polynomial needed for the final counterexample.
 
 ::: lean-explanation
-`ℚ[X]` is Lean's notation for polynomials with rational coefficients. `C 4` and `C 2` turn the rational numbers into constant polynomials, while `X` is the polynomial variable. The keyword `noncomputable` permits classical constructions used later; it does not prevent this polynomial from being evaluated.
+`ℚ[X]` is Lean's notation for polynomials with rational coefficients, `X` is the polynomial variable, and `C` embeds a rational number as a constant polynomial. Mathlib's polynomial arithmetic uses noncomputable instances, so Lean requires the `noncomputable` marker here even though the polynomial itself is completely explicit.
 :::
 
 ### II. Verify the polynomial bookkeeping
