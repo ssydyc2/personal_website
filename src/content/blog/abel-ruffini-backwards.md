@@ -709,7 +709,7 @@ The polynomial itself witnesses `IsAlgebraic ℚ x`; monicity proves that witnes
 The polynomial \(\Phi\in\mathbb Q[X]\) has degree five. Viewed over \(\mathbb C\), it therefore has a root \(x\in\mathbb C\) by the Fundamental Theorem of Algebra, so \(\Phi(x)=0\). The Galois argument above proves that every complex root of \(\Phi\) is not solvable by radicals over \(\mathbb Q\). Hence this chosen \(x\) has both required properties.
 
 ::: lean-explanation
-`IsAlgClosed.splits` states that the polynomial splits over \(\mathbb C\), and positive degree then supplies `x` and its root equation. Because the polynomial was defined over \(\mathbb Q\), `map_Phi` and `eval_map` transport the equation through `algebraMap ℚ ℂ`. The final component invokes the specialized non-radical-root theorem.
+`IsAlgClosed.exists_aeval_eq_zero` applies algebraic closure directly to the rational polynomial \(\Phi\) and supplies `x` with its root equation. The final component invokes the concrete non-radical-root theorem.
 :::
 
 Notice the logical shape: algebraic closure proves that a root **does** exist; Galois theory proves that the same root **cannot** be expressed by radicals. These are complementary statements, not competing ones.
@@ -727,7 +727,7 @@ Define \(P_n=X^{n-5}\Phi\). Both factors are monic, so their product is monic an
 The assumption \(n\ge5\) gives \((n-5)+5=n\), completing the degree calculation.
 
 ::: lean-explanation
-In Lean, `monic_X.pow (n - 5)` proves that the first factor is monic, while `monic_Phi 4 2` proves the same for the quintic. The explicit nonzero proofs passed to `natDegree_mul` prevent the zero-polynomial exception.
+In Lean, `monic_X.pow (n - 5)` proves that the first factor is monic, while `hardQuintic_monic` proves the same for \(\Phi\). The explicit nonzero proofs passed to `natDegree_mul` prevent the zero-polynomial exception.
 
 Natural-number subtraction truncates at zero, so Lean uses `Nat.sub_add_cancel hn` with the hypothesis `hn : 5 ≤ n` for the final equality.
 :::
