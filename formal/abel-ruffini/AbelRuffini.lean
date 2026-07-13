@@ -56,12 +56,12 @@ attribute [local instance] splits_ℚ_ℂ
 #check solvableByRad
 -- endregion galois-interfaces
 
--- region library-bridge
+-- region core-lemmas
 #check isSolvable_gal_of_irreducible
 #check galActionHom_bijective_of_prime_degree'
 #check solvable_of_surjective
 #check Equiv.Perm.not_solvable
--- endregion library-bridge
+-- endregion core-lemmas
 
 -- region hard-quintic
 /-- The concrete quintic used in the Abel–Ruffini counterexample. -/

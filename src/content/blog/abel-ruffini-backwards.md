@@ -4,22 +4,21 @@
 
 - [1. The problem and counterexample](#1-the-problem-and-counterexample)
 - [2. Mathematical prerequisites](#2-mathematical-prerequisites)
-  - [I. Algebraic structures](#i-algebraic-structures)
-  - [II. Group](#ii-group)
-  - [III. Semigroup](#iii-semigroup)
-  - [IV. Monoid](#iv-monoid)
-  - [V. Commutative monoid](#v-commutative-monoid)
-  - [VI. Abelian group](#vi-abelian-group)
-  - [VII. Ring](#vii-ring)
-  - [VIII. Commutative ring](#viii-commutative-ring)
-  - [IX. Field](#ix-field)
-  - [X. Polynomial](#x-polynomial)
-  - [XI. Units and factorization](#xi-units-and-factorization)
-  - [XII. Minimal polynomial](#xii-minimal-polynomial)
-  - [XIII. Separable polynomial](#xiii-separable-polynomial)
-  - [XIV. Field extensions and Galois groups](#xiv-field-extensions-and-galois-groups)
-  - [XV. Commutators, derived series, and solvable groups](#xv-commutators-derived-series-and-solvable-groups)
-  - [XVI. What solvable by radicals means](#xvi-what-solvable-by-radicals-means)
+  - [I. Group](#i-group)
+  - [II. Semigroup](#ii-semigroup)
+  - [III. Monoid](#iii-monoid)
+  - [IV. Commutative monoid](#iv-commutative-monoid)
+  - [V. Abelian group](#v-abelian-group)
+  - [VI. Ring](#vi-ring)
+  - [VII. Commutative ring](#vii-commutative-ring)
+  - [VIII. Field](#viii-field)
+  - [IX. Polynomial](#ix-polynomial)
+  - [X. Units and factorization](#x-units-and-factorization)
+  - [XI. Minimal polynomial](#xi-minimal-polynomial)
+  - [XII. Separable polynomial](#xii-separable-polynomial)
+  - [XIII. Field extensions and Galois groups](#xiii-field-extensions-and-galois-groups)
+  - [XIV. Commutators, derived series, and solvable groups](#xiv-commutators-derived-series-and-solvable-groups)
+  - [XV. What solvable by radicals means](#xv-what-solvable-by-radicals-means)
 - [3. Build the proof step by step](#3-build-the-proof-step-by-step)
   - [I. Define the hard quintic](#i-define-the-hard-quintic)
   - [II. Verify the polynomial bookkeeping](#ii-verify-the-polynomial-bookkeeping)
@@ -27,7 +26,7 @@
   - [IV. Exhibit two real roots](#iv-exhibit-two-real-roots)
   - [V. At most three real roots](#v-at-most-three-real-roots)
   - [VI. Count all complex roots](#vi-count-all-complex-roots)
-  - [VII. Inspect the imported bridges](#vii-inspect-the-imported-bridges)
+  - [VII. The core lemmas](#vii-the-core-lemmas)
   - [VIII. Why the Galois group is S5](#viii-why-the-galois-group-is-s5)
   - [IX. The Galois obstruction](#ix-the-galois-obstruction)
   - [X. Recover the algebraic counterexample](#x-recover-the-algebraic-counterexample)
@@ -92,11 +91,7 @@ Every mathematical step is paired with the exact Lean code compiled by the compa
 
 ## 2. Mathematical prerequisites
 
-### I. Algebraic structures
-
-Each structure gets its own definition. We begin with groups, the structure that will later describe symmetries of polynomial roots.
-
-### II. Group
+### I. Group
 
 A group is a tuple \((G,\star,e,(-)^{-1})\) consisting of a set \(G\), a binary operation \(\star:G\times G\to G\), an identity element \(e\in G\), and an inverse operation \((-)^{-1}:G\to G\). For every \(a,b,c\in G\), it satisfies:
 
@@ -104,7 +99,7 @@ A group is a tuple \((G,\star,e,(-)^{-1})\) consisting of a set \(G\), a binary 
 - **Identity:** \(e\star a=a=a\star e\).
 - **Inverses:** \(a^{-1}\star a=e=a\star a^{-1}\).
 
-### III. Semigroup
+### II. Semigroup
 
 A semigroup is a pair \((S,\star)\) consisting of a set \(S\) and a binary operation \(\star:S\times S\to S\) satisfying associativity. For every \(a,b,c\in S\),
 
@@ -112,7 +107,7 @@ A semigroup is a pair \((S,\star)\) consisting of a set \(S\) and a binary opera
 (a\star b)\star c=a\star(b\star c).
 ```
 
-### IV. Monoid
+### III. Monoid
 
 A monoid is a semigroup \((M,\star)\) together with an identity element \(e\in M\) satisfying, for every \(a\in M\),
 
@@ -120,7 +115,7 @@ A monoid is a semigroup \((M,\star)\) together with an identity element \(e\in M
 e\star a=a=a\star e.
 ```
 
-### V. Commutative monoid
+### IV. Commutative monoid
 
 A commutative monoid is a monoid whose operation also satisfies, for every \(a,b\in M\),
 
@@ -128,7 +123,7 @@ A commutative monoid is a monoid whose operation also satisfies, for every \(a,b
 a\star b=b\star a.
 ```
 
-### VI. Abelian group
+### V. Abelian group
 
 An abelian group, also called a commutative group, is a group whose operation is commutative:
 
@@ -137,7 +132,7 @@ a\star b=b\star a
 \qquad\text{for every }a,b\in G.
 ```
 
-### VII. Ring
+### VI. Ring
 
 A ring is a tuple \((R,+,\cdot,-,0,1)\) such that:
 
@@ -153,15 +148,15 @@ a\cdot(b+c)=a\cdot b+a\cdot c,
 
 The additive inverse of \(a\) is written \(-a\), and subtraction is the derived operation \(a-b:=a+(-b)\). Multiplication in a ring need not be commutative.
 
-### VIII. Commutative ring
+### VII. Commutative ring
 
 A commutative ring is a ring whose multiplication is commutative. Equivalently, its multiplicative structure \((R,\cdot,1)\) is a commutative monoid.
 
-### IX. Field
+### VIII. Field
 
 A field is a commutative ring \(F\) satisfying \(0\ne1\) in which every nonzero element has a multiplicative inverse. Equivalently, \((F\setminus\{0\},\cdot,1)\) is an abelian group.
 
-### X. Polynomial
+### IX. Polynomial
 
 Let \(F\) be a field. A polynomial over \(F\) is a finite formal sum
 
@@ -173,7 +168,7 @@ p(X)=a_0+a_1X+\cdots+a_nX^n
 
 The word **formal** matters: \(X\) is an indeterminate, not yet a number. Two polynomials are equal exactly when all corresponding coefficients are equal. The set of polynomials over \(F\), with coefficientwise addition and the usual convolution product, is denoted by \(F[X]\).
 
-### XI. Units and factorization
+### X. Units and factorization
 
 A **unit** in a ring is an element with a multiplicative inverse. The units of \(F[X]\) are exactly the nonzero constant polynomials. Consequently, multiplying a polynomial by a nonzero scalar does not create a mathematically meaningful factorization.
 
@@ -191,7 +186,7 @@ Irreducibility depends on the coefficient field. For example, \(X^2-2\) is irred
 X^2-2=(X-\sqrt2)(X+\sqrt2).
 ```
 
-### XII. Minimal polynomial
+### XI. Minimal polynomial
 
 An element \(\alpha\in E\) is **algebraic over \(F\)** if it is a root of some nonzero polynomial in \(F[X]\). For every algebraic \(\alpha\), there is a unique monic irreducible polynomial \(m_{\alpha,F}\in F[X]\) satisfying
 
@@ -233,7 +228,7 @@ m_{\sqrt2,\mathbb R}(X)=X-\sqrt2.
 
 Thus the minimal polynomial depends not only on \(\alpha\), but also on the chosen base field.
 
-### XIII. Separable polynomial
+### XII. Separable polynomial
 
 A nonzero polynomial is **separable over \(F\)** if, in a field where it splits completely into linear factors, no root occurs with multiplicity greater than one. Equivalently,
 
@@ -243,7 +238,7 @@ A nonzero polynomial is **separable over \(F\)** if, in a field where it splits 
 
 where \(p'\) is the formal derivative. Every irreducible polynomial over a field of characteristic zero is separable. In particular, every irreducible polynomial in \(\mathbb Q[X]\) is separable.
 
-### XIV. Field extensions and Galois groups
+### XIII. Field extensions and Galois groups
 
 A **field homomorphism** \(\iota:F\to E\) is a function preserving \(0\), \(1\), addition, and multiplication. Such a map is automatically injective: its kernel is an ideal of the field \(F\), so it is either \(\{0\}\) or all of \(F\), and preservation of \(1\) rules out the latter. We may therefore identify \(F\) with its image inside \(E\).
 
@@ -335,7 +330,7 @@ Separability has a different role. If \(p\) is separable of degree \(d\), then i
 
 For our quintic, the target is therefore \(S_5\). The decisive fact later will be that \(S_5\) is not a solvable group.
 
-### XV. Commutators, derived series, and solvable groups
+### XIV. Commutators, derived series, and solvable groups
 
 A **subgroup** \(H\le G\) is a subset of a group \(G\) that is itself a group under the same operation. Concretely, \(H\) contains the identity and is closed under multiplication and inverses. For example, the even permutations form a subgroup \(A_n\le S_n\).
 
@@ -437,7 +432,7 @@ The second equality says that \(A_5\) is **perfect**: it equals its own commutat
 
 Finally, solvability is preserved by subgroups and quotient groups. In particular, if \(f:G\to H\) is a surjective group homomorphism and \(G\) is solvable, then \(H\) is solvable: by the first isomorphism theorem, \(H\cong G/\ker f\). We will use the contrapositive later. Since \(S_5\) is not solvable, no solvable Galois group can map onto \(S_5\).
 
-### XVI. What solvable by radicals means
+### XV. What solvable by radicals means
 
 Fix a base field \(F\) inside a larger field \(E\), such as \(\mathbb Q\subseteq\mathbb C\). A **radical tower over \(F\)** is a finite chain of field extensions
 
@@ -611,32 +606,62 @@ Because \(\Phi\) is irreducible over the characteristic-zero field \(\mathbb Q\)
 
 This is the formal location of the Fundamental Theorem of Algebra in the Galois-group calculation.
 
-### VII. Inspect the imported bridges
+### VII. The core lemmas
 
-::: proof-lean library-bridge
-The contradiction uses four mathematical results:
+::: proof-lean core-lemmas
+We use the following four theorems as cited results. Their precise statements are recorded here; their proofs are not part of the main argument.
 
-1. If an irreducible polynomial has a root solvable by radicals, its Galois group is solvable.
-2. An irreducible rational polynomial of prime degree whose real-root count is between one and three below its complex-root count has full symmetric Galois action.
-3. Every surjective homomorphic image of a solvable group is solvable.
-4. The permutation group on at least five elements is not solvable.
+**Cited theorem 1 (radicals imply solvable Galois group).** Let \(F\) and \(E\) be fields with an \(F\)-algebra structure on \(E\). Let \(x\in E\) and \(q\in F[X]\). If
 
-Together they turn root-count information about our quintic into an obstruction to radical expressions.
+```latex
+x\in\mathcal R(F,E),\qquad q\text{ is irreducible},\qquad q(x)=0,
+```
+
+where \(\mathcal R(F,E)\) is the smallest intermediate field containing \(F\) with the following closure property: for every \(y\in E\) and every \(n\ge1\), if \(y^n\in\mathcal R(F,E)\), then \(y\in\mathcal R(F,E)\). Then
+
+```latex
+\operatorname{Gal}(q/F)\text{ is solvable}.
+```
+
+**Cited theorem 2 (prime-degree Galois action).** Let \(p\in\mathbb Q[X]\) be irreducible, and suppose that its natural degree is prime. Write
+
+```latex
+r=|\operatorname{Roots}_{\mathbb R}(p)|,
+\qquad
+c=|\operatorname{Roots}_{\mathbb C}(p)|.
+```
+
+If
+
+```latex
+r+1\le c\le r+3,
+```
+
+then the natural homomorphism
+
+```latex
+\operatorname{Gal}(p/\mathbb Q)
+\longrightarrow
+\operatorname{Perm}(\operatorname{Roots}_{\mathbb C}(p))
+```
+
+is bijective.
+
+**Cited theorem 3 (surjective transfer of solvability).** Let \(G\) and \(H\) be groups and let \(f:G\to H\) be a surjective group homomorphism. If \(G\) is solvable, then \(H\) is solvable.
+
+**Cited theorem 4 (non-solvability of the symmetric group).** If \(X\) is a type satisfying
+
+```latex
+5\le |X|,
+```
+
+where \(|X|\) denotes its cardinality, then the full permutation group \(\operatorname{Perm}(X)\) is not solvable.
 
 ::: lean-explanation
-These are the four library results on which the short Lean contradiction rests.
-
-- The first is the radicals-to-solvable-Galois bridge. Its first argument is membership in the intermediate field `solvableByRad F E`.
-- The second recognizes a full Galois action for an irreducible prime-degree rational polynomial whose real and complex root counts differ by one to three.
-- The third says a surjective image of a solvable group is solvable.
-- The fourth says the permutation group of any type with cardinality at least five is not solvable.
-
-`#check` asks Lean to print an expression's inferred type. It changes no theorem; it is a precise way to inspect the contract that later code must satisfy.
+The four `#check` commands correspond, in order, to cited theorems 1–4. They introduce no proofs or new declarations: `#check` only asks Lean to elaborate and report the imported declaration's type. Thus the mathematics on the left states exactly the results cited by this Lean region and deliberately supplies no independent proofs.
 :::
 
-Mathlib proves the first bridge by induction through the operations that generate `solvableByRad`. The radical case adjoins roots of unity, studies the Galois group of \(X^m-c\), and passes solvability through a field tower. Mathlib proves the non-solvability of permutation groups beginning with an explicit nontrivial element that remains in every term of the derived series of `Perm (Fin 5)`, then embeds that group into larger permutation groups.
-
-Those developments are deep reusable libraries. Our companion calls them by their public theorem statements, while rebuilding every lemma specific to the polynomial \(X^5-4X+2\).
+Cited theorems 1–4 remain imported without proof, exactly as they do in the displayed Lean file.
 
 ### VIII. Why the Galois group is S5
 
@@ -661,17 +686,45 @@ Why does this criterion force all of \(S_5\)? Irreducibility makes the Galois ac
 ### IX. The Galois obstruction
 
 ::: proof-lean radical-contradiction
-Let \(x\) be any complex root of \(\Phi=X^5-4X+2\). Suppose for contradiction that \(x\) is solvable by radicals over \(\mathbb Q\).
+Let \(x\in\mathbb C\) satisfy \(\Phi(x)=0\), and let
 
-The radicals-to-Galois theorem implies that \(\operatorname{Gal}(\Phi/\mathbb Q)\) is solvable. Its Galois action is surjective onto \(\operatorname{Sym}(R)\), where \(R\) is the set of its five complex roots. A surjective image of a solvable group is solvable, so \(\operatorname{Sym}(R)\cong S_5\) would be solvable. But \(S_5\) is not solvable. This contradiction proves that \(x\) is not solvable by radicals.
+```latex
+R=\operatorname{Roots}_{\mathbb C}(\Phi).
+```
+
+We prove that \(x\notin\mathcal R(\mathbb Q,\mathbb C)\).
+
+By cited theorem 1, irreducibility of \(\Phi\), and the equality \(\Phi(x)=0\), we have the implication
+
+```latex
+x\in\mathcal R(\mathbb Q,\mathbb C)
+\quad\Longrightarrow\quad
+\operatorname{Gal}(\Phi/\mathbb Q)\text{ is solvable}.
+```
+
+It therefore suffices, by contraposition, to prove that \(\operatorname{Gal}(\Phi/\mathbb Q)\) is not solvable. Suppose instead that it is solvable. Section VIII proves that the Galois-action homomorphism
+
+```latex
+\rho:\operatorname{Gal}(\Phi/\mathbb Q)\longrightarrow\operatorname{Perm}(R)
+```
+
+is bijective, hence surjective. Cited theorem 3 applied to \(\rho\) would then imply that \(\operatorname{Perm}(R)\) is solvable.
+
+On the other hand, Section VI gives \(|R|=5\), hence \(5\le |R|\). Cited theorem 4 therefore says that \(\operatorname{Perm}(R)\) is not solvable, a contradiction. Thus \(\operatorname{Gal}(\Phi/\mathbb Q)\) is not solvable, and contraposition yields
+
+```latex
+x\notin\mathcal R(\mathbb Q,\mathbb C).
+```
 
 ::: lean-explanation
-1. `isSolvable_gal_of_irreducible` turns that assumption, irreducibility, and the root equation into solvability of the polynomial's Galois group.
-2. `hardQuintic_galoisAction_bijective` says the Galois action on the five roots is bijective, so in particular it is surjective onto their full permutation group.
-3. `solvable_of_surjective` transfers solvability through that surjection.
-4. `Equiv.Perm.not_solvable` says a symmetric group on at least five objects is not solvable.
+The proof follows the mathematical argument in the same order.
 
-The tactic `mt` is modus tollens: from `A → B` it produces `¬B → ¬A`. Here it converts “radical root implies solvable Galois group” into “non-solvable Galois group implies non-radical root.” The cardinality calculation at the end identifies the root set as a five-element type.
+1. `isSolvable_gal_of_irreducible · hardQuintic_irreducible hx` is the implication from radical membership to solvability of `Gal Φ`.
+2. `apply mt` takes its contrapositive, leaving the goal that `Gal Φ` is not solvable.
+3. Under the temporary assumption `h : IsSolvable (Gal Φ)`, `hardQuintic_galoisAction_bijective.2` supplies surjectivity of the Galois action, and `solvable_of_surjective` makes the permutation group of the complex root type solvable.
+4. `rw_mod_cast [Cardinal.mk_fintype, hardQuintic_complex_roots]` proves that this root type has cardinality five. `Equiv.Perm.not_solvable` then contradicts its solvability.
+
+In particular, neither column constructs an explicit isomorphism with \(S_5\): both apply the imported non-solvability theorem directly to the five-element complex root type.
 :::
 
 This is the conceptual heart of Abel–Ruffini. A radical formula can create only solvable symmetry, while the roots of this quintic exhibit all of \(S_5\), a symmetry group too complicated to be solvable.

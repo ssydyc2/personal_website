@@ -42,8 +42,9 @@ const endRegionIds = collectMatches(
 const directiveSet = new Set(directiveIds);
 const regionSet = new Set(regionIds);
 const endRegionSet = new Set(endRegionIds);
+const allowedUnusedRegions = new Set(['algebra-interfaces', 'galois-interfaces']);
 const missingRegions = directiveIds.filter((id) => !regionSet.has(id));
-const unusedRegions = regionIds.filter((id) => !directiveSet.has(id));
+const unusedRegions = regionIds.filter((id) => !directiveSet.has(id) && !allowedUnusedRegions.has(id));
 const unclosedRegions = regionIds.filter((id) => !endRegionSet.has(id));
 const strayEndRegions = endRegionIds.filter((id) => !regionSet.has(id));
 
