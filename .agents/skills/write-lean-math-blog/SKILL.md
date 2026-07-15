@@ -17,6 +17,7 @@ Treat the compiled Lean source as the authority for theorem statements, hypothes
    - Put concepts used only by the detailed appendix or Lean-facing algebraic machinery in **Prerequisites for the Appendix**.
    - Keep local choices such as “put \(p=\operatorname{minpoly}_F(x)\)” inside the proof; these are not prerequisite concepts.
 5. Preserve Lean's exact generality. Do not add characteristic-zero, nonzero, finiteness, separability, or other assumptions unless the Lean declaration has or derives them.
+6. For subtle definitions or structural theorems that readers may misunderstand, prefer this exposition order: definition or theorem, proof idea, why it is needed later, and a counterexample or non-example when a tempting converse is false. Keep the proof idea aligned with the Lean dependency; label it as intuition if the Lean proof imports the result.
 
 ## Audit the proof–code pairing
 
