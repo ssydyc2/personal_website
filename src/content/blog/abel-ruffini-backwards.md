@@ -6,13 +6,15 @@
 - [2. Mathematical prerequisites](#2-mathematical-prerequisites)
   - [I. Group](#i-group)
   - [II. Abelian group](#ii-abelian-group)
-  - [III. Field](#iii-field)
-  - [IV. Polynomial](#iv-polynomial)
-  - [V. Units and factorization](#v-units-and-factorization)
-  - [VI. Separable polynomial](#vi-separable-polynomial)
-  - [VII. Field extensions and Galois groups](#vii-field-extensions-and-galois-groups)
-  - [VIII. Commutators, derived series, and solvable groups](#viii-commutators-derived-series-and-solvable-groups)
-  - [IX. What solvable by radicals means](#ix-what-solvable-by-radicals-means)
+  - [III. Semigroups, monoids, and rings](#iii-semigroups-monoids-and-rings)
+  - [IV. Field](#iv-field)
+  - [V. Polynomial](#v-polynomial)
+  - [VI. Units and factorization](#vi-units-and-factorization)
+  - [VII. Separable polynomial](#vii-separable-polynomial)
+  - [VIII. Homomorphisms and automorphisms](#viii-homomorphisms-and-automorphisms)
+  - [IX. Field extensions and Galois groups](#ix-field-extensions-and-galois-groups)
+  - [X. Commutators, derived series, and solvable groups](#x-commutators-derived-series-and-solvable-groups)
+  - [XI. Solvable by radicals and the radical closure](#xi-solvable-by-radicals-and-the-radical-closure)
 - [3. Build the proof step by step](#3-build-the-proof-step-by-step)
   - [I. Define the hard quintic](#i-define-the-hard-quintic)
   - [II. Verify the polynomial bookkeeping](#ii-verify-the-polynomial-bookkeeping)
@@ -39,18 +41,11 @@
 
 ## Overview and approach
 
-When I was learning abstract algebra, one of my biggest frustrations was encountering an endless stream of definitions and concepts without understanding what they were trying to accomplish.
+**What this article is about.** This article explains why equations of degree five or higher cannot always be solved by radicals. Each stage of the main argument presents a pure mathematical proof beside the exact compiled Lean code that verifies the same logical step, with short explanations connecting the formal statement back to the mathematics.
 
-This article explains why equations of degree five or higher cannot always be solved by radicals. It has three stages. First, we state the problem precisely and introduce the concrete quintic that will serve as the counterexample. Second, we develop the mathematical prerequisites—groups, fields, polynomials, field extensions, Galois groups, solvable groups, and radical towers. Third, we build the proof in dependency order, with each step supported by results already established.
+**Goal.** When I was learning abstract algebra, one of my biggest frustrations was encountering an endless stream of definitions and concepts without understanding what they were trying to accomplish. This article is written for readers who may otherwise lose the main argument behind a wall of definitions. Its aim is to make the purpose of each construction visible as it enters the proof, so that readers can understand what the mathematics is doing without giving up mathematical precision.
 
-Each stage of the main argument presents a pure mathematical proof beside the exact compiled Lean code that verifies the same logical step. The explanation below the code shows how the formal statement corresponds to the mathematics.
-
-Why this approach?
-
-1. **It is more intuitive.** Each abstract concept appears where the proof needs it, so its purpose remains visible.
-2. **Lean checks the proof and its logical dependencies.** Every formal step beside the mathematics is compiled, so missing assumptions and invalid deductions cannot quietly slip through—which is especially comforting when most of this article was generated with the help of AI. Lean, fortunately, is less impressed by confident prose than we are.
-
-This article is written for readers learning abstract algebra who may otherwise lose the main argument behind a wall of definitions. Its aim is to make the purpose of each construction visible as it enters the proof, so that readers can understand what the mathematics is doing without giving up mathematical precision. The article gives the complete framework of the proof and fully verifies the explicit counterexample, but it does not re-prove every foundational theorem in Galois theory or mathlib from first principles; doing so would turn one article into a book. Those deeper results are stated precisely, linked to their formal sources, and used as named dependencies. Lean certifies the formal proof shown here; the surrounding explanations are still meant to be read critically by humans.
+**Approach.** The article has three stages. First, we state the problem precisely and introduce the concrete counterexample. Second, we develop only the mathematical prerequisites the proof needs. Third, we build the proof in dependency order, with each step supported by results already established. This order keeps each abstract concept tied to the moment where it becomes useful, while Lean checks that the formal dependencies really line up. The article gives the complete framework of the proof and fully verifies the explicit counterexample, but it does not re-prove every foundational theorem in Galois theory or mathlib from first principles; those deeper results are stated precisely, linked to their formal sources, and used as named dependencies.
 
 ---
 
@@ -103,28 +98,6 @@ A group is a tuple \((G,\star,e,(-)^{-1})\) consisting of a set \(G\), a binary 
 - **Identity:** \(e\star a=a=a\star e\).
 - **Inverses:** \(a^{-1}\star a=e=a\star a^{-1}\).
 
-Let \((G,\star)\) and \((H,\diamond)\) be groups. A **group homomorphism** is a function \(f:G\to H\) that preserves the group operation:
-
-```latex
-f(a\star b)=f(a)\diamond f(b)
-\qquad(a,b\in G).
-```
-
-It is **injective** if
-
-```latex
-f(a)=f(b)\Longrightarrow a=b,
-```
-
-and **surjective** if
-
-```latex
-\text{for every }h\in H\text{ there exists }g\in G
-\text{ such that }f(g)=h.
-```
-
-A function is **bijective** if it is both injective and surjective. A **group isomorphism** is a bijective group homomorphism. If one exists, we write \(G\cong H\); the two groups may have differently named elements, but they have the same group structure.
-
 A group is **cyclic** if all of its elements are integer powers of one element. Every cyclic group is abelian.
 
 ### II. Abelian group
@@ -136,7 +109,28 @@ a\star b=b\star a
 \qquad\text{for every }a,b\in G.
 ```
 
-### III. Field
+### III. Semigroups, monoids, and rings
+
+A **semigroup** is a set \(S\) with an associative binary operation \(\star\):
+
+```latex
+(a\star b)\star c=a\star(b\star c)
+\qquad(a,b,c\in S).
+```
+
+A **monoid** is a semigroup with an identity element \(e\) satisfying \(e\star a=a=a\star e\). It is **commutative** if \(a\star b=b\star a\) for all \(a,b\).
+
+A **ring** is a tuple \((R,+,\cdot,-,0,1)\) such that \((R,+,0,-)\) is an abelian group, \((R,\cdot,1)\) is a monoid, and multiplication distributes over addition:
+
+```latex
+a(b+c)=ab+ac,
+\qquad
+(a+b)c=ac+bc.
+```
+
+A **commutative ring** is a ring whose multiplication is commutative. These definitions are the ambient algebraic structure behind polynomial rings, ideals, kernels, and fields.
+
+### IV. Field
 
 A field is a set \(F\) with addition, multiplication, additive inverses, distinguished elements \(0,1\), and multiplicative inverses for nonzero elements, such that:
 
@@ -147,9 +141,9 @@ A field is a set \(F\) with addition, multiplication, additive inverses, disting
 
 Examples include \(\mathbb Q\), \(\mathbb R\), and \(\mathbb C\). Division by a nonzero element is defined by \(a/b:=ab^{-1}\).
 
-A field has **characteristic zero** if no positive integer sum \(1+\cdots+1\) equals \(0\). Equivalently, the natural map \(\mathbb Z\to F\) is injective. The fields \(\mathbb Q\), \(\mathbb R\), and \(\mathbb C\) all have characteristic zero.
+A field has **characteristic zero** if no positive integer sum \(1+\cdots+1\) equals \(0\). Equivalently, the natural map \(\mathbb Z\to F\) never sends two different integers to the same field element. The fields \(\mathbb Q\), \(\mathbb R\), and \(\mathbb C\) all have characteristic zero.
 
-### IV. Polynomial
+### V. Polynomial
 
 Let \(F\) be a field. A polynomial over \(F\) is a finite formal sum
 
@@ -177,7 +171,7 @@ The **formal derivative** of \(p\) is
 p'(X)=\sum_{i\ge1} i\,a_iX^{i-1}.
 ```
 
-### V. Units and factorization
+### VI. Units and factorization
 
 A **unit** of \(F[X]\) is a polynomial \(u\) for which some \(v\in F[X]\) satisfies \(uv=1\). The units of \(F[X]\) are exactly the nonzero constant polynomials. Consequently, multiplying a polynomial by a nonzero scalar does not create a mathematically meaningful factorization.
 
@@ -197,11 +191,101 @@ Irreducibility depends on the coefficient field. For example, \(X^2-2\) is irred
 X^2-2=(X-\sqrt2)(X+\sqrt2).
 ```
 
-### VI. Separable polynomial
+### VII. Separable polynomial
 
 A nonzero polynomial is **separable over \(F\)** if, in a field where it splits completely into linear factors, no root occurs with multiplicity greater than one. Equivalently, \(p\) and its formal derivative \(p'\) have no common nonconstant factor. Every irreducible polynomial over a field of characteristic zero is separable. In particular, every irreducible polynomial in \(\mathbb Q[X]\) is separable.
 
-### VII. Field extensions and Galois groups
+### VIII. Homomorphisms and automorphisms
+
+A **homomorphism** is a function that preserves structure. The structure depends on the kind of object: for groups it must preserve the group operation; for fields it must preserve addition, multiplication, \(0\), and \(1\).
+
+A function \(f:A\to B\) is **injective** if different inputs never collapse to the same output:
+
+```latex
+f(a)=f(a')\Longrightarrow a=a'.
+```
+
+It is **surjective** if every element of \(B\) is hit by some element of \(A\):
+
+```latex
+\text{for every }b\in B\text{ there exists }a\in A
+\text{ such that }f(a)=b.
+```
+
+A function is **bijective** if it is both injective and surjective.
+
+Let \((G,\star)\) and \((H,\diamond)\) be groups. A **group homomorphism** is a function \(f:G\to H\) preserving the group operation:
+
+```latex
+f(a\star b)=f(a)\diamond f(b)
+\qquad(a,b\in G).
+```
+
+A **group isomorphism** is a bijective group homomorphism. If one exists, we write \(G\cong H\); the two groups may have differently named elements, but they have the same group structure.
+
+A **group automorphism** is a group isomorphism from a group to itself. It is a symmetry of that group.
+
+Let \(F\) and \(E\) be fields. A **field homomorphism**
+
+```latex
+\varphi:F\longrightarrow E
+```
+
+is a function that preserves the field operations:
+
+```latex
+\varphi(a+b)=\varphi(a)+\varphi(b),
+\qquad
+\varphi(ab)=\varphi(a)\varphi(b),
+\qquad
+\varphi(0)=0,
+\qquad
+\varphi(1)=1.
+```
+
+In words, it sends arithmetic in \(F\) to the same arithmetic in \(E\). This is the same data as a unital ring homomorphism between fields. We do not separately require preservation of inverses, because it follows automatically: if \(a\ne0\), then
+
+```latex
+\varphi(a)\varphi(a^{-1})
+=\varphi(aa^{-1})
+=\varphi(1)
+=1,
+```
+
+so \(\varphi(a^{-1})=\varphi(a)^{-1}\). For example, the usual inclusion \(\mathbb Q\hookrightarrow\mathbb C\) is a field homomorphism.
+
+A **field isomorphism** is a bijective field homomorphism. It says two fields have the same field structure, even if their elements are named or represented differently.
+
+A **field automorphism** of a field \(L\) is an isomorphism from \(L\) to itself:
+
+```latex
+\sigma:L\longrightarrow L.
+```
+
+It is a symmetry of the field \(L\) that preserves addition, multiplication, \(0\), and \(1\). For instance, complex conjugation
+
+```latex
+z\longmapsto \overline z
+```
+
+is a field automorphism of \(\mathbb C\).
+
+If \(F\subseteq L\), an **\(F\)-automorphism of \(L\)** is a field automorphism that fixes every element of the base field \(F\):
+
+```latex
+\sigma(a)=a
+\qquad(a\in F).
+```
+
+This means the automorphism is allowed to move the new elements of \(L\), but it must leave the scalars from \(F\) unchanged. The \(F\)-automorphisms of \(L\) form a group under composition, denoted
+
+```latex
+\operatorname{Aut}_F(L).
+```
+
+This definition is the symmetry language used by Galois groups.
+
+### IX. Field extensions and Galois groups
 
 For the main proof, a **field extension** is an inclusion of fields
 
@@ -209,7 +293,7 @@ For the main proof, a **field extension** is an inclusion of fields
 F\subseteq E.
 ```
 
-We write \(E/F\), where \(F\) is the **base field** and \(E\) is the **extension field**. The slash records the inclusion and does not denote a quotient. For example, \(\mathbb C/\mathbb Q\) denotes the usual inclusion \(\mathbb Q\subseteq\mathbb C\). The more abstract formulation by a chosen field homomorphism, and the proof that it is equivalent to this concrete picture, are deferred to Appendix II.
+We write \(E/F\), where \(F\) is the **base field** and \(E\) is the **extension field**. The slash records the inclusion and does not denote a quotient. For example, \(\mathbb C/\mathbb Q\) denotes the usual inclusion \(\mathbb Q\subseteq\mathbb C\). More abstractly, a field extension can be described by a chosen field homomorphism \(F\to E\); Appendix II explains why this agrees with the concrete inclusion picture after identifying \(F\) with its image.
 
 An **intermediate field** of \(E/F\) is a field \(K\) lying between them:
 
@@ -218,6 +302,8 @@ F\subseteq K\subseteq E.
 ```
 
 An element \(\alpha\in E\) is **algebraic over \(F\)** if some nonzero polynomial \(p\in F[X]\) satisfies \(p(\alpha)=0\).
+
+The extension \(E/F\) is an **algebraic extension** if every element of \(E\) is algebraic over \(F\). In other words, no element of \(E\) is freely transcendental over \(F\); each one satisfies some polynomial equation with coefficients in \(F\).
 
 A field \(E\) is **algebraically closed** if every nonconstant polynomial in \(E[X]\) has a root in \(E\). Equivalently, every polynomial in \(E[X]\) splits into linear factors over \(E\). The Fundamental Theorem of Algebra says precisely that \(\mathbb C\) is algebraically closed.
 
@@ -234,18 +320,6 @@ A **splitting field** of \(p\) over \(F\) is an extension \(L/F\) satisfying two
 2. \(L\) is generated over \(F\) by the roots of \(p\).
 
 The second condition is a minimality condition: no unrelated field elements have been added. For example, \(X^2-2\) has splitting field \(\mathbb Q(\sqrt2)\) over \(\mathbb Q\), because its roots are \(\sqrt2\) and \(-\sqrt2\). Inside a fixed algebraic closure, splitting fields exist and are unique up to an isomorphism that fixes \(F\).
-
-An **\(F\)-automorphism of \(L\)** is a bijective field homomorphism
-
-```latex
-\sigma:L\to L
-```
-
-that fixes the base field pointwise: \(\sigma(a)=a\) for every \(a\in F\). These automorphisms form a group under composition, denoted
-
-```latex
-\operatorname{Aut}_F(L).
-```
 
 If \(L\) is the splitting field of \(p\), the **Galois group of \(p\) over \(F\)** is
 
@@ -280,7 +354,7 @@ Separability has a different role. If \(p\) is separable of degree \(d\), then i
 
 For our quintic, the target is therefore \(S_5\). The decisive fact later will be that \(S_5\) is not a solvable group.
 
-### VIII. Commutators, derived series, and solvable groups
+### X. Commutators, derived series, and solvable groups
 
 A **subgroup** \(H\le G\) is a subset of a group \(G\) that is itself a group under the same operation. Concretely, \(H\) contains the identity and is closed under multiplication and inverses. For example, the even permutations form a subgroup \(A_n\le S_n\).
 
@@ -382,7 +456,7 @@ The second equality says that \(A_5\) is **perfect**: it equals its own commutat
 
 Finally, solvability is preserved by subgroups and quotient groups. We will use the following imported consequence without proving it: if \(f:G\to H\) is a surjective group homomorphism and \(G\) is solvable, then \(H\) is solvable. This is cited theorem 3 in the main proof and is exactly the theorem `solvable_of_surjective` used by Lean. Its contrapositive says that no solvable group can map surjectively onto \(S_5\).
 
-### IX. What solvable by radicals means
+### XI. Solvable by radicals and the radical closure
 
 Fix a base field \(F\) inside a larger field \(E\), such as \(\mathbb Q\subseteq\mathbb C\). A **radical tower over \(F\)** is a finite chain of field extensions
 
@@ -438,6 +512,22 @@ y\in E,\quad n\ge1,\quad y^n\in K
 y\in K.
 ```
 
+Formally, this smallest field is constructed by intersecting every intermediate field with that closure property:
+
+```latex
+\mathcal R(F,E)
+=
+\bigcap
+\left\{
+K:
+F\subseteq K\subseteq E,\quad
+\forall y\in E,\ \forall n\ge1,
+y^n\in K\Rightarrow y\in K
+\right\}.
+```
+
+The family being intersected is nonempty because \(E\) itself belongs to it. Intersections of intermediate fields are intermediate fields, so \(\mathcal R(F,E)\) is a field. It is contained in every radical-closed intermediate field and is therefore the unique smallest one.
+
 Thus
 
 ```latex
@@ -446,7 +536,7 @@ Thus
 \alpha\in\mathcal R(F,E).
 ```
 
-The detailed intersection construction of this smallest field appears in Appendix II. A polynomial is called **solvable by radicals** if a radical extension contains all of its roots, or equivalently its splitting field embeds into such an extension.
+A polynomial is called **solvable by radicals** if a radical extension contains all of its roots, or equivalently its splitting field embeds into such an extension.
 
 The group-theoretic consequence needed later is:
 
@@ -585,7 +675,7 @@ We use the following four theorems as cited results. Their precise statements ar
 x\in\mathcal R(F,E),\qquad q\text{ is irreducible},\qquad q(x)=0,
 ```
 
-where \(\mathcal R(F,E)\) is the radical closure defined in prerequisite IX. Then
+where \(\mathcal R(F,E)\) is the radical closure defined in prerequisite XI. Then
 
 ```latex
 \operatorname{Gal}(q/F)\text{ is solvable}.
@@ -660,7 +750,11 @@ Let \(x\in\mathbb C\) satisfy \(\Phi(x)=0\), and let
 R=\operatorname{Roots}_{\mathbb C}(\Phi).
 ```
 
-We prove that \(x\notin\mathcal R(\mathbb Q,\mathbb C)\).
+Here \(\mathcal R(\mathbb Q,\mathbb C)\) is the radical closure of \(\mathbb Q\) inside \(\mathbb C\): the set of complex numbers obtainable from rational numbers by field operations and radical extractions, as defined in prerequisite XI. We prove that
+
+```latex
+x\notin\mathcal R(\mathbb Q,\mathbb C).
+```
 
 By cited theorem 1, irreducibility of \(\Phi\), and the equality \(\Phi(x)=0\), we have the implication
 
@@ -824,24 +918,7 @@ Thus a double-headed arrow \(G\twoheadrightarrow H\) asserts that every element 
 
 #### B. Semigroups, monoids, and rings
 
-A **semigroup** is a set \(S\) with an associative binary operation \(\star\):
-
-```latex
-(a\star b)\star c=a\star(b\star c)
-\qquad(a,b,c\in S).
-```
-
-A **monoid** is a semigroup with an identity element \(e\) satisfying \(e\star a=a=a\star e\). It is **commutative** if \(a\star b=b\star a\) for all \(a,b\).
-
-A **ring** is a tuple \((R,+,\cdot,-,0,1)\) such that \((R,+,0,-)\) is an abelian group, \((R,\cdot,1)\) is a monoid, and multiplication distributes over addition:
-
-```latex
-a(b+c)=ab+ac,
-\qquad
-(a+b)c=ac+bc.
-```
-
-A **commutative ring** is a ring whose multiplication is commutative. These definitions supply the ambient algebraic structure needed for ideals and kernels below.
+These basic definitions are part of the main mathematical prerequisites; see [Section 2.III](#iii-semigroups-monoids-and-rings). They are used here as the ambient algebraic structure for ideals and kernels below.
 
 #### C. Ideals, kernels, and field homomorphisms
 
@@ -858,6 +935,17 @@ The purpose of this subsection is to prove that a field homomorphism places its 
 ```
 
 for all \(a,b\in F\).
+
+This definition does not separately mention inverses. They are preserved automatically: if \(a\ne0\), then
+
+```latex
+\iota(a)\iota(a^{-1})
+=\iota(aa^{-1})
+=\iota(1)
+=1.
+```
+
+Thus \(\iota(a^{-1})=\iota(a)^{-1}\).
 
 **Definition 2 (ideal).** Let \(R\) be a commutative ring. An ideal of \(R\) is a subset \(I\subseteq R\) such that:
 
@@ -1029,15 +1117,58 @@ A **predicate** on a set \(S\) is a statement \(P(x)\) that is either true or fa
 
 An element \(\alpha\in E\) is **integral over \(F\)** if it is a root of a monic polynomial in \(F[X]\). Over a field, integrality is equivalent to algebraicity: any nonzero annihilating polynomial can be divided by its leading coefficient to make it monic.
 
-An algebraic extension \(L/F\) is **normal** if every irreducible polynomial \(p\in F[X]\) having one root in \(L\) splits completely over \(L\). A splitting field is normal over its base field. Consequently, if \(L/F\) is normal and \(z\in L\), then the minimal polynomial of \(z\) over \(F\) splits over \(L\).
+An algebraic extension \(L/F\) is **normal** if it contains all conjugate roots forced by \(F\). More precisely: whenever an irreducible polynomial \(p\in F[X]\) has one root in \(L\), then \(p\) must split completely over \(L\). Equivalently:
 
-If \(F\subseteq K\subseteq L\) and an \(F\)-automorphism \(\sigma:L\to L\) preserves \(K\), its **restriction** is the \(F\)-automorphism
+```latex
+\text{one root of }p\text{ lies in }L
+\quad\Longrightarrow\quad
+\text{all roots of }p\text{ lie in }L,
+```
+
+as long as \(p\) is irreducible over the base field \(F\). The irreducibility condition matters because the roots of one irreducible polynomial are the algebraic conjugates that \(F\) cannot distinguish from one another.
+
+The minimal polynomial is unique: for an algebraic element \(z\), there is exactly one monic irreducible polynomial in \(F[X]\) having \(z\) as a root.
+
+**Theorem.** Every splitting field is normal over its base field.
+
+**Proof idea.** Let \(L\) be the splitting field of \(f\in F[X]\), and let \(\Omega\) be an algebraic closure containing \(L\). Since \(L\) is generated by all roots of \(f\), any \(F\)-embedding \(L\to\Omega\) must send each root of \(f\) to another root of \(f\). But all roots of \(f\) already lie in \(L\), so the embedding sends the generators of \(L\) back into \(L\). Therefore it sends all of \(L\) back into \(L\).
+
+Now suppose an irreducible polynomial \(q\in F[X]\) has one root \(z\in L\). The other roots of \(q\) are the possible \(F\)-conjugates of \(z\). By the embedding argument above, those conjugates also lie in \(L\). Hence \(q\) splits over \(L\), so \(L/F\) is normal.
+
+**Where this is used later.** If \(L/F\) is normal and \(z\in L\), then the minimal polynomial of \(z\) over \(F\) splits over \(L\): that minimal polynomial is irreducible over \(F\), and it already has one root in \(L\), namely \(z\). Later, in Lemma 9, we put several elements inside a splitting field \(S\). Normality then tells us that the minimal polynomial of any element we build inside \(S\) also splits in \(S\), which lets us compare its Galois group with the larger splitting-field Galois group.
+
+**Counterexample.** Not every algebraic extension is normal. Let \(L=\mathbb Q(\sqrt[3]{2})\). The polynomial \(X^3-2\) is irreducible over \(\mathbb Q\) and has one root \(\sqrt[3]{2}\in L\). But its other roots are
+
+```latex
+\zeta_3\sqrt[3]{2}
+\quad\text{and}\quad
+\zeta_3^2\sqrt[3]{2},
+```
+
+which are not real, while \(L\subseteq\mathbb R\). Thus \(X^3-2\) has one root in \(L\) but does not split over \(L\). So \(\mathbb Q(\sqrt[3]{2})/\mathbb Q\) is algebraic but not normal; it is not the splitting field of \(X^3-2\).
+
+Now we define a bookkeeping operation called **restriction**. Suppose
+
+```latex
+F\subseteq K\subseteq L
+```
+
+and let \(\sigma:L\to L\) be an \(F\)-automorphism of the large field \(L\). To restrict \(\sigma\) to the smaller field \(K\), we want to use the same function but only on inputs from \(K\):
+
+```latex
+\sigma|_K(x)=\sigma(x)
+\qquad(x\in K).
+```
+
+This is only an automorphism of \(K\) if \(\sigma\) **preserves \(K\)**, meaning \(\sigma(K)=K\). In words: elements of \(K\) must be sent back to elements of \(K\). Under that assumption, restriction gives an \(F\)-automorphism
 
 ```latex
 \sigma|_K:K\longrightarrow K.
 ```
 
-Restriction respects composition and therefore defines a group homomorphism. The surjectivity and injectivity properties of the particular restriction maps used later are cited theorems, not consequences of this definition alone.
+This is not automatic for every intermediate field. For example, inside \(\mathbb C/\mathbb Q\), complex conjugation preserves \(\mathbb Q(i)\), but an automorphism of a larger splitting field might send one chosen root to another root and thereby move a smaller field generated by that chosen root to a different subfield. In that case, the formula \(\sigma|_K\) still gives a function \(K\to L\), but not an automorphism \(K\to K\).
+
+**Where this is used later.** Restriction lets us compare symmetries of a large splitting field with symmetries of a smaller one. Later cited theorems say that particular restriction maps are injective or surjective; those facts are special theorems, not consequences of the definition alone. The basic definition only says what the map is once preservation of the smaller field is known.
 
 #### H. Coefficient extension, roots of unity, and multisets
 
@@ -1071,41 +1202,7 @@ A **multiset** is a finite collection in which order is ignored but repetition i
 
 #### I. Extracting radicals and the radical closure
 
-Let \(K\) be an intermediate field between \(F\) and \(E\). To **extract an \(n\)-th root** of an element \(a\in K\), where \(n\ge1\), means to choose an element \(y\in E\) satisfying
-
-```latex
-y^n=a.
-```
-
-For example, starting from \(K=\mathbb Q\), extracting a square root of \(2\) permits us to add \(\sqrt2\), because \((\sqrt2)^2=2\in\mathbb Q\). If \(2+\sqrt2\) is available at a later stage, extracting a cube root permits us to add \(\sqrt[3]{2+\sqrt2}\).
-
-We say that \(K\) is **closed under extracting radicals inside \(E\)** if it never loses such a root: for every \(y\in E\) and every positive integer \(n\),
-
-```latex
-y^n\in K
-\quad\Longrightarrow\quad
-y\in K.
-```
-
-In words: if an element of the larger field \(E\) has a positive integer power already in \(K\), then that element itself must already be in \(K\). The phrase “positive integer” describes the exponent \(n\); it does not say that \(y\) or \(y^n\) must be a nonzero number. The case \(n=1\) adds nothing, while \(n=2,3,\ldots\) correspond to square roots, cube roots, and so on.
-
-This closure condition packages all possible choices of radicals. For instance, when \(E=\mathbb C\), a radical-closed field containing \(\mathbb Q\) must contain \(\sqrt2\), must then contain \(1+\sqrt2\), and must then contain every \(y\in\mathbb C\) with \(y^3=1+\sqrt2\). Because it is a field, it also contains every result of applying addition, subtraction, multiplication, and division by a nonzero element to things already constructed.
-
-The **radical closure** is defined formally by intersecting every intermediate field with this closure property:
-
-```latex
-\mathcal R(F,E)
-=
-\bigcap
-\left\{
-K:
-F\subseteq K\subseteq E,\quad
-\forall y\in E,\ \forall n\ge1,
-y^n\in K\Rightarrow y\in K
-\right\}.
-```
-
-The family being intersected is nonempty because \(E\) itself belongs to it. Intersections of intermediate fields are intermediate fields, so \(\mathcal R(F,E)\) is a field. It is contained in every radical-closed intermediate field and is therefore the unique smallest one. This is the formal version of the operational description in main prerequisite IX.
+The radical closure is part of the main mathematical prerequisites; see [Section 2.XI](#xi-solvable-by-radicals-and-the-radical-closure). In the appendix proofs below, \(\mathcal R(F,E)\) refers to that same intersection-defined smallest intermediate field closed under extracting radicals inside \(E\).
 
 ### III. Group-theoretic and splitting-field lemmas
 
@@ -1242,7 +1339,7 @@ We want to attach one certificate to every \(z\in\mathcal R(F,E)\): the Galois g
 Algebraicity is essential here, not decorative. It guarantees that every \(z\in\mathcal R(F,E)\) has a minimal polynomial, so the certificate is even defined. The final effect of this section is that any property surviving those construction rules automatically holds for a hypothetical radical expression for a root of \(\Phi\), regardless of how deeply nested that expression is.
 
 ::: proof-lean appendix-solvable-by-rad
-Recall from Appendix II.I that \(\mathcal R(F,E)\) is defined as the intersection of all intermediate fields \(K\) with
+Recall from prerequisite XI that \(\mathcal R(F,E)\) is defined as the intersection of all intermediate fields \(K\) with
 
 ```latex
 F\subseteq K\subseteq E
