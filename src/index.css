@@ -501,7 +501,7 @@ samp {
 }
 
 .rpg-hero--study .rpg-hero__stage {
-  --spell-origin-x: 43%;
+  --spell-origin-x: 40.75%;
   --spell-mid-x: 48.5%;
   --spell-page-x: 53.5%;
 }
@@ -517,9 +517,9 @@ samp {
 .rpg-hero__spellwriting-mage {
   position: absolute;
   bottom: 5.5%;
-  left: 26%;
-  width: 18%;
-  aspect-ratio: 360 / 465;
+  left: 28%;
+  width: 14%;
+  aspect-ratio: 543 / 724;
   overflow: hidden;
   filter: drop-shadow(4px 6px 3px rgba(6, 12, 31, 0.48));
   image-rendering: pixelated;
@@ -1582,15 +1582,15 @@ samp {
   }
 
   .rpg-hero--study .rpg-hero__stage {
-    --spell-origin-x: 44.5%;
+    --spell-origin-x: 43.25%;
     --spell-mid-x: 49%;
     --spell-page-x: 53.5%;
   }
 
   .rpg-hero__spellwriting-mage {
     bottom: 5%;
-    left: 29%;
-    width: 15.5%;
+    left: 30%;
+    width: 13.5%;
   }
 
   .rpg-hero__spellwriting-page {
